@@ -41,7 +41,3 @@ Each layer in `home.html` takes two inline CSS variables:
 | `--md-parallax-depth` | Depth (higher = slower scroll). Suggested: `8`, `5`, `2`, `1` |
 | `--md-image-position` | `object-position` horizontal %. Controls which part of the image shows |
 
-## Credits
-
-Parallax technique and CSS ported from [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) — MIT License, copyright Martin Donath.
-
