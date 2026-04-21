@@ -49,3 +49,4 @@ The effect uses no JavaScript, no scroll event listeners, and no `requestAnimati
 ## Credits
 
 CSS parallax technique ported from [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) — MIT License, copyright Martin Donath.
+
