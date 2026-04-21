@@ -39,3 +39,4 @@ Agent skills for this project:
 ## Credits
 
 Parallax technique from [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) — MIT License.
+
