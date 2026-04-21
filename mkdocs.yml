@@ -13,6 +13,8 @@ theme:
   features:
     - navigation.tabs
     - navigation.instant
+    - navigation.tabs.sticky
+    - content.code.copy
 
 extra_css:
   - assets/stylesheets/home.css
@@ -21,3 +23,8 @@ nav:
   - Home: index.md
   - How It Works: how-it-works.md
   - Your Own Layers: your-own-layers.md
+  - AI Image Generation: ai-image-generation.md
+  - MkDocs Skills: mkdocs-skills.md
+  - Agents: agents.md
+  - Advanced CSS: advanced-css.md
+  - GitHub Pages: github-pages.md
