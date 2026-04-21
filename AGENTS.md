@@ -36,3 +36,4 @@ Skills are defined in `skills/` and invoked via `.claude/commands/`. Each skill 
 - Change the MkDocs theme away from Material
 - Add tracking pixels, analytics, or external font calls
 - Modify `docs/assets/hero/.gitkeep` — that file keeps the directory in git
+
