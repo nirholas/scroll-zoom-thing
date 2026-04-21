@@ -130,3 +130,4 @@ photorealistic, panoramic wide-angle, 16:5 aspect ratio
 ## 6. Changelog
 
 - `0.1.0` — Initial skill.
+
