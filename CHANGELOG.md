@@ -13,3 +13,4 @@ All notable changes to scroll-zoom-thing are documented here.
 - Claude slash commands in `.claude/commands/`
 - Agent documentation in `agents/`
 - Docs: how-it-works, your-own-layers, advanced-css, ai-image-generation
+
