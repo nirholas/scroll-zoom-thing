@@ -29,3 +29,4 @@ Skills live in `skills/` and Claude commands in `.claude/commands/`. When modify
 - No JavaScript in the parallax implementation — CSS only
 - Images must be AVIF format, `@4x` suffix
 - MkDocs Material theme only
+
