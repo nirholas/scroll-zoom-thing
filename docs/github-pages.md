@@ -117,3 +117,4 @@ MkDocs copies it to `_site/CNAME` at build time. Then configure your DNS CNAME t
 ## Checking the deployed site
 
 After the first deploy, open DevTools → Network → filter by `avif`. Confirm all 4 layers return 200 and load within 1-2 seconds. If layers are missing, check that file paths in `home.html` match exactly what's in `docs/assets/hero/` (case-sensitive on Linux).
+
