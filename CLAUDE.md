@@ -39,3 +39,4 @@ mkdocs serve
 ## Credits
 
 Parallax technique ported from [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) — MIT License, Martin Donath.
+
