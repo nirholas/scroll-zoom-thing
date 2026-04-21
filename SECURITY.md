@@ -26,3 +26,4 @@ If you discover a security issue:
 | Version | Supported |
 |---------|-----------|
 | latest  | ✅        |
+
