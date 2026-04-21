@@ -29,3 +29,4 @@ CSS 3D perspective parallax for MkDocs Material. No JavaScript. Pure CSS.
 - Add JavaScript to implement scroll behavior
 - Change the theme from MkDocs Material
 - Use image formats other than AVIF for layers
+
