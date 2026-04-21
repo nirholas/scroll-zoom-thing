@@ -174,3 +174,4 @@ Users who prefer reduced motion should get a static hero:
 ```
 
 This disables the 3D scroll effect and treats the hero as a normal stacked layout.
+
