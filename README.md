@@ -44,3 +44,4 @@ Each layer in `home.html` takes two inline CSS variables:
 ## Credits
 
 Parallax technique and CSS ported from [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) — MIT License, copyright Martin Donath.
+
