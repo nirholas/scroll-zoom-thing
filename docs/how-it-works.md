@@ -71,3 +71,4 @@ The scroll-timeline API (`@keyframes` driven by scroll position) is simpler to w
 
 - **Safari**: handles `contain: strict` differently — the `.safari` class disables it.
 - **Firefox**: has a `contain` bug on the first scroll — the `.ff-hack` class (toggled by a tiny JS observer) forces a repaint.
+
