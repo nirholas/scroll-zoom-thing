@@ -126,3 +126,4 @@ ls -lh "$OUT"/*.avif
 ## 7. Changelog
 
 - `0.1.0` — Initial skill.
+
