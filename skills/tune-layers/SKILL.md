@@ -73,3 +73,4 @@ Maps to CSS `object-position` (horizontal axis).
 ## 5. Changelog
 
 - `0.1.0` — Initial skill.
+
