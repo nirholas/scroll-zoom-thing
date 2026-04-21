@@ -10,3 +10,4 @@ The MkDocs Material community
 Last update: 2026-04-21
 Language: English
 Technology: CSS, MkDocs Material, AVIF
+
