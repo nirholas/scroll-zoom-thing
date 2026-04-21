@@ -62,3 +62,4 @@ Start with these defaults and adjust based on where the subject sits:
   `.mdx-hero` — removing it causes a hard edge between hero and content.
 - `contain: strict` on the first group is intentional — do not remove it
   (the Safari/Firefox workarounds handle the edge cases).
+
