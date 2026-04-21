@@ -44,3 +44,4 @@ immediately buildable.
 - Adding `will-change: transform` — already implied by `transform-style:
   preserve-3d` on the group; adding it explicitly wastes GPU memory.
 - Forgetting that `.mdx-parallax` is the scroll container, not `html`/`body`.
+
