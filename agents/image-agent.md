@@ -71,3 +71,4 @@ Before handing off images for use:
 - Do not recommend upscaling layers beyond 2× — AI upscaling artifacts
   are visible in the parallax at depth.
 - Do not auto-commit image files without user review.
+
