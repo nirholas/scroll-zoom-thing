@@ -1,0 +1,18 @@
+{
+  "name": "scroll-zoom-thing",
+  "description": "CSS 3D perspective parallax for MkDocs Material — no JS, pure CSS translateZ + scale()",
+  "version": "1.0.0",
+  "publisher": "nirholas",
+  "repository": "https://github.com/nirholas/scroll-zoom-thing",
+  "language": "CSS",
+  "topics": [
+    "parallax",
+    "css",
+    "mkdocs",
+    "mkdocs-material",
+    "3d",
+    "perspective",
+    "nirholas",
+    "open-source"
+  ]
+}

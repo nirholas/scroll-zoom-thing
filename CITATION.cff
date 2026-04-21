@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this parallax technique in your project, please cite it."
+type: software
+title: scroll-zoom-thing
+abstract: "CSS 3D perspective parallax for MkDocs Material. Uses translateZ and scale() to create depth-based scroll parallax without JavaScript."
+authors:
+  - family-names: Nicholas
+    given-names: ""
+    alias: nirholas
+    email: nicholas.usd@gmail.com
+repository-code: "https://github.com/nirholas/scroll-zoom-thing"
+license: MIT
+version: 1.0.0
+date-released: "2026-04-21"
+keywords:
+  - parallax
+  - css
+  - mkdocs
+  - mkdocs-material
+  - 3d-perspective

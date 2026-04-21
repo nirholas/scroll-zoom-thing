@@ -1,0 +1,83 @@
+# scroll-zoom-thing — Full LLM Context
+
+> CSS 3D perspective parallax for MkDocs Material — no JS, pure CSS
+
+## Project overview
+
+scroll-zoom-thing is a minimal, well-documented reference implementation of a pure-CSS 3D perspective parallax effect, extracted from the [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) hero section. It demonstrates how to use CSS `perspective`, `translateZ`, and `scale()` to create parallax scrolling without any JavaScript or scroll event listeners.
+
+## How the parallax works
+
+1. The scroll container gets `perspective: Npx` — this establishes a 3D rendering context
+2. Each layer is a `<picture>` element with `transform: translateZ(depth)` — pushing it back in 3D space
+3. Elements pushed further back appear to scroll slower (natural 3D projection — the same way distant mountains move slower than foreground trees)
+4. `scale()` is applied to compensate for the apparent size reduction caused by depth, so all layers fill the viewport regardless of depth
+5. No JavaScript, no scroll events — the browser handles all 3D geometry during normal scroll rendering
+
+## Repository structure
+
+```
+docs/
+├── overrides/
+│   └── home.html                    # Jinja2 template — layer <picture> elements
+├── assets/
+│   ├── stylesheets/
+│   │   └── home.css                 # All parallax CSS, heavily commented
+│   └── hero/                        # Drop AVIF layer images here
+│       └── .gitkeep
+├── index.md
+├── how-it-works.md
+├── your-own-layers.md
+├── advanced-css.md
+├── ai-image-generation.md
+├── agents.md
+├── github-pages.md
+└── mkdocs-skills.md
+mkdocs.yml
+skills/
+├── SKILL.md
+├── setup-parallax/SKILL.md
+├── generate-prompts/SKILL.md
+├── convert-images/SKILL.md
+└── tune-layers/SKILL.md
+.claude/
+└── commands/
+    ├── setup-parallax.md
+    ├── generate-prompts.md
+    ├── convert-images.md
+    ├── tune-layers.md
+    └── deploy.md
+agents/
+├── agent.md
+├── image-agent.md
+└── parallax-agent.md
+```
+
+## CSS variables
+
+Per-layer variables set inline on each `<picture>` element:
+
+| Variable | Type | Effect |
+|---|---|---|
+| `--md-parallax-depth` | number | Depth — higher = slower scroll. Suggested: 8, 5, 2, 1 |
+| `--md-image-position` | percentage | `object-position` horizontal % — controls visible crop |
+
+## Agent skills
+
+| Skill | Description |
+|---|---|
+| setup-parallax | Scaffolds the layer file structure and template |
+| generate-prompts | Creates AI image generation prompts for each layer |
+| convert-images | Converts source images to AVIF at @4x resolution |
+| tune-layers | Adjusts depth and crop per layer for visual balance |
+
+## Constraints
+
+- No JavaScript in the parallax implementation — CSS only
+- MkDocs Material theme required
+- Images must be AVIF format, `@4x` suffix, named `N-description@4x.avif`
+- No telemetry, no external calls, no analytics
+
+## Credits
+
+Parallax technique and original CSS from [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) — MIT License, copyright Martin Donath.

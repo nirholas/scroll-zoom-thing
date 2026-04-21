@@ -1,0 +1,41 @@
+# scroll-zoom-thing
+
+> CSS 3D perspective parallax for MkDocs Material — no JS, pure CSS
+
+## What it is
+
+A minimal reference implementation of the parallax hero used in MkDocs Material. Uses `perspective`, `translateZ`, and `scale()` to create smooth depth-based scroll parallax without any JavaScript.
+
+## Key concepts
+
+- `perspective` on the scroll container establishes the 3D rendering context
+- Each layer uses `translateZ(N)` to sit at a different depth
+- Layers further from the viewer scroll slower — natural 3D projection
+- `scale()` compensates for depth-induced size reduction
+- No scroll events, no JS — pure browser 3D geometry
+
+## CSS variables per layer
+
+- `--md-parallax-depth` — depth value; higher = slower scroll; suggested ladder: 8, 5, 2, 1
+- `--md-image-position` — horizontal crop position as a percentage
+
+## Skills
+
+Agent skills for this project:
+
+- **setup-parallax** — scaffold the layer structure
+- **generate-prompts** — generate AI image prompts for each parallax layer
+- **convert-images** — convert images to AVIF at correct dimensions
+- **tune-layers** — adjust depth and crop per layer for visual balance
+
+## Files
+
+- [docs/assets/stylesheets/home.css](docs/assets/stylesheets/home.css)
+- [docs/overrides/home.html](docs/overrides/home.html)
+- [mkdocs.yml](mkdocs.yml)
+- [skills/](skills/)
+- [.claude/commands/](.claude/commands/)
+
+## Credits
+
+Parallax technique from [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) — MIT License.

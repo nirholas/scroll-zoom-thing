@@ -1,0 +1,16 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "scroll-zoom-thing",
+  "name_for_model": "scroll_zoom_thing",
+  "description_for_human": "CSS 3D perspective parallax for MkDocs Material — no JS, pure CSS",
+  "description_for_model": "A pure-CSS 3D perspective parallax technique for MkDocs Material. Uses translateZ and scale() to create depth-based scroll parallax without JavaScript. Includes Claude agent skills for generating parallax layers and tuning depth.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "none"
+  },
+  "logo_url": "https://github.com/nirholas.png",
+  "contact_email": "nirholas@users.noreply.github.com",
+  "legal_info_url": "https://github.com/nirholas/scroll-zoom-thing/blob/main/LICENSE"
+}

@@ -1,0 +1,12 @@
+/* TEAM */
+Owner & developer: nirholas
+GitHub: https://github.com/nirholas
+
+/* THANKS */
+Martin Donath (squidfunk) — MkDocs Material parallax technique
+The MkDocs Material community
+
+/* SITE */
+Last update: 2026-04-21
+Language: English
+Technology: CSS, MkDocs Material, AVIF

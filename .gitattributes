@@ -1,0 +1,23 @@
+# Normalize line endings
+* text=auto eol=lf
+
+# CSS and HTML
+*.css text diff=css
+*.html text diff=html
+
+# Docs
+*.md text diff=markdown
+*.yml text
+*.yaml text
+
+# Binary assets
+*.avif binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text
+
+# Linguist
+docs/** linguist-documentation=true
