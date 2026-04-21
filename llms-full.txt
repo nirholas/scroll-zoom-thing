@@ -81,3 +81,4 @@ Per-layer variables set inline on each `<picture>` element:
 ## Credits
 
 Parallax technique and original CSS from [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) — MIT License, copyright Martin Donath.
+
