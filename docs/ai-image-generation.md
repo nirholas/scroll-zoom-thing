@@ -126,3 +126,4 @@ Common issues:
 | Layers have mismatched lighting | Re-generate with the same lighting description anchored in every prompt |
 | Foreground objects are too large | Use `--ar 16:5` and keep subjects in the lower third |
 | Background bleeds into foreground layers | Re-run background removal with a higher tolerance |
+
