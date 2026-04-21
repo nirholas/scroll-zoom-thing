@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block tabs %}
+  {{ super() }}
+  <style>
+    .md-header{position:initial}
+    .md-main__inner{margin:0}
+    .md-content{display:none}
+    @media screen and (min-width:60em){.md-sidebar--secondary{display:none}}
+    @media screen and (min-width:76.25em){.md-sidebar--primary{display:none}}
+  </style>
+  <div class="mdx-parallax" data-mdx-component="parallax">
+    <section class="mdx-parallax__group" data-md-color-scheme="slate">
+
+      <!--
+        Each layer gets --md-parallax-depth (inline style).
+        Higher depth = pushed further back in Z = scrolls slower.
+        --md-image-position controls object-position (which part of the image is visible).
+
+        Layer order (HTML): back to front.
+        Suggested depths for 4 layers: 8, 5, 2, 1
+      -->
+
+      <picture class="mdx-parallax__layer" style="--md-parallax-depth: 8; --md-image-position: 70%">
+        <source type="image/avif" srcset="{{ 'assets/hero/1-landscape@4x.avif' | url }}">
+        <img src="{{ 'assets/hero/1-landscape@4x.avif' | url }}" alt="" class="mdx-parallax__image" draggable="false">
+      </picture>
+
+      <picture class="mdx-parallax__layer" style="--md-parallax-depth: 5; --md-image-position: 25%">
+        <source type="image/avif" srcset="{{ 'assets/hero/2-plateau@4x.avif' | url }}">
+        <img src="{{ 'assets/hero/2-plateau@4x.avif' | url }}" alt="" class="mdx-parallax__image" draggable="false">
+      </picture>
+
+      <picture class="mdx-parallax__layer" style="--md-parallax-depth: 2; --md-image-position: 40%">
+        <source type="image/avif" srcset="{{ 'assets/hero/5-plants-1@4x.avif' | url }}">
+        <img src="{{ 'assets/hero/5-plants-1@4x.avif' | url }}" alt="" class="mdx-parallax__image" draggable="false">
+      </picture>
+
+      <picture class="mdx-parallax__layer" style="--md-parallax-depth: 1; --md-image-position: 50%">
+        <source type="image/avif" srcset="{{ 'assets/hero/6-plants-2@4x.avif' | url }}">
+        <img src="{{ 'assets/hero/6-plants-2@4x.avif' | url }}" alt="" class="mdx-parallax__image" draggable="false">
+      </picture>
+
+      <!-- Gradient fade from transparent to page background -->
+      <div class="mdx-parallax__layer mdx-parallax__blend"></div>
+
+      <!-- Hero text — sticky so it stays visible while layers scroll past -->
+      <div class="mdx-hero" data-mdx-component="hero">
+        <div class="mdx-hero__scrollwrap md-grid">
+          <div class="mdx-hero__inner">
+            <div class="mdx-hero__teaser md-typeset">
+              <h1>Scroll. Depth. Perspective.</h1>
+              <p>A pure-CSS parallax hero for MkDocs Material — no JavaScript, no scroll events, just 3D projection.</p>
+              <a href="{{ 'how-it-works/' | url }}" class="md-button md-button--primary">How it works</a>
+              <a href="{{ 'your-own-layers/' | url }}" class="md-button">Use your layers</a>
+            </div>
+            <div class="mdx-hero__more">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 4h2v12l5.5-5.5 1.42 1.42L12 19.84l-7.92-7.92L5.5 10.5 11 16z"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+    <section class="mdx-parallax__group" data-md-color-scheme="slate">
+      <div class="md-content md-grid" data-md-component="content">
+        <div class="md-content__inner md-typeset">
+          {{ page.content }}
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}
+
+{% block content %}{% endblock %}
+{% block footer %}{% endblock %}

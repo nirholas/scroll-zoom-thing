@@ -1,0 +1,23 @@
+site_name: CSS 3D Parallax Scrolling
+site_description: A minimal MkDocs Material example of pure-CSS 3D perspective parallax scrolling using layered images, translateZ, and a sticky hero.
+site_author: nirholas
+site_url: https://nirholas.github.io/scroll-zoom-thing/
+
+theme:
+  name: material
+  custom_dir: docs/overrides
+  palette:
+    scheme: slate
+    primary: indigo
+    accent: indigo
+  features:
+    - navigation.tabs
+    - navigation.instant
+
+extra_css:
+  - assets/stylesheets/home.css
+
+nav:
+  - Home: index.md
+  - How It Works: how-it-works.md
+  - Your Own Layers: your-own-layers.md
