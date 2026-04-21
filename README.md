@@ -2,14 +2,13 @@
 
 > A pure-CSS 3D perspective parallax hero for MkDocs Material. No JavaScript, no scroll listeners, no animation frame loops. Just `perspective`, `translateZ`, and `scale()`, plus a handful of AVIF layers, wired into the browser's own scroll rendering.
 
-This repository is a minimal, documented, copy-pasteable reference implementation of the layered parallax hero used on [squidfunk.github.io/mkdocs-material](https://squidfunk.github.io/mkdocs-material/). It extracts the technique into its own project so you can read it end to end, swap in your own artwork, and ship a MkDocs site that opens with a slow, cinematic depth effect that degrades gracefully on anything from a 2015 laptop to a modern phone.
+This repository is a minimal, documented, copy-pasteable reference implementation of a layered parallax hero. It extracts the technique into its own project so you can read it end to end, swap in your own artwork, and ship a MkDocs site that opens with a slow, cinematic depth effect that degrades gracefully on anything from a 2015 laptop to a modern phone.
 
 If you have ever wondered "how do they do that thing where the background drifts slower than the foreground while you scroll, and why is my JavaScript version always janky?", this repo is the answer. The trick is that there is no trick. The browser already knows how to project 3D geometry during scroll. You just have to tell it that your layers exist in a 3D space.
 
 ## Table of contents
 
 - [What this is](#what-this-is)
-- [What it is not](#what-it-is-not)
 - [How it works](#how-it-works)
 - [Repository layout](#repository-layout)
 - [Quick start](#quick-start)
@@ -38,13 +37,6 @@ A small, self-contained MkDocs Material site that demonstrates a pure-CSS 3D per
 - Reusable skills and agent prompts for Claude Code and similar tools, so an AI assistant can scaffold layers, generate prompts, convert images, and tune the result for you
 
 Everything is standard MkDocs Material. If you already know how to run `mkdocs serve`, you already know how to run this.
-
-## What it is not
-
-- It is not a JavaScript library. There is no bundler, no framework, no runtime. The parallax effect runs inside the browser's compositor.
-- It is not a gimmick that breaks without JS. The layers are plain `<picture>` tags inside HTML. With CSS disabled you get a stack of images. With JS disabled you get the full effect.
-- It is not a rebrand of squidfunk's work. The technique and original CSS come from the MkDocs Material project. This repository is a clean extraction, documented for reuse, with credit to the original author.
-- It is not a generator or template engine. It does not produce layered images for you. It shows you where to put them and how to wire them up.
 
 ## How it works
 
