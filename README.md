@@ -1,4 +1,4 @@
-# scroll-zoom-thing
+# CSS 3D Perspective Scrolling
 
 > A pure-CSS 3D perspective parallax hero for MkDocs Material. No JavaScript, no scroll listeners, no animation frame loops. Just `perspective`, `translateZ`, and `scale()`, plus a handful of AVIF layers, wired into the browser's own scroll rendering.
 
