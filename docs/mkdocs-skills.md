@@ -162,3 +162,4 @@ Override them per color scheme:
   --md-default-bg-color: #0d1117;
 }
 ```
+
