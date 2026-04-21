@@ -12,3 +12,4 @@ version: 0.1.0
 | `tune-layers` | Adjust depth and image-position values for existing layers | stable |
 | `convert-images` | Convert PNG/WebP source images to AVIF for parallax layers | stable |
 | `generate-prompts` | Write AI image prompts for each parallax depth layer | stable |
+
