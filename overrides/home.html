@@ -37,13 +37,13 @@
           <div class="mdx-hero__inner">
             <div class="mdx-hero__teaser md-typeset">
               <!-- AGENT: hero headline — ≤8 words, brand tagline -->
-              <h1>Your AI. Your keys. Your OS.</h1>
+              <h1>Cinematic depth. Zero JavaScript.</h1>
               <!-- AGENT: hero subhead — 25–60 words -->
-              <p>PAI is a full Linux desktop on a USB drive — private AI, cold-signing, encryption, all of it local. Plug into any machine, boot into your own workspace in seconds, pull the drive. No cloud, no account, nothing left behind.</p>
+              <p>scroll-zoom-thing is a pure-CSS 3D parallax MkDocs Material template. Four AVIF layers, one perspective container, no scroll listeners. Fork the repo, swap the images, ship a docs site that opens with cinematic depth on every device. Production-tested at docs.pai.direct.</p>
               <!-- AGENT: primary CTA — action verb, must point to a real page -->
-              <a href="{{ 'quickstart/' | url }}" class="md-button md-button--primary">Quickstart</a>
+              <a href="https://github.com/nirholas/scroll-zoom-thing/generate" class="md-button md-button--primary">Use this template</a>
               <!-- AGENT: secondary CTA — orientation, lower commitment -->
-              <a href="{{ 'general/how-pai-works/' | url }}" class="md-button">Learn more</a>
+              <a href="https://github.com/nirholas/scroll-zoom-thing" class="md-button">View on GitHub</a>
             </div>
             <div class="mdx-hero__more">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 4h2v12l5.5-5.5 1.42 1.42L12 19.84l-7.92-7.92L5.5 10.5 11 16z"/></svg>
@@ -57,16 +57,16 @@
     <section class="mdx-parallax__group mdx-pillars" data-md-color-scheme="slate">
       <div class="mdx-pillars__inner">
         <div class="mdx-pillar">
-          <h3 class="mdx-pillar__title">Runs in RAM, leaves no trace</h3>
-          <p class="mdx-pillar__body">Boot from USB into a full Debian + Sway desktop that lives entirely in memory. Your host disk is never touched. Pull the drive and nothing remains.</p>
+          <h3 class="mdx-pillar__title">Pure CSS, no JavaScript</h3>
+          <p class="mdx-pillar__body">The depth effect is the browser's native 3D projection of <code>translateZ</code>-positioned layers inside a <code>perspective</code> scroll container. No scroll listeners, no animation frame loops, no jank. The compositor does all the work.</p>
         </div>
         <div class="mdx-pillar">
-          <h3 class="mdx-pillar__title">Local AI, any model, your hardware</h3>
-          <p class="mdx-pillar__body">Ollama and Open WebUI are preinstalled. Run Llama, Mistral, Qwen, Gemma, or your own GGUF, with GPU offload on CUDA, ROCm, or Metal. No API keys, no quotas, no telemetry.</p>
+          <h3 class="mdx-pillar__title">Four AVIF layers, ~600 KB total</h3>
+          <p class="mdx-pillar__body">Panoramic AVIF compresses 30–50% smaller than WebP. Four layers stacked at depths 8, 5, 2, 1 give a perceptible parallax range without bloating mobile load times. Lighthouse scores stay above 95.</p>
         </div>
         <div class="mdx-pillar">
-          <h3 class="mdx-pillar__title">Privacy by construction</h3>
-          <p class="mdx-pillar__body">Hardened defaults, optional Tor routing, MAC randomization, and a LUKS-encrypted persistence option when you want to keep work between boots. Designed to be boring to surveil.</p>
+          <h3 class="mdx-pillar__title">MkDocs Material under the hood</h3>
+          <p class="mdx-pillar__body">Search, instant navigation, code-copy buttons, content tabs, admonitions, sticky tabs, dark or light themes. Everything Material gives you, plus the cinematic hero on top.</p>
         </div>
       </div>
     </section>
@@ -75,20 +75,21 @@
     <section class="mdx-parallax__group mdx-intro" data-md-color-scheme="slate">
       <div class="mdx-intro__inner">
         <div class="mdx-intro__card">
-          <h2>Overview</h2>
-          <p>PAI is a bootable USB Linux distribution that runs Ollama and Open WebUI locally. A complete offline AI workstation that lives entirely in RAM and leaves zero trace on your host machine.</p>
-          <p>Debian 12 base, Sway desktop, hardened defaults. Works on any AMD64 or ARM64 hardware. No cloud, no accounts, no telemetry.</p>
-          <a href="{{ 'general/how-pai-works/' | url }}" class="md-button">How PAI works →</a>
+          <h2>How it works</h2>
+          <p>A scroll container with <code>perspective: 2.5rem</code> establishes a 3D context. Each layer is pushed back with <code>translateZ</code> and scaled to compensate. Layers further from the camera move slower as you scroll — the parallax is the browser's projection math, not a simulation.</p>
+          <p>The technique was originally built for <a href="https://squidfunk.github.io/mkdocs-material/">Material for MkDocs</a>. This repo is the standalone extraction: documented, scripted, and ready to drop into any project.</p>
+          <a href="https://github.com/nirholas/scroll-zoom-thing#the-parallax-effect-in-30-seconds" class="md-button">Read the deep dive →</a>
         </div>
         <div class="mdx-intro__card">
           <h2>Quickstart</h2>
-          <p>Download the ISO, flash a USB stick, and boot from it. First launch takes under two minutes from power-on to a working local AI chat.</p>
+          <p>Pick a host, click deploy, swap the four hero AVIFs for your own. The site is live in under five minutes — no account beyond your deploy platform, no JavaScript framework, no build pipeline beyond <code>mkdocs build</code>.</p>
           <ol>
-            <li>Grab the latest ISO from <a href="https://pai.direct">pai.direct</a></li>
-            <li>Flash with <code>dd</code>, Rufus, or Raspberry Pi Imager</li>
-            <li>Boot your machine from USB and pick a model</li>
+            <li><a href="https://github.com/nirholas/scroll-zoom-thing/generate">Fork the repo</a> via "Use this template"</li>
+            <li>Click a one-click deploy button (Vercel, Netlify, Railway)</li>
+            <li>Replace the four AVIFs in <code>src/assets/hero/</code> with your art</li>
+            <li>Edit hero copy in <code>overrides/home.html</code> — push, deploy auto-updates</li>
           </ol>
-          <a href="{{ 'quickstart/' | url }}" class="md-button md-button--primary">Get started →</a>
+          <a href="https://github.com/nirholas/scroll-zoom-thing#deploy-in-one-click" class="md-button md-button--primary">Deploy now →</a>
         </div>
       </div>
     </section>

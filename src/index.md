@@ -1,7 +1,7 @@
 ---
 template: home.html
-title: "PAI Documentation — Bootable USB Linux for Offline, Private AI"
-description: "Complete documentation for PAI — how to install, use, and build the offline AI Linux distribution on amd64 PCs and Raspberry Pi. Start here for quickstart, concepts, and full reference."
+title: "scroll-zoom-thing — Pure-CSS 3D Parallax MkDocs Material Template"
+description: "A pure-CSS 3D parallax MkDocs Material template. No JavaScript, no scroll listeners. Four AVIF layers, one perspective container. Production-tested at docs.pai.direct. Deploy on Vercel, Cloudflare Pages, GitHub Pages, Railway, or Netlify in one click."
 sidebar:
   label: "Docs home"
   order: 0
@@ -12,11 +12,11 @@ head:
   - tag: meta
     attrs:
       property: "og:description"
-      content: "Complete documentation for PAI — how to install, use, and build the offline AI Linux distribution on amd64 PCs and Raspberry Pi. Start here for quickstart, concepts, and full reference."
+      content: "A pure-CSS 3D parallax MkDocs Material template. Four AVIF layers, one perspective container, zero JavaScript. Production-tested at docs.pai.direct."
   - tag: meta
     attrs:
       name: "keywords"
-      content: "PAI documentation, offline AI Linux, private AI OS, bootable AI USB, Ollama Linux docs, local LLM distribution"
+      content: "CSS 3D parallax, MkDocs Material template, perspective translateZ, AVIF layers, parallax scrolling, MkDocs hero, scroll-zoom-thing"
 ---
 
 Welcome to the PAI documentation. PAI is a bootable USB Linux distribution that runs Ollama and Open WebUI locally — a complete offline AI workstation that lives entirely in RAM and leaves zero trace on your host machine.

@@ -1,9 +1,9 @@
 # AGENT: site_name — browser tab title and site header (e.g. "Acme Documentation")
-site_name: PAI Documentation
+site_name: scroll-zoom-thing
 # AGENT: site_description — meta description and OG tag (one sentence)
-site_description: Private AI on a bootable USB drive — Debian + Sway + Ollama.
+site_description: A pure-CSS 3D parallax MkDocs Material template — no JavaScript, four AVIF layers, one perspective container.
 # AGENT: site_url — production URL; canonical URL and sitemap base
-site_url: https://docs.pai.direct
+site_url: https://scroll-zoom-thing.pages.dev
 # AGENT: repo_url — "View on GitHub" link target
 repo_url: https://github.com/nirholas/scroll-zoom-thing
 # AGENT: repo_name — repo label shown in the header
