@@ -1,0 +1,66 @@
+# AGENT: site_name — browser tab title and site header
+site_name: {{SITE_NAME}}
+# AGENT: site_description — meta description and OG tag
+site_description: {{SITE_DESCRIPTION}}
+# AGENT: site_url — production URL; canonical URL and sitemap base
+site_url: {{SITE_URL}}
+# AGENT: repo_url — "View on GitHub" link target
+repo_url: {{REPO_URL}}
+# AGENT: repo_name — repo label shown in the header
+repo_name: {{REPO_NAME}}
+edit_uri: edit/main/src/
+
+docs_dir: src
+site_dir: _site
+
+theme:
+  name: material
+  custom_dir: overrides
+  language: en
+  palette:
+    - scheme: slate
+      primary: custom
+      accent: custom
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.instant
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+
+extra_css:
+  - assets/theme.css
+  - assets/stylesheets/home.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - About: about.md

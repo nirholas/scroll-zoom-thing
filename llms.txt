@@ -1,42 +1,62 @@
 # scroll-zoom-thing
 
-> CSS 3D perspective parallax for MkDocs Material — no JS, pure CSS
+> CSS 3D perspective parallax for MkDocs Material — no JS, pure CSS. A reusable template for building documentation/marketing sites with a layered AVIF parallax hero.
 
-## What it is
+## Start here
 
-A minimal reference implementation of the parallax hero used in MkDocs Material. Uses `perspective`, `translateZ`, and `scale()` to create smooth depth-based scroll parallax without any JavaScript.
+If you are an LLM/agent driving this repo, the **canonical operator's manual** is [`AGENTS.md`](AGENTS.md). It has 28 sections covering: orientation, mental model, file classification, decision tree, nine workflows, verification, common mistakes, depth math, browser quirks, performance, accessibility, security, glossary.
 
-## Key concepts
+After `AGENTS.md`, the most useful files in priority order:
 
-- `perspective` on the scroll container establishes the 3D rendering context
-- Each layer uses `translateZ(N)` to sit at a different depth
-- Layers further from the viewer scroll slower — natural 3D projection
-- `scale()` compensates for depth-induced size reduction
-- No scroll events, no JS — pure browser 3D geometry
+- [`templates/README.md`](templates/README.md) — scaffolding a new site from a starter template
+- [`skills/setup-parallax/SKILL.md`](skills/setup-parallax/SKILL.md) — wiring the parallax from scratch
+- [`skills/tune-layers/SKILL.md`](skills/tune-layers/SKILL.md) — diagnosing visual problems
+- [`skills/convert-images/SKILL.md`](skills/convert-images/SKILL.md) — PNG→AVIF pipeline
+- [`skills/generate-prompts/SKILL.md`](skills/generate-prompts/SKILL.md) — AI prompts for hero artwork
+- [`agents/parallax-agent.md`](agents/parallax-agent.md) — parallax-focused persona
+- [`agents/image-agent.md`](agents/image-agent.md) — imagery-focused persona
 
-## CSS variables per layer
+## Source files (the four that matter)
 
-- `--md-parallax-depth` — depth value; higher = slower scroll; suggested ladder: 8, 5, 2, 1
-- `--md-image-position` — horizontal crop position as a percentage
+- [`mkdocs.yml`](mkdocs.yml) — site config
+- [`overrides/home.html`](overrides/home.html) — hero template (Jinja)
+- [`src/assets/stylesheets/home.css`](src/assets/stylesheets/home.css) — parallax engine
+- [`src/assets/hero/`](src/assets/hero/) — AVIF layers
 
-## Skills
+## Mental model
 
-Agent skills for this project:
+`perspective` on the scroll container `.mdx-parallax` establishes a 3D context. Each `<picture>` layer uses `translateZ(-N)` to sit at a different depth. The browser's natural 3D projection makes deeper layers move slower during scroll. `scale(depth + 1)` compensates for the depth-induced size reduction.
 
-- **setup-parallax** — scaffold the layer structure
-- **generate-prompts** — generate AI image prompts for each parallax layer
-- **convert-images** — convert images to AVIF at correct dimensions
-- **tune-layers** — adjust depth and crop per layer for visual balance
+There is **no JavaScript** in the parallax. Two tiny browser-quirk scripts handle Safari and Firefox first-paint issues; that's it.
 
-## Files
+## Per-layer variables
 
-- [docs/assets/stylesheets/home.css](docs/assets/stylesheets/home.css)
-- [docs/overrides/home.html](docs/overrides/home.html)
-- [mkdocs.yml](mkdocs.yml)
-- [skills/](skills/)
-- [.claude/commands/](.claude/commands/)
+- `--md-parallax-depth` — back-distance. Higher = slower scroll. Default ladder: `8, 5, 2, 1` (back to front).
+- `--md-image-position` — `object-position` X percent. Tunes which slice of the image is visible.
+
+## The ten variables you customize per project
+
+1. `site_name` (mkdocs.yml)
+2. `site_description` (mkdocs.yml)
+3. `site_url` (mkdocs.yml)
+4. `repo_url` / `repo_name` / `edit_uri` (mkdocs.yml)
+5. Hero `<h1>` (overrides/home.html)
+6. Hero `<p>` (overrides/home.html)
+7. CTA labels and hrefs (overrides/home.html)
+8. Four AVIF filenames (overrides/home.html + src/assets/hero/)
+9. Brand colors (src/assets/pai-theme.css)
+10. Logo files (src/assets/pai-logo-white.{png,svg})
+
+Find them in code with `grep -rn "AGENT:" .`.
+
+## Conventions
+
+- No JavaScript in the parallax
+- Images must be AVIF, named `N-name@4x.avif` (N = depth-sort order)
+- Run `mkdocs build --strict` before pushing
+- Don't commit `_site/`
+- Use `{{ '...' | url }}` for internal links, not raw `href`
 
 ## Credits
 
-Parallax technique from [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) — MIT License.
-
+Parallax CSS originates from [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) — MIT License, Martin Donath.

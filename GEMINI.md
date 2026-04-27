@@ -1,32 +1,27 @@
-# scroll-zoom-thing — Gemini Agent Guide
+# GEMINI.md — Gemini-specific notes
 
-CSS 3D perspective parallax for MkDocs Material. No JavaScript. Pure CSS.
+> **Read [`AGENTS.md`](AGENTS.md) first.** It is the single source of truth for working in this repo. This file only adds Gemini-specific notes on top.
 
-## How the parallax works
+## Where to look
 
-`perspective` on the scroll container creates a 3D context. Each layer uses `translateZ` to sit at a different depth — layers pushed further back appear to scroll slower. `scale()` compensates for the size reduction caused by depth, so all layers fill the viewport.
+- [`AGENTS.md`](AGENTS.md) — full operator's manual (workflows, mental model, do/don't lists)
+- [`README.md`](README.md) — public project overview
+- [`templates/`](templates/) — scaffold a new project from a starter template
+- [`skills/`](skills/) — structured runbooks (originally Claude-format, but readable as plain markdown)
 
-## Key files
+## Gemini-specific notes
 
-| File | Role |
-|---|---|
-| `docs/overrides/home.html` | Jinja2 layer template — add/remove `<picture>` groups here |
-| `docs/assets/stylesheets/home.css` | All parallax CSS with inline comments |
-| `docs/assets/hero/` | Drop AVIF layer images here |
-| `mkdocs.yml` | MkDocs configuration |
-| `skills/` | Agent skill definitions |
+- This repo has no Gemini-specific tooling beyond the standard files. The Claude `skills/` and `.claude/commands/` are useful as runbooks even when invoked from Gemini.
+- When asked to scaffold a new site, run [`scripts/new-site.sh`](scripts/new-site.sh) rather than copying files manually.
+- When asked about the parallax math, point at [`AGENTS.md` § 21](AGENTS.md#depth-math) — it has the exact projection formulas with worked examples.
 
-## Layer CSS variables
+## Quick references
 
-```css
-/* Per layer, set inline on the <picture> element */
---md-parallax-depth: 5;      /* higher = further back = slower scroll */
---md-image-position: 50%;    /* object-position horizontal % */
-```
+- [The ten variables you customize per project](AGENTS.md#ten-variables)
+- [Decision tree: pick your task](AGENTS.md#decision-tree)
+- [What you must never do](AGENTS.md#never-do)
+- [Verification checklist](AGENTS.md#verification)
 
-## Do not
+## Credits
 
-- Add JavaScript to implement scroll behavior
-- Change the theme from MkDocs Material
-- Use image formats other than AVIF for layers
-
+Parallax CSS originates from [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) — MIT License, Martin Donath.

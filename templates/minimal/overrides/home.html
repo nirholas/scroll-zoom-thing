@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block tabs %}
+  {{ super() }}
+  <style>
+    .md-header{position:initial}
+    .md-main__inner{margin:0}
+    .md-main__inner > .md-content{display:none}
+    @media screen and (min-width:60em){.md-main__inner > .md-sidebar--secondary{display:none}}
+    @media screen and (min-width:76.25em){.md-main__inner > .md-sidebar--primary{display:none}}
+  </style>
+  <div class="mdx-parallax" data-mdx-component="parallax">
+    <section class="mdx-parallax__group" data-md-color-scheme="slate">
+      {# AGENT: parallax layers — back to front. Default depth ladder 8/5/2/1.
+         Replace AVIF filenames to match files in src/assets/hero/. #}
+      <picture class="mdx-parallax__layer" style="--md-parallax-depth: 8; --md-image-position: 70%">
+        <source type="image/avif" srcset="{{ 'assets/hero/1-far@4x.avif' | url }}">
+        <img src="{{ 'assets/hero/1-far@4x.avif' | url }}" alt="" class="mdx-parallax__image" draggable="false">
+      </picture>
+      <picture class="mdx-parallax__layer" style="--md-parallax-depth: 5; --md-image-position: 25%">
+        <source type="image/avif" srcset="{{ 'assets/hero/2-mid@4x.avif' | url }}">
+        <img src="{{ 'assets/hero/2-mid@4x.avif' | url }}" alt="" class="mdx-parallax__image" draggable="false">
+      </picture>
+      <picture class="mdx-parallax__layer" style="--md-parallax-depth: 2; --md-image-position: 40%">
+        <source type="image/avif" srcset="{{ 'assets/hero/3-near@4x.avif' | url }}">
+        <img src="{{ 'assets/hero/3-near@4x.avif' | url }}" alt="" class="mdx-parallax__image" draggable="false">
+      </picture>
+      <picture class="mdx-parallax__layer" style="--md-parallax-depth: 1; --md-image-position: 50%">
+        <source type="image/avif" srcset="{{ 'assets/hero/4-front@4x.avif' | url }}">
+        <img src="{{ 'assets/hero/4-front@4x.avif' | url }}" alt="" class="mdx-parallax__image" draggable="false">
+      </picture>
+      <div class="mdx-parallax__layer mdx-parallax__blend"></div>
+      <div class="mdx-hero" data-mdx-component="hero">
+        <div class="mdx-hero__scrollwrap md-grid">
+          <div class="mdx-hero__inner">
+            <div class="mdx-hero__teaser md-typeset">
+              <!-- AGENT: hero headline -->
+              <h1>{{HERO_HEADLINE}}</h1>
+              <!-- AGENT: hero subhead -->
+              <p>{{HERO_SUBHEAD}}</p>
+              <!-- AGENT: primary CTA -->
+              <a href="{{ '{{PRIMARY_CTA_HREF}}' | url }}" class="md-button md-button--primary">{{PRIMARY_CTA_LABEL}}</a>
+              <!-- AGENT: secondary CTA -->
+              <a href="{{ '{{SECONDARY_CTA_HREF}}' | url }}" class="md-button">{{SECONDARY_CTA_LABEL}}</a>
+            </div>
+            <div class="mdx-hero__more">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 4h2v12l5.5-5.5 1.42 1.42L12 19.84l-7.92-7.92L5.5 10.5 11 16z"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}
+
+{% block content %}{% endblock %}
+{% block footer %}{{ super() }}{% endblock %}

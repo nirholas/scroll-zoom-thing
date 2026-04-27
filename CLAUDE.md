@@ -1,42 +1,69 @@
-# scroll-zoom-thing
+# CLAUDE.md — Claude Code-specific notes
 
-CSS 3D perspective parallax for MkDocs Material — no JS, pure CSS.
+> **Read [`AGENTS.md`](AGENTS.md) first.** It is the single source of truth for working in this repo. This file only adds Claude-specific notes on top.
 
-## Project structure
+## What's in `AGENTS.md`
 
-```
-docs/
-├── overrides/home.html          # Jinja2 template — layer <picture> elements
-├── assets/stylesheets/home.css  # All parallax CSS, heavily commented
-└── assets/hero/                 # Drop AVIF layers here
-skills/                          # Claude agent skills
-.claude/commands/                # Claude slash commands
-agents/                          # Agent documentation
-mkdocs.yml
-```
+- 30-second orientation
+- Mental model of the parallax
+- Files: edit / configure / never touch
+- Decision tree for picking a workflow
+- Nine workflows (clone, hero copy, artwork, depth tuning, sections, pages, nav, palette, deploy)
+- Verification, common mistakes, depth math, browser quirks, performance, accessibility, security
+- Glossary, pointers, file-tree walkthrough
 
-## Running locally
+If the user asks you to do anything in this repo, jump to `AGENTS.md` and find the matching workflow before improvising.
+
+## Claude-specific tooling
+
+This repo ships skills and slash commands that automate common workflows. Use them when applicable.
+
+### Skills
+
+| Skill | Path | Use when |
+|---|---|---|
+| `setup-parallax` | [`skills/setup-parallax/SKILL.md`](skills/setup-parallax/SKILL.md) | Scaffolding the parallax for a new site |
+| `tune-layers` | [`skills/tune-layers/SKILL.md`](skills/tune-layers/SKILL.md) | User reports a visual problem with the depth effect |
+| `convert-images` | [`skills/convert-images/SKILL.md`](skills/convert-images/SKILL.md) | PNG→AVIF pipeline |
+| `generate-prompts` | [`skills/generate-prompts/SKILL.md`](skills/generate-prompts/SKILL.md) | AI image prompts for hero artwork |
+
+Each skill's frontmatter declares `inputs`, `outputs`, `triggers`, and `constraints`. Honor the constraints; they exist because past agents made each mistake.
+
+### Slash commands
+
+| Command | Maps to |
+|---|---|
+| `/setup-parallax` | `setup-parallax` skill |
+| `/tune-layers` | `tune-layers` skill |
+| `/convert-images` | `convert-images` skill |
+| `/generate-prompts` | `generate-prompts` skill |
+| `/deploy` | Walks Workflow I (deploy targets) in AGENTS.md |
+
+### Templates
+
+[`templates/`](templates/) contains pre-built starter directories. Use [`scripts/new-site.sh`](scripts/new-site.sh) to scaffold a new project from a template:
 
 ```bash
-pip install mkdocs-material
-mkdocs serve
+./scripts/new-site.sh my-project minimal
 ```
 
-## CSS variables per layer
+Choices: `minimal`, `marketing-hero`, `product-docs`. See [`templates/README.md`](templates/README.md).
 
-| Variable | Effect |
-|---|---|
-| `--md-parallax-depth` | Depth — higher = slower. Suggested: `8`, `5`, `2`, `1` |
-| `--md-image-position` | `object-position` horizontal % |
+## Claude Code conventions in this repo
 
-## Conventions
+- **Use `Read` before `Edit`.** Always. The harness enforces it.
+- **Use `Edit` for edits, `Write` only for new files or full rewrites.** Edits cost less context.
+- **Run `mkdocs build --strict` before reporting "done"** — it is the test suite.
+- **Don't create planning docs (`PLAN.md`, `NOTES.md`) unless the user asks.** Work from conversation context.
+- **Don't create new `.md` files speculatively.** Every new file becomes a nav decision.
 
-- No JavaScript in parallax — CSS only
-- Images must be AVIF, `@4x` suffix, named `N-description@4x.avif`
-- Skills live in `skills/`, commands in `.claude/commands/`
-- Do not change the MkDocs theme
+## Quick references
+
+- [The ten variables you customize per project](AGENTS.md#ten-variables)
+- [What you must never do](AGENTS.md#never-do)
+- [Common mistakes and their fixes](AGENTS.md#common-mistakes)
+- [Verification checklist before shipping](AGENTS.md#verification)
 
 ## Credits
 
-Parallax technique ported from [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) — MIT License, Martin Donath.
-
+Parallax CSS originates from [squidfunk/mkdocs-material](https://github.com/squidfunk/mkdocs-material) — MIT License, Martin Donath.

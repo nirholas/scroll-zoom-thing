@@ -1,0 +1,25 @@
+/*
+  Brand styles for the {{SITE_NAME}} site.
+  This file is loaded before home.css; home.css can reference these tokens.
+*/
+
+:root {
+  /* AGENT: primary brand color */
+  --md-primary-fg-color:        {{PRIMARY_COLOR}};
+  --md-primary-fg-color--light: {{PRIMARY_COLOR}};
+  --md-primary-fg-color--dark:  {{PRIMARY_COLOR}};
+  /* AGENT: accent color (links, focus) */
+  --md-accent-fg-color:         {{ACCENT_COLOR}};
+}
+
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color:    #0a0d10;
+  --md-default-fg-color:    #e6e9ec;
+  --md-typeset-color:       #d8dde2;
+  --md-typeset-a-color:     {{ACCENT_COLOR}};
+}
+
+.md-button--primary {
+  background-color: var(--md-primary-fg-color);
+  border-color:     var(--md-primary-fg-color);
+}

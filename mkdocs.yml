@@ -1,8 +1,14 @@
+# AGENT: site_name — browser tab title and site header (e.g. "Acme Documentation")
 site_name: PAI Documentation
+# AGENT: site_description — meta description and OG tag (one sentence)
 site_description: Private AI on a bootable USB drive — Debian + Sway + Ollama.
+# AGENT: site_url — production URL; canonical URL and sitemap base
 site_url: https://docs.pai.direct
+# AGENT: repo_url — "View on GitHub" link target
 repo_url: https://github.com/nirholas/scroll-zoom-thing
+# AGENT: repo_name — repo label shown in the header
 repo_name: nirholas/scroll-zoom-thing
+# AGENT: edit_uri — base path for "Edit this page" links; remove if you don't want them
 edit_uri: edit/main/src/
 
 docs_dir: src
@@ -12,6 +18,7 @@ theme:
   name: material
   custom_dir: overrides
   language: en
+  # AGENT: logo — replace src/assets/pai-logo-white.png with your brand logo
   logo: assets/pai-logo-white.png
   palette:
     - scheme: slate

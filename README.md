@@ -4,6 +4,8 @@
 
 The repository is a working production site — the docs you see when you build it are [docs.pai.direct](https://docs.pai.direct), included verbatim as a real-world example of the parallax pattern in use. Replace the content in `src/` with your own and you have a cinematic, depth-driven docs site for your own project.
 
+> **Working with an AI agent? Read [`AGENTS.md`](AGENTS.md) first.** It is a tool-neutral operator's manual covering the mental model, decision tree, nine workflows (clone, hero copy, artwork, depth tuning, sections, pages, nav, palette, deploy), verification checklist, and common mistakes. There are also [`templates/`](templates/) starters and a [`scripts/new-site.sh`](scripts/new-site.sh) scaffolder that produces a new project in under a minute.
+
 ---
 
 ## Deploy in one click
