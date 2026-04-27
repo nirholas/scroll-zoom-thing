@@ -5,7 +5,7 @@ description: Deploying a scroll-zoom-thing site to Railway using nixpacks.toml a
 
 # Deploy to Railway
 
-Railway is an application platform: it deploys long-running processes from a Git repository, manages environment variables, and bills based on usage. It is not a static-site host in the dedicated sense (Netlify, Vercel, Cloudflare Pages, GitHub Pages all are), but it can serve a static site through Python's bundled `http.server` perfectly well. Railway is the right choice when you want your documentation to live in the same project as a backend, a database, or a scheduled job. For a docs-only site, prefer one of the dedicated hosts. See the [deployment landing page](index.md) for the comparison.
+Railway is an application platform: it deploys long-running processes from a Git repository, manages environment variables, and bills based on usage. It is not a static-site host in the dedicated sense (Netlify, Vercel, Cloudflare Pages, GitHub Pages all are), but it can serve a static site through Python's bundled `http.server` perfectly well. Railway is the right choice when you want your documentation to live in the same project as a backend, a database, or a scheduled job. For a docs-only site, prefer one of the dedicated hosts. See the [Cloudflare Pages guide](cloudflare.md) for the comparison.
 
 ## Prerequisites
 
@@ -102,7 +102,7 @@ Railway bills for build CPU time. The build for this project takes roughly 30 se
 
 ### Logs are useful
 
-Railway streams stdout from `http.server` directly to the dashboard. Each request produces a log line. This makes Railway one of the easiest places to do log-based analytics: pipe the log drain to GoAccess and you have visitor analytics with no browser-side tracking. See [analytics.md](../privacy/analytics.md) for the broader analytics options.
+Railway streams stdout from `http.server` directly to the dashboard. Each request produces a log line. This makes Railway one of the easiest places to do log-based analytics: pipe the log drain to GoAccess and you have visitor analytics with no browser-side tracking.
 
 ### `http.server` is not production-grade
 
@@ -123,7 +123,7 @@ Railway's pricing as of writing:
 - After the trial, the **Hobby** plan is $5/month and includes $5 of usage; usage above that is billed per minute of compute and per GB of network egress.
 - Static-site usage on Railway is dominated by network egress, since CPU is near-zero when serving cached files. The exact cost depends on your traffic.
 
-Before committing a high-traffic site to Railway, model the cost: estimated monthly bandwidth times the per-GB rate, plus the base plan, plus the build time. For a docs site under 50 GB/month of traffic, the cost is typically under $10/month. For a docs site over 500 GB/month, Cloudflare Pages becomes much cheaper. See [the deployment landing page](index.md) for the comparison.
+Before committing a high-traffic site to Railway, model the cost: estimated monthly bandwidth times the per-GB rate, plus the base plan, plus the build time. For a docs site under 50 GB/month of traffic, the cost is typically under $10/month. For a docs site over 500 GB/month, [Cloudflare Pages](cloudflare.md) becomes much cheaper.
 
 ## Migrating away
 
@@ -133,4 +133,4 @@ If you decide to move off Railway, the `site/` directory is portable. The Railwa
 
 - [Cloudflare Pages](cloudflare.md) and [Netlify](netlify.md) for dedicated static hosts with global CDNs.
 - [GitHub Pages](github-pages.md) for a free, no-platform option.
-- [Privacy landing page](../privacy/index.md) for the project's broader privacy posture, including log-based analytics that pair well with Railway.
+- [Cloudflare Pages guide](cloudflare.md) if you want a CDN-backed static host instead of a long-running container.

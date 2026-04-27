@@ -18,8 +18,6 @@ theme:
   name: material
   custom_dir: overrides
   language: en
-  # AGENT: logo — relative to docs_dir (src/)
-  logo: images/3d.svg
   palette:
     - scheme: slate
       primary: custom
@@ -81,61 +79,30 @@ plugins:
 
 nav:
   - Home: index.md
-  - Overview:
-      - Overview: overview/index.md
-      - How it works: overview/how-it-works.md
-  - Getting started:
-      - Getting started: getting-started/index.md
+  - How it works: overview/how-it-works.md
+  - Quickstart:
       - Quickstart: getting-started/quickstart.md
       - Use as template: getting-started/use-as-template.md
       - Local development: getting-started/local-development.md
-  - Guides:
-      - Guides: guides/index.md
+  - Customize:
       - Your own layers: guides/your-own-layers.md
       - Hero copy: guides/hero-copy.md
       - Theme: guides/theme.md
       - Pages and nav: guides/pages-and-nav.md
-  - AI:
-      - AI: ai/index.md
-      - Image generation: ai/image-generation.md
-      - Agents: ai/agents.md
-  - Apps:
-      - Apps: apps/index.md
-      - Product docs: apps/product-docs.md
-      - Personal sites: apps/personal-sites.md
-      - Conferences: apps/conferences.md
-  - Advanced:
-      - Advanced: advanced/index.md
-      - CSS techniques: advanced/css-techniques.md
-      - MkDocs skills: advanced/mkdocs-skills.md
-      - Performance: advanced/performance.md
+      - AI image generation: ai/image-generation.md
+      - Advanced CSS: advanced/css-techniques.md
       - Video layers: advanced/video-layers.md
-  - Privacy:
-      - Privacy: privacy/index.md
-      - Analytics: privacy/analytics.md
-      - Accessibility: privacy/accessibility.md
-  - Examples:
-      - Examples: examples/index.md
-      - docs.pai.direct: examples/docs-pai-direct.md
-  - Development:
-      - Development: development/index.md
-      - Contributing: development/contributing.md
-      - Local setup: development/local-setup.md
+      - Performance: advanced/performance.md
   - Deploy:
-      - Deploy: deploy/index.md
       - Vercel: deploy/vercel.md
       - Cloudflare Pages: deploy/cloudflare.md
       - GitHub Pages: deploy/github-pages.md
       - Netlify: deploy/netlify.md
       - Railway: deploy/railway.md
   - Reference:
-      - Reference: reference/index.md
       - CSS variables: reference/css-variables.md
       - File structure: reference/file-structure.md
       - Glossary: reference/glossary.md
       - FAQ: reference/faq.md
-  - About:
-      - About: about/index.md
-      - Philosophy: about/philosophy.md
       - Credits: about/credits.md
       - License: about/license.md

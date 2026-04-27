@@ -5,7 +5,7 @@ description: Frequently asked questions about using scroll-zoom-thing - mobile s
 
 # Frequently asked questions
 
-Practical answers to questions that come up when adopting scroll-zoom-thing. For deeper background see [philosophy](../about/philosophy.md); for definitions see the [glossary](glossary.md).
+Practical answers to questions that come up when adopting scroll-zoom-thing. For definitions see the [glossary](glossary.md).
 
 ## Compatibility
 

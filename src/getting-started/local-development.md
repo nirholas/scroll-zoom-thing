@@ -158,6 +158,6 @@ pip install -r requirements.txt
 
 ## Next steps
 
-With a working dev loop, the [Guides](../guides/index.md) section is the
+With a working dev loop, the [Customize](../guides/your-own-layers.md) section is the
 natural next read - it covers hero copy, theme customization, and
 navigation in more depth than the getting-started flow.

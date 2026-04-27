@@ -7,7 +7,7 @@ description: Deploying a scroll-zoom-thing site to Netlify, including netlify.to
 
 Netlify is one of the most full-featured static hosts: it deploys from a Git repository, produces preview URLs for every pull request, and offers form handling, edge functions, and identity as opt-in extras. This page walks through deploying a scroll-zoom-thing site to Netlify, covers the `netlify.toml` already in the repo, and notes the Netlify-specific quirks that come up.
 
-For a comparison against the other four supported platforms, see the [deployment landing page](index.md).
+Compare to [Vercel](vercel.md), [Cloudflare Pages](cloudflare.md), [GitHub Pages](github-pages.md), and [Railway](railway.md) for the other supported targets.
 
 ## Prerequisites
 
@@ -141,7 +141,7 @@ The base template has no forms, but if you add a contact or feedback form, Netli
 
 Netlify scans the deployed HTML for forms with that attribute and registers them automatically. Submissions appear in the Netlify dashboard. The free tier includes 100 submissions per month.
 
-For spam protection, add `data-netlify-honeypot="bot-field"` and a hidden honeypot field. This catches most bots without inconveniencing real users. Avoid reCAPTCHA unless honeypot proves insufficient; reCAPTCHA introduces third-party requests that conflict with the template's privacy posture. See [the privacy landing page](../privacy/index.md).
+For spam protection, add `data-netlify-honeypot="bot-field"` and a hidden honeypot field. This catches most bots without inconveniencing real users. Avoid reCAPTCHA unless honeypot proves insufficient — reCAPTCHA introduces third-party requests that conflict with the template's privacy posture.
 
 ## Edge functions
 
@@ -192,7 +192,7 @@ A 301 is a permanent redirect; a 200 is a transparent rewrite. Use 301 for path 
 
 Netlify exposes build logs in the dashboard for every deploy. They are kept for the lifetime of the site. For runtime logs (edge function output, function invocations), the **Functions** tab shows recent invocations.
 
-Netlify does not show per-request logs for static asset hits. If you need that detail, attach an analytics tool ([analytics.md](../privacy/analytics.md)) or front the site with Cloudflare and use Cloudflare's logging.
+Netlify does not show per-request logs for static asset hits. If you need that detail, attach a privacy-friendly analytics tool (Plausible, Umami, or Cloudflare Web Analytics) or front the site with Cloudflare and use Cloudflare's logging.
 
 ## Disabling Netlify analytics
 
@@ -206,4 +206,4 @@ If you decide to leave Netlify, the `site/` directory is portable. Run `mkdocs b
 
 - [Vercel deployment guide](vercel.md) for a comparable platform with similar features.
 - [Cloudflare Pages deployment guide](cloudflare.md) for a free-tier-uncapped alternative.
-- [Privacy landing page](../privacy/index.md) for guidance on which Netlify features conflict with the template's privacy defaults.
+- [Cloudflare Pages guide](cloudflare.md) for an alternative free-tier static host with unlimited bandwidth.
