@@ -1,0 +1,7 @@
+providers = ["python"]
+
+[phases.build]
+cmds = ["python -m mkdocs build"]
+
+[start]
+cmd = "python -m http.server $PORT --directory _site"
