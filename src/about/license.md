@@ -68,4 +68,4 @@ For commercial use of the production reference and the underlying Material for M
 ## See also
 
 - [Credits](credits.md) for attribution
-- [Philosophy](philosophy.md) for the rationale behind extraction
+- [Credits](credits.md) for attribution to the original Material for MkDocs technique

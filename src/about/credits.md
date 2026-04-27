@@ -73,4 +73,4 @@ Issues, pull requests, and discussions are welcome at [github.com/nirholas/scrol
 ## See also
 
 - [License](license.md) for legal terms covering the inherited and original work
-- [Philosophy](philosophy.md) for why the template was extracted in the first place
+- [How it works](../overview/how-it-works.md) for the technical mechanics
