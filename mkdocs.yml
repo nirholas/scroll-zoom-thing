@@ -18,8 +18,8 @@ theme:
   name: material
   custom_dir: overrides
   language: en
-  # AGENT: logo — replace src/assets/pai-logo-white.png with your brand logo
-  logo: assets/pai-logo-white.png
+  # AGENT: logo — relative to docs_dir (src/)
+  logo: images/3d.svg
   palette:
     - scheme: slate
       primary: custom
@@ -82,118 +82,60 @@ plugins:
 nav:
   - Home: index.md
   - Overview:
-      - How PAI works: general/how-pai-works.md
-      - Features included: general/features-included.md
-      - System requirements: general/system-requirements.md
-      - Warnings and limitations: general/warnings-and-limitations.md
+      - Overview: overview/index.md
+      - How it works: overview/how-it-works.md
   - Getting started:
-      - Try in a VM: first-steps/try-in-a-vm.md
-      - Quickstart: quickstart.md
-      - Installation: installation.md
-      - Getting started: getting-started.md
-      - USB flashing: USB-FLASHING.md
-      - Starting on Mac: first-steps/starting-on-mac.md
-      - Starting on Windows: first-steps/starting-on-windows.md
-      - Installing and booting: first-steps/installing-and-booting.md
-      - Raspberry Pi Imager: first-steps/using-raspberry-pi-imager.md
-      - Using Ventoy: first-steps/using-ventoy.md
-      - First boot walkthrough: first-steps/first-boot-walkthrough.md
-      - Desktop basics: first-steps/desktop-basics.md
-      - Browser installer: first-steps/browser-installer.md
-      - Shutting down: first-steps/shutting-down.md
+      - Getting started: getting-started/index.md
+      - Quickstart: getting-started/quickstart.md
+      - Use as template: getting-started/use-as-template.md
+      - Local development: getting-started/local-development.md
   - Guides:
-      - Using PAI: using-pai.md
-      - Basic usage: usage/basic.md
-      - Advanced usage: usage/advanced.md
-      - Command line: usage/cli.md
-      - Models: models.md
-      - Persistence:
-          - Introduction: persistence/introduction.md
-          - Creating persistence: persistence/creating-persistence.md
-          - Unlocking: persistence/unlocking.md
-          - Backing up: persistence/backing-up.md
-      - Configuration: configuration.md
-      - Deployment: deployment.md
-      - Build in cloud: build-in-cloud.md
-      - Building from source: advanced/building-from-source.md
-      - Upgrading: UPGRADING.md
-      - Migration: MIGRATION.md
-      - Troubleshooting: advanced/troubleshooting.md
+      - Guides: guides/index.md
+      - Your own layers: guides/your-own-layers.md
+      - Hero copy: guides/hero-copy.md
+      - Theme: guides/theme.md
+      - Pages and nav: guides/pages-and-nav.md
   - AI:
-      - Choosing a model: ai/choosing-a-model.md
-      - Managing models: ai/managing-models.md
-      - Using Ollama: ai/using-ollama.md
-      - Using Open WebUI: ai/using-open-webui.md
+      - AI: ai/index.md
+      - Image generation: ai/image-generation.md
+      - Agents: ai/agents.md
   - Apps:
-      - Password management: apps/password-management.md
-      - Encrypting files (GPG): apps/encrypting-files-gpg.md
-      - Secure delete: apps/secure-delete.md
+      - Apps: apps/index.md
+      - Product docs: apps/product-docs.md
+      - Personal sites: apps/personal-sites.md
+      - Conferences: apps/conferences.md
   - Advanced:
-      - GPU setup: advanced/gpu-setup.md
-      - GPU passthrough (VMs): advanced/gpu-passthrough.md
-      - Running in a VM: advanced/running-in-a-vm.md
-      - Boot options: advanced/boot-options.md
-      - Windows package managers: advanced/windows-package-managers.md
-      - Arch Linux (AUR): advanced/arch-linux.md
-      - Homebrew (macOS/Linux): advanced/homebrew.md
+      - Advanced: advanced/index.md
+      - CSS techniques: advanced/css-techniques.md
+      - MkDocs skills: advanced/mkdocs-skills.md
+      - Performance: advanced/performance.md
+      - Video layers: advanced/video-layers.md
   - Privacy:
-      - Introduction: privacy/introduction-to-privacy.md
-      - Privacy mode (Tor): privacy/privacy-mode-tor.md
-      - MAC address anonymization: privacy/mac-address-anonymization.md
-      - Offline mode: privacy/offline-mode.md
-      - Tor Browser: privacy/tor-browser.md
+      - Privacy: privacy/index.md
+      - Analytics: privacy/analytics.md
+      - Accessibility: privacy/accessibility.md
   - Examples:
-      - Getting started example: examples/getting-started.md
-      - Local AI assistant: examples/local-ai-assistant.md
-      - Crypto cold signing: examples/crypto-cold-signing.md
-      - Travel and network hardening: examples/travel-and-network-hardening.md
-      - Real-world use cases: examples/real-world-use-cases.md
-      - Tutorials: tutorials/index.md
+      - Examples: examples/index.md
+      - docs.pai.direct: examples/docs-pai-direct.md
   - Development:
-      - Setup: development/setup.md
-      - Guidelines: development/guidelines.md
-      - Testing: development/testing.md
-      - Debugging: development/debugging.md
-      - CI/CD: development/ci-cd.md
-      - Cloud builders runbook: ops-cloud-builders.md
-      - Agents overview: agents/overview.md
-      - Agent registry: agents/agent-registry.md
-      - Skill catalog: agents/skill-catalog.md
+      - Development: development/index.md
+      - Contributing: development/contributing.md
+      - Local setup: development/local-setup.md
+  - Deploy:
+      - Deploy: deploy/index.md
+      - Vercel: deploy/vercel.md
+      - Cloudflare Pages: deploy/cloudflare.md
+      - GitHub Pages: deploy/github-pages.md
+      - Netlify: deploy/netlify.md
+      - Railway: deploy/railway.md
   - Reference:
-      - Architecture:
-          - Overview: architecture/overview.md
-          - Components: architecture/components.md
-          - Data flow: architecture/data-flow.md
-          - Diagrams: architecture/diagrams.md
-      - Editions: editions.md
-      - Skills: skills.md
-      - Tools: TOOLS.md
-      - Keyboard shortcuts: reference/keyboard-shortcuts.md
-      - FAQ: reference/faq.md
+      - Reference: reference/index.md
+      - CSS variables: reference/css-variables.md
+      - File structure: reference/file-structure.md
       - Glossary: reference/glossary.md
-      - API:
-          - Reference: api/reference.md
-          - Endpoints: api/endpoints.md
-          - SDK: api/sdk.md
-          - CLI JSON shapes: api/cli-json-shapes.md
+      - FAQ: reference/faq.md
   - About:
-      - Philosophy: PHILOSOPHY.md
-      - Vision: VISION.md
-      - Values: VALUES.md
-      - Strategy: STRATEGY.md
-      - Comparison: COMPARISON.md
-      - Roadmap: roadmap.md
-      - Changelog: CHANGELOG.md
-      - Ethics: ETHICS.md
-      - Privacy: PRIVACY.md
-      - Security: security.md
-      - Accessibility: ACCESSIBILITY.md
-      - Governance: governance.md
-      - Internationalization: INTERNATIONALIZATION.md
-      - Known issues: KNOWN_ISSUES.md
-      - Release: RELEASE.md
-      - Maintainers: MAINTAINERS.md
-      - Authors: AUTHORS.md
-      - Citation: CITATION.md
-      - Acknowledgments: ACKNOWLEDGMENTS.md
-      - Contributing to docs: contributing-to-docs.md
+      - About: about/index.md
+      - Philosophy: about/philosophy.md
+      - Credits: about/credits.md
+      - License: about/license.md

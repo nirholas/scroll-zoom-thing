@@ -1,0 +1,3012 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A complete guide to designing, exporting, and wiring up your own parallax layers — image formats, dimensions, transparency, depth assignment, object-position tuning, and the picture element structure.">
+      
+      
+      
+        <link rel="canonical" href="https://scroll-zoom-thing.pages.dev/guides/your-own-layers/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../hero-copy/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Using Your Own Layers - scroll-zoom-thing</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/pai-theme.css">
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#using-your-own-layers" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="scroll-zoom-thing" class="md-header__button md-logo" aria-label="scroll-zoom-thing" data-md-component="logo">
+      
+  <img src="../../images/3d.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            scroll-zoom-thing
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Using Your Own Layers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../overview/" class="md-tabs__link">
+          
+  
+  Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/" class="md-tabs__link">
+          
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ai/" class="md-tabs__link">
+          
+  
+  AI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../apps/" class="md-tabs__link">
+          
+  
+  Apps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../advanced/" class="md-tabs__link">
+          
+  
+  Advanced
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../privacy/" class="md-tabs__link">
+          
+  
+  Privacy
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../examples/" class="md-tabs__link">
+          
+  
+  Examples
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/" class="md-tabs__link">
+          
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../deploy/" class="md-tabs__link">
+          
+  
+  Deploy
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/" class="md-tabs__link">
+          
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../about/" class="md-tabs__link">
+          
+  
+  About
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="scroll-zoom-thing" class="md-nav__button md-logo" aria-label="scroll-zoom-thing" data-md-component="logo">
+      
+  <img src="../../images/3d.svg" alt="logo">
+
+    </a>
+    scroll-zoom-thing
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../overview/how-it-works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How it works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Getting started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quickstart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/use-as-template/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Use as template
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/local-development/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Local development
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Your own layers
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Your own layers
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-four-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why four layers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#image-format-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Image format comparison
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dimensions-and-aspect-ratio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dimensions and aspect ratio
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transparency-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transparency rules
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-4x-naming-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      The @4x naming convention
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selecting-depth-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selecting depth values
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-position-as-crop-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      object-position as crop control
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scene-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scene composition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edge-handling-on-transparent-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Edge handling on transparent layers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-layers-before-avif-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing layers before AVIF conversion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      File placement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-picture-element" class="md-nav__link">
+    <span class="md-ellipsis">
+      The &lt;picture&gt; element
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-webp-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a WebP fallback
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common mistakes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#swapping-layers-without-breaking-the-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      Swapping layers without breaking the site
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick reference
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hero-copy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hero copy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../theme/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Theme
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pages-and-nav/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pages and nav
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AI
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            AI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/image-generation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image generation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/agents/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agents
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Apps
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Apps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Apps
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/product-docs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Product docs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/personal-sites/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Personal sites
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/conferences/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conferences
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Advanced
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advanced
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/css-techniques/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSS techniques
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/mkdocs-skills/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MkDocs skills
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/video-layers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Video layers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Privacy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/analytics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Analytics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/accessibility/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accessibility
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Examples
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/docs-pai-direct/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    docs.pai.direct
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/local-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Local setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Deploy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Deploy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deploy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/vercel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vercel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/cloudflare/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cloudflare Pages
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/github-pages/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GitHub Pages
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/netlify/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Netlify
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/railway/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Railway
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/css-variables/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSS variables
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/file-structure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    File structure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            About
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/philosophy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Philosophy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/credits/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Credits
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-four-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why four layers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#image-format-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Image format comparison
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dimensions-and-aspect-ratio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dimensions and aspect ratio
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transparency-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transparency rules
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-4x-naming-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      The @4x naming convention
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selecting-depth-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selecting depth values
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-position-as-crop-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      object-position as crop control
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scene-composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scene composition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edge-handling-on-transparent-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Edge handling on transparent layers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-layers-before-avif-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing layers before AVIF conversion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      File placement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-picture-element" class="md-nav__link">
+    <span class="md-ellipsis">
+      The &lt;picture&gt; element
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-webp-fallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a WebP fallback
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common mistakes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#swapping-layers-without-breaking-the-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      Swapping layers without breaking the site
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick reference
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/nirholas/scroll-zoom-thing/edit/main/src/guides/your-own-layers.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="using-your-own-layers">Using Your Own Layers<a class="headerlink" href="#using-your-own-layers" title="Permanent link">&para;</a></h1>
+<p>This page is the practical handbook for replacing the default layers with your own art. It covers image format choices, the dimensions to target, transparency rules, how to pick depth values, the <code>object-position</code> cropping system, the <code>&lt;picture&gt;</code> markup, and the common mistakes that break the effect.</p>
+<p>If you have already read <a href="../../overview/how-it-works/">How It Works</a>, you know that the parallax effect comes from layers at different <code>translateZ</code> distances inside a perspective scroll container. This page is about the layers themselves — what they should contain, how big they should be, and how to wire them into the template.</p>
+<hr />
+<h2 id="why-four-layers">Why four layers<a class="headerlink" href="#why-four-layers" title="Permanent link">&para;</a></h2>
+<p>Four is the practical sweet spot. Here is why.</p>
+<p>Below four layers, the depth effect is subtle. Two layers feel like a tilt, three feel like a shallow scene, four feel like real depth. Above four, the eye stops resolving the additional planes — a fifth layer at depth 6 sits between depth 5 and depth 8 in a way most viewers cannot distinguish from a slight wobble in either neighbor. You pay the file size cost for depth nobody perceives.</p>
+<p>The four-plane mental model also matches the way scenes naturally decompose:</p>
+<table>
+<thead>
+<tr>
+<th>Plane</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Far</td>
+<td>Sky, horizon, distant geometry. Sets atmosphere.</td>
+</tr>
+<tr>
+<td>Mid</td>
+<td>Architecture, terrain, water. Establishes the world.</td>
+</tr>
+<tr>
+<td>Near</td>
+<td>Foreground elements close enough to feel approachable.</td>
+</tr>
+<tr>
+<td>Front</td>
+<td>Framing objects (plants, edges) — give the viewer a sense of being inside the scene.</td>
+</tr>
+</tbody>
+</table>
+<p>A photographer composing a single-frame image instinctively places subject matter at three or four perceptual depths. The parallax just literalizes that mental model into separate layers.</p>
+<hr />
+<h2 id="image-format-comparison">Image format comparison<a class="headerlink" href="#image-format-comparison" title="Permanent link">&para;</a></h2>
+<p>The template uses AVIF for layer assets, with PNG and WebP available as fallbacks. Here is the trade-off:</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Compression</th>
+<th>Alpha (transparency)</th>
+<th>Browser support</th>
+<th>Recommended use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AVIF</strong></td>
+<td>Best — typically 30–50% smaller than WebP at equivalent quality</td>
+<td>Yes, AV1-compressed</td>
+<td>Universal in modern browsers (2023+)</td>
+<td>Primary format for layers</td>
+</tr>
+<tr>
+<td><strong>WebP</strong></td>
+<td>Good — typically 25% smaller than PNG at equivalent quality</td>
+<td>Yes, separate alpha channel</td>
+<td>Universal</td>
+<td>Fallback for older browsers</td>
+</tr>
+<tr>
+<td><strong>PNG</strong></td>
+<td>Lossless</td>
+<td>Yes, native</td>
+<td>Universal</td>
+<td>Last-resort fallback or for hand-painted assets</td>
+</tr>
+<tr>
+<td><strong>JPEG</strong></td>
+<td>Good for photos but no alpha</td>
+<td>No</td>
+<td>Universal</td>
+<td>Only for the far layer (no transparency needed)</td>
+</tr>
+</tbody>
+</table>
+<p>For a 4-layer setup at 2400×800 each:</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Approximate file size per layer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PNG with alpha</td>
+<td>800 KB – 2 MB</td>
+</tr>
+<tr>
+<td>WebP with alpha</td>
+<td>200 – 500 KB</td>
+</tr>
+<tr>
+<td>AVIF with alpha</td>
+<td>80 – 200 KB</td>
+</tr>
+</tbody>
+</table>
+<p>AVIF is the right default. The savings compound — a 4-layer hero in AVIF totals ~600 KB, the same hero in PNG totals 4–8 MB. On mobile networks, that difference is noticeable on first load.</p>
+<hr />
+<h2 id="dimensions-and-aspect-ratio">Dimensions and aspect ratio<a class="headerlink" href="#dimensions-and-aspect-ratio" title="Permanent link">&para;</a></h2>
+<p>The minimum width depends on the depth value. A layer at depth 8 is scaled by <code>9×</code>, so the source image needs to be at least 1/9 the rendered viewport width — but it also needs to be wide enough to cover the viewport horizontally without showing edges. For a 1920px-wide viewport:</p>
+<ul>
+<li>Depth 8: source width ≥ 1920 / 9 ≈ 215px... but the layer at depth 8 takes up <code>100vw</code> after scaling, so the source still needs to fill that scaled box. Practically, source width ≥ 1920px is the safe floor, with 2400–3000px being ideal for high-DPI displays.</li>
+</ul>
+<p>The reasoning generalizes: target a panoramic source at least 1920–2400px wide. The aspect ratio should be wide — 16:5 or wider. Tall images do not work well because the parallax travels primarily on the Y axis, but the layer scaling pushes the image wider in the viewport, not taller. A square or portrait source ends up cropped strangely as the user scrolls.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Ideal dimensions</th>
+<th>Aspect ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Far</td>
+<td>2400×800</td>
+<td>3:1</td>
+</tr>
+<tr>
+<td>Mid</td>
+<td>2400×900</td>
+<td>~2.7:1</td>
+</tr>
+<tr>
+<td>Near</td>
+<td>2400×1000</td>
+<td>~2.4:1</td>
+</tr>
+<tr>
+<td>Front</td>
+<td>2400×1100</td>
+<td>~2.2:1</td>
+</tr>
+</tbody>
+</table>
+<p>The numbers shift slightly per layer because deeper layers need more horizontal coverage (their scale factor pushes more pixels off-screen), and front layers benefit from extra vertical padding to prevent crop on tall viewports.</p>
+<hr />
+<h2 id="transparency-rules">Transparency rules<a class="headerlink" href="#transparency-rules" title="Permanent link">&para;</a></h2>
+<p>Three of the four layers require transparency. The far background does not.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Transparency required?</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Far</td>
+<td>No</td>
+<td>Fills the entire frame as the deepest plane</td>
+</tr>
+<tr>
+<td>Mid</td>
+<td>Yes</td>
+<td>Must show the far layer behind it</td>
+</tr>
+<tr>
+<td>Near</td>
+<td>Yes</td>
+<td>Must show the mid and far layers behind it</td>
+</tr>
+<tr>
+<td>Front</td>
+<td>Yes</td>
+<td>Must show everything behind it</td>
+</tr>
+</tbody>
+</table>
+<p>If a layer that should be transparent has a solid background, you get a rectangular cutout effect — the solid rectangle paints over everything behind it where the actual subject does not extend. The eye reads this as a flat shape pasted over the scene, not a depth plane.</p>
+<p>AVIF supports alpha as a separately compressed AV1 channel. Modern AVIF encoders preserve transparency cleanly. WebP supports alpha as an extra channel as well. PNG supports alpha natively (RGBA mode).</p>
+<p>When exporting from a tool that doesn't natively output AVIF with alpha (some image editors flatten on export), check the output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Verify AVIF has alpha — should print &quot;yuva&quot; or &quot;rgba&quot;</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ffprobe<span class="w"> </span>-v<span class="w"> </span>quiet<span class="w"> </span>-select_streams<span class="w"> </span>v:0<span class="w"> </span>-show_entries<span class="w"> </span><span class="nv">stream</span><span class="o">=</span>pix_fmt<span class="w"> </span><span class="m">1</span>-far@4x.avif
+</code></pre></div>
+<p>If the format reports <code>yuv420p</code> (no alpha), re-export with the alpha channel preserved.</p>
+<hr />
+<h2 id="the-4x-naming-convention">The <code>@4x</code> naming convention<a class="headerlink" href="#the-4x-naming-convention" title="Permanent link">&para;</a></h2>
+<p>The filenames use a <code>@4x</code> suffix:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>1-landscape@4x.avif
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>2-plateau@4x.avif
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>5-plants-1@4x.avif
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>6-plants-2@4x.avif
+</code></pre></div>
+<p>This convention comes from iOS asset catalogs, where <code>@2x</code> and <code>@3x</code> mark high-DPI source images. It has no browser meaning — the browser does not change behavior based on the filename. The suffix exists to communicate to humans (and to tooling) that these are full-resolution sources intended to scale across display densities. It is purely documentation in the filename.</p>
+<p>You can rename them to anything you want. Just update the <code>srcset</code> paths in <code>home.html</code>. The skill scripts (<code>skills/convert-images/</code>) follow the convention, so keeping it makes the automated pipelines just work.</p>
+<hr />
+<h2 id="selecting-depth-values">Selecting depth values<a class="headerlink" href="#selecting-depth-values" title="Permanent link">&para;</a></h2>
+<p>Each layer's <code>--md-parallax-depth</code> controls how far back it sits in 3D space, which controls how slowly it scrolls. Higher = slower.</p>
+<p>The relationship is not linear. The scroll rate at depth <code>d</code> is approximately:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>scroll_rate = 1 / (depth + 1)
+</code></pre></div>
+<p>So:</p>
+<table>
+<thead>
+<tr>
+<th>Depth</th>
+<th>Approximate scroll rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>100% (no parallax)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>50%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>33%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>17%</td>
+</tr>
+<tr>
+<td>8</td>
+<td>11%</td>
+</tr>
+<tr>
+<td>12</td>
+<td>8%</td>
+</tr>
+</tbody>
+</table>
+<p>The default values (<code>8</code>, <code>5</code>, <code>2</code>, <code>1</code>) give a noticeable spread between layers — the far background drifts at 11%, the foreground at 50%. Each layer feels distinct from its neighbors.</p>
+<p>A common mistake is clustering depth values too closely:</p>
+<table>
+<thead>
+<tr>
+<th>Bad: depth values too close</th>
+<th>Better: spread the values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>4</code>, <code>3</code>, <code>2</code>, <code>1</code></td>
+<td><code>8</code>, <code>5</code>, <code>2</code>, <code>1</code></td>
+</tr>
+</tbody>
+</table>
+<p>In the bad case, the layers at depths 4, 3, 2, 1 all scroll at fairly similar rates (20%, 25%, 33%, 50%) — the eye has trouble separating them. In the better case, the gap between rates is large enough to read as distinct depth.</p>
+<p>For wider viewports, you can push the far layer to depth 10 or 12 to make the parallax more pronounced. For mobile, depth 6 or 7 on the far layer often feels better because the smaller viewport makes high-depth parallax read as too slow.</p>
+<hr />
+<h2 id="object-position-as-crop-control"><code>object-position</code> as crop control<a class="headerlink" href="#object-position-as-crop-control" title="Permanent link">&para;</a></h2>
+<p>The <code>--md-image-position</code> variable maps to <code>object-position</code> on the layer image:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">.</span><span class="nc">mdx-parallax__image</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="k">object-fit</span><span class="p">:</span><span class="w"> </span><span class="kc">cover</span><span class="p">;</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="k">object-position</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--md-image-position</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="kt">%</span><span class="p">);</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">}</span>
+</code></pre></div>
+<p><code>object-fit: cover</code> scales the image to fill the layer box, cropping whatever does not fit. <code>object-position</code> controls which part of the cropped image is shown:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Shows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0%</code></td>
+<td>Left edge of the source image</td>
+</tr>
+<tr>
+<td><code>50%</code> (default)</td>
+<td>Horizontal center</td>
+</tr>
+<tr>
+<td><code>100%</code></td>
+<td>Right edge</td>
+</tr>
+<tr>
+<td><code>25%</code></td>
+<td>Roughly the left third</td>
+</tr>
+<tr>
+<td><code>70%</code></td>
+<td>Roughly the right third</td>
+</tr>
+</tbody>
+</table>
+<p>For a wide panoramic source, the layer box is narrower than the source, so <code>object-position</code> chooses which horizontal slice is visible.</p>
+<p>You set this independently per layer in the <code>&lt;picture&gt;</code> style attribute:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">&lt;</span><span class="nt">picture</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  <span class="na">class</span><span class="o">=</span><span class="s">&quot;mdx-parallax__layer&quot;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  <span class="na">style</span><span class="o">=</span><span class="s">&quot;--md-parallax-depth: 8; --md-image-position: 70%;&quot;</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">&gt;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  ...
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">&lt;/</span><span class="nt">picture</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>A typical tuning loop:</p>
+<ol>
+<li>Open the site, scroll the hero, identify the most important focal point in each layer image.</li>
+<li>Note where that focal point sits horizontally — left, center, right.</li>
+<li>Adjust <code>--md-image-position</code> to bring that focal point into view at the user's normal viewport width.</li>
+<li>Test on multiple viewport widths — what looks centered at 1920px may be cropped differently at 1280px.</li>
+</ol>
+<hr />
+<h2 id="scene-composition">Scene composition<a class="headerlink" href="#scene-composition" title="Permanent link">&para;</a></h2>
+<p>Beyond format and dimensions, the layers need to compose as a coherent scene.</p>
+<p><strong>Horizon alignment.</strong> If your far layer has a horizon at 60% from the top, your mid layer should also place its mid-distance scenery roughly at 60% from the top. Mismatched horizons read as a glitch — the eye expects the perspective lines to converge.</p>
+<p><strong>Foreground anchoring.</strong> Front and near layers should anchor at the bottom of the frame. The hero text sits at the bottom of the viewport, and the front layer often acts as a frame around or below it. If your foreground objects float in the middle of the frame, they read as floating, not framing.</p>
+<p><strong>Color consistency.</strong> All four layers should share the same lighting direction, color temperature, and saturation. A dawn-lit far layer paired with a midday-lit foreground breaks the illusion. When generating layers with AI, anchor every prompt to the same lighting description (<code>"soft dawn light, cool blue-purple palette"</code>) and stick to that anchor across all four prompts.</p>
+<p><strong>Atmospheric perspective.</strong> Real scenes have less contrast and more blue-shift in distant elements (atmospheric haze). If your far layer is as crisp and saturated as your foreground, the brain reads them as the same distance. Reduce contrast and saturation on the far layer to mimic real-world atmospheric perspective.</p>
+<hr />
+<h2 id="edge-handling-on-transparent-layers">Edge handling on transparent layers<a class="headerlink" href="#edge-handling-on-transparent-layers" title="Permanent link">&para;</a></h2>
+<p>When a layer scales up (via <code>scale(depth + 1)</code>), any hard edge in the alpha channel becomes much larger and more visible. A clean cut-out at 100% may show jagged or rectangular edges at 9× scale.</p>
+<p>Mitigations:</p>
+<ul>
+<li><strong>Feather the alpha by 2–4 pixels</strong> before exporting. Soft edges scale gracefully; hard edges do not.</li>
+<li><strong>Avoid hard horizontal lines at the top or bottom</strong> of transparent layers. They become visible bands when the layer scales beyond viewport bounds.</li>
+<li><strong>Avoid solid edge geometry</strong> like a rectangular building wall touching the image edge. When scaled, the wall appears to extend off-canvas in a way the eye reads as wrong.</li>
+</ul>
+<p>For Photoshop: Layer mask → blur the mask by 2–3px, or use Refine Edge with a small feather radius. For Figma: convert to a frame, blur the alpha with a Gaussian blur effect on the mask. For affine tools: most have an "expand selection" or "feather" option in the alpha channel toolset.</p>
+<hr />
+<h2 id="testing-layers-before-avif-conversion">Testing layers before AVIF conversion<a class="headerlink" href="#testing-layers-before-avif-conversion" title="Permanent link">&para;</a></h2>
+<p>Convert to AVIF only after the composition is right. AVIF conversion is irreversible (you can re-export from the source PNG, but you can't recover the original from the AVIF).</p>
+<p>To preview the composite:</p>
+<ol>
+<li>Open all 4 PNGs in Figma, Photoshop, GIMP, or Affinity Designer</li>
+<li>Stack them with the far layer at the bottom, front on top</li>
+<li>Crop the composite to a panoramic aspect ratio (16:9 or 21:9)</li>
+<li>Verify the scene reads as coherent depth, not as four pasted shapes</li>
+<li>Check that horizons align and lighting is consistent</li>
+</ol>
+<p>If the composite looks right, convert to AVIF. If it looks wrong, fix the source files first.</p>
+<hr />
+<h2 id="file-placement">File placement<a class="headerlink" href="#file-placement" title="Permanent link">&para;</a></h2>
+<p>MkDocs copies everything under <code>docs/assets/</code> to the build output verbatim. Drop your layer files at:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>docs/
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>└── assets/
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    └── hero/
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>        ├── 1-far@4x.avif
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>        ├── 2-mid@4x.avif
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        ├── 3-near@4x.avif
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        └── 4-front@4x.avif
+</code></pre></div>
+<p>After build:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>_site/
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>└── assets/
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    └── hero/
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        ├── 1-far@4x.avif
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        └── ...
+</code></pre></div>
+<p>Reference them in <code>home.html</code> with paths relative to the site root:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">&lt;</span><span class="nt">source</span> <span class="na">srcset</span><span class="o">=</span><span class="s">&quot;{{ &#39;assets/hero/1-far@4x.avif&#39; | url }}&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;image/avif&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>The <code>| url</code> Jinja2 filter resolves the path correctly regardless of whether the site is deployed at the root or in a subdirectory. Without it, paths break under custom domains or path-prefixed deployments.</p>
+<p><strong>Linux is case-sensitive.</strong> <code>1-Far@4x.avif</code> and <code>1-far@4x.avif</code> are different files. GitHub Pages and most production hosts run Linux. macOS is case-insensitive, so a typo on macOS can pass local testing and break in production. Use lowercase filenames and consistent capitalization to avoid the trap.</p>
+<hr />
+<h2 id="the-picture-element">The <code>&lt;picture&gt;</code> element<a class="headerlink" href="#the-picture-element" title="Permanent link">&para;</a></h2>
+<p>Each layer in <code>home.html</code> looks like this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">&lt;</span><span class="nt">picture</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  <span class="na">class</span><span class="o">=</span><span class="s">&quot;mdx-parallax__layer&quot;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>  <span class="na">style</span><span class="o">=</span><span class="s">&quot;--md-parallax-depth: 8; --md-image-position: 70%;&quot;</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="p">&gt;</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>  <span class="p">&lt;</span><span class="nt">source</span> <span class="na">srcset</span><span class="o">=</span><span class="s">&quot;{{ &#39;assets/hero/1-far@4x.avif&#39; | url }}&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;image/avif&quot;</span><span class="p">&gt;</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>  <span class="p">&lt;</span><span class="nt">source</span> <span class="na">srcset</span><span class="o">=</span><span class="s">&quot;{{ &#39;assets/hero/1-far@4x.webp&#39; | url }}&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;image/webp&quot;</span><span class="p">&gt;</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>  <span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;{{ &#39;assets/hero/1-far@4x.png&#39; | url }}&quot;</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>       <span class="na">alt</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>       <span class="na">class</span><span class="o">=</span><span class="s">&quot;mdx-parallax__image&quot;</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>       <span class="na">draggable</span><span class="o">=</span><span class="s">&quot;false&quot;</span><span class="p">&gt;</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="p">&lt;/</span><span class="nt">picture</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>The <code>&lt;picture&gt;</code> element gives you progressive enhancement:</p>
+<ul>
+<li>Browsers that support AVIF use the first <code>&lt;source&gt;</code></li>
+<li>Browsers that support WebP but not AVIF use the second <code>&lt;source&gt;</code></li>
+<li>Browsers that support neither (very rare) fall back to the <code>&lt;img&gt;</code> PNG</li>
+</ul>
+<p>The <code>alt=""</code> is intentional. Layer images are decorative — the semantic content lives in the hero text, which is a sibling element. An empty alt tells assistive technology to skip the image. A non-empty alt would make screen readers announce four meaningless image descriptions before getting to the actual hero copy.</p>
+<p><code>draggable="false"</code> prevents the browser from initiating an image drag when the user accidentally clicks-and-drags on a layer. Without it, the user can grab a layer and pull it across the page, which breaks the parallax illusion.</p>
+<hr />
+<h2 id="adding-a-webp-fallback">Adding a WebP fallback<a class="headerlink" href="#adding-a-webp-fallback" title="Permanent link">&para;</a></h2>
+<p>If you need to support older browsers, encode WebP versions:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">for</span><span class="w"> </span>f<span class="w"> </span><span class="k">in</span><span class="w"> </span>docs/assets/hero/*.png<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span>cwebp<span class="w"> </span>-q<span class="w"> </span><span class="m">80</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$f</span><span class="s2">&quot;</span><span class="w"> </span>-o<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">f</span><span class="p">%.png</span><span class="si">}</span><span class="s2">.webp&quot;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">done</span>
+</code></pre></div>
+<p>Add the WebP <code>&lt;source&gt;</code> between the AVIF source and the <code>&lt;img&gt;</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">&lt;</span><span class="nt">source</span> <span class="na">srcset</span><span class="o">=</span><span class="s">&quot;{{ &#39;assets/hero/1-far@4x.avif&#39; | url }}&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;image/avif&quot;</span><span class="p">&gt;</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="p">&lt;</span><span class="nt">source</span> <span class="na">srcset</span><span class="o">=</span><span class="s">&quot;{{ &#39;assets/hero/1-far@4x.webp&#39; | url }}&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;image/webp&quot;</span><span class="p">&gt;</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;{{ &#39;assets/hero/1-far@4x.png&#39; | url }}&quot;</span> <span class="err">...</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>Order matters. The browser uses the first source it can decode. AVIF first, WebP next, PNG fallback last.</p>
+<hr />
+<h2 id="common-mistakes">Common mistakes<a class="headerlink" href="#common-mistakes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Mistake</th>
+<th>What happens</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forgetting transparency on the mid layer</td>
+<td>Solid rectangle paints over the far layer</td>
+<td>Re-export with alpha channel</td>
+</tr>
+<tr>
+<td>Depth values too close together</td>
+<td>Layers feel like one plane</td>
+<td>Spread to 8/5/2/1 or wider</td>
+</tr>
+<tr>
+<td>Mismatched lighting between layers</td>
+<td>Scene reads as pasted, not unified</td>
+<td>Anchor lighting in every AI prompt</td>
+</tr>
+<tr>
+<td>Hard edges on transparent layers</td>
+<td>Visible cutouts at scale</td>
+<td>Feather alpha by 2–4px</td>
+</tr>
+<tr>
+<td>Square or portrait source images</td>
+<td>Wrong horizontal coverage at scale</td>
+<td>Use 16:5 or wider panoramas</td>
+</tr>
+<tr>
+<td>Wrong file path in home.html</td>
+<td>Layer fails to load (404)</td>
+<td>Check Network tab, verify case</td>
+</tr>
+<tr>
+<td>Non-<code>@4x</code> source resolution</td>
+<td>Pixelation on retina displays</td>
+<td>Source ≥ 2400px wide</td>
+</tr>
+<tr>
+<td>No <code>&lt;source type="image/avif"&gt;</code></td>
+<td>All browsers download the PNG</td>
+<td>Add the AVIF source first</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="swapping-layers-without-breaking-the-site">Swapping layers without breaking the site<a class="headerlink" href="#swapping-layers-without-breaking-the-site" title="Permanent link">&para;</a></h2>
+<p>A clean swap procedure:</p>
+<ol>
+<li>Place new AVIF files in <code>docs/assets/hero/</code> alongside the old ones</li>
+<li>Update the four <code>&lt;source&gt;</code> paths in <code>home.html</code> to point to new files</li>
+<li>Update <code>--md-parallax-depth</code> and <code>--md-image-position</code> per layer</li>
+<li>Run <code>mkdocs serve</code> and open in a browser</li>
+<li>Scroll the hero and check each layer feels right</li>
+<li>Build with <code>mkdocs build</code> and verify no errors</li>
+<li>Once the new layers are confirmed, delete the old AVIF files</li>
+<li>Commit the result</li>
+</ol>
+<p>If a layer fails to load, open DevTools → Network and filter by <code>avif</code>. A 404 means the path in <code>home.html</code> doesn't match the file in <code>docs/assets/hero/</code> — most often a case-sensitivity issue or a typo.</p>
+<hr />
+<h2 id="quick-reference">Quick reference<a class="headerlink" href="#quick-reference" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Where set</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Depth</td>
+<td><code>--md-parallax-depth</code> inline on <code>&lt;picture&gt;</code></td>
+<td><code>8</code>, <code>5</code>, <code>2</code>, <code>1</code></td>
+<td>Higher = slower scroll</td>
+</tr>
+<tr>
+<td>Crop</td>
+<td><code>--md-image-position</code> inline on <code>&lt;picture&gt;</code></td>
+<td><code>50%</code></td>
+<td>Horizontal <code>object-position</code></td>
+</tr>
+<tr>
+<td>Source format</td>
+<td><code>&lt;source type="..."&gt;</code></td>
+<td>AVIF first</td>
+<td>WebP and PNG as fallbacks</td>
+</tr>
+<tr>
+<td>File path</td>
+<td><code>srcset</code> and <code>src</code> attributes</td>
+<td><code>assets/hero/N-name@4x.avif</code></td>
+<td>Use <code>{{ ... | url }}</code> filter</td>
+</tr>
+<tr>
+<td>Alt text</td>
+<td><code>&lt;img alt=""&gt;</code></td>
+<td>empty</td>
+<td>Layers are decorative</td>
+</tr>
+<tr>
+<td>Drag behavior</td>
+<td><code>&lt;img draggable="false"&gt;</code></td>
+<td>disabled</td>
+<td>Prevents accidental drag</td>
+</tr>
+</tbody>
+</table>
+<p>The defaults work. Most projects only need to swap the four AVIF files and tune the two CSS variables per layer. Everything else is rarely worth touching.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://x.com/nichxbt" target="_blank" rel="noopener" title="nichxbt on X" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/nirholas" target="_blank" rel="noopener" title="nirholas on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.instant", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

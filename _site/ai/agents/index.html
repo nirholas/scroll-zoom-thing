@@ -1,0 +1,3164 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A pure-CSS 3D parallax MkDocs Material template — no JavaScript, four AVIF layers, one perspective container.">
+      
+      
+      
+        <link rel="canonical" href="https://scroll-zoom-thing.pages.dev/ai/agents/">
+      
+      
+        <link rel="prev" href="../image-generation/">
+      
+      
+        <link rel="next" href="../../apps/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Agents - scroll-zoom-thing</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/pai-theme.css">
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#automating-parallax-assets-with-ai-agents" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="scroll-zoom-thing" class="md-header__button md-logo" aria-label="scroll-zoom-thing" data-md-component="logo">
+      
+  <img src="../../images/3d.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            scroll-zoom-thing
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Agents
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../overview/" class="md-tabs__link">
+          
+  
+  Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/" class="md-tabs__link">
+          
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/" class="md-tabs__link">
+          
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  AI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../apps/" class="md-tabs__link">
+          
+  
+  Apps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../advanced/" class="md-tabs__link">
+          
+  
+  Advanced
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../privacy/" class="md-tabs__link">
+          
+  
+  Privacy
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../examples/" class="md-tabs__link">
+          
+  
+  Examples
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/" class="md-tabs__link">
+          
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../deploy/" class="md-tabs__link">
+          
+  
+  Deploy
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/" class="md-tabs__link">
+          
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../about/" class="md-tabs__link">
+          
+  
+  About
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="scroll-zoom-thing" class="md-nav__button md-logo" aria-label="scroll-zoom-thing" data-md-component="logo">
+      
+  <img src="../../images/3d.svg" alt="logo">
+
+    </a>
+    scroll-zoom-thing
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../overview/how-it-works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How it works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Getting started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quickstart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/use-as-template/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Use as template
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/local-development/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Local development
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/your-own-layers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Your own layers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/hero-copy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hero copy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/theme/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Theme
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/pages-and-nav/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pages and nav
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    AI
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            AI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-generation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Image generation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Agents
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Agents
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-agents-can-and-cannot-automate" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Agents Can and Cannot Automate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-four-built-in-claude-code-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Four Built-In Claude Code Skills
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Four Built-In Claude Code Skills">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-parallax" class="md-nav__link">
+    <span class="md-ellipsis">
+      /setup-parallax
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      /generate-prompts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convert-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      /convert-images
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tune-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      /tune-layers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#claude-code-cli-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Claude Code CLI Integration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-claudemd-file-behavioral-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      The CLAUDE.md File: Behavioral Guidelines
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-agentsmd-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      The AGENTS.md File
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-1-scene-description-to-four-layer-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 1: Scene Description to Four Layer Prompts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-2-image-processing-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 2: Image Processing Pipeline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-3-full-site-scaffold-from-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 3: Full Site Scaffold from Description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-4-iterative-tuning-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 4: Iterative Tuning Loop
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-5-documentation-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 5: Documentation Generation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#giving-agents-shell-tool-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      Giving Agents Shell Tool Access
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-evaluation-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent Evaluation Loop
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-ollama-for-fast-depthposition-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Ollama for Fast Depth/Position Tuning
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-agent-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Agent Workflows
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-claudecommands-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      The .claude/commands/ Directory
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-agent-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Agent Output
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-agent-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Agent Mistakes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Agent Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wrong-file-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wrong File Paths
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#case-sensitivity-on-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      Case Sensitivity on Linux
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing-super-in-jinja2-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Missing {{ super() }} in Jinja2 Blocks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indented-front-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Indented Front Matter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cost-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cost Considerations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-pai-docs-as-a-production-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      The PAI Docs as a Production Example
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Apps
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Apps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Apps
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/product-docs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Product docs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/personal-sites/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Personal sites
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/conferences/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conferences
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Advanced
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advanced
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/css-techniques/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSS techniques
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/mkdocs-skills/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MkDocs skills
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/video-layers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Video layers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Privacy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/analytics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Analytics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/accessibility/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accessibility
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Examples
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/docs-pai-direct/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    docs.pai.direct
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/local-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Local setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Deploy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Deploy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deploy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/vercel/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vercel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/cloudflare/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cloudflare Pages
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/github-pages/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GitHub Pages
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/netlify/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Netlify
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deploy/railway/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Railway
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/css-variables/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSS variables
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/file-structure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    File structure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            About
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/philosophy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Philosophy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/credits/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Credits
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-agents-can-and-cannot-automate" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Agents Can and Cannot Automate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-four-built-in-claude-code-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Four Built-In Claude Code Skills
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Four Built-In Claude Code Skills">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-parallax" class="md-nav__link">
+    <span class="md-ellipsis">
+      /setup-parallax
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      /generate-prompts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convert-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      /convert-images
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tune-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      /tune-layers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#claude-code-cli-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Claude Code CLI Integration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-claudemd-file-behavioral-guidelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      The CLAUDE.md File: Behavioral Guidelines
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-agentsmd-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      The AGENTS.md File
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-1-scene-description-to-four-layer-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 1: Scene Description to Four Layer Prompts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-2-image-processing-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 2: Image Processing Pipeline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-3-full-site-scaffold-from-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 3: Full Site Scaffold from Description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-4-iterative-tuning-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 4: Iterative Tuning Loop
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-5-documentation-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pattern 5: Documentation Generation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#giving-agents-shell-tool-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      Giving Agents Shell Tool Access
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agent-evaluation-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent Evaluation Loop
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-ollama-for-fast-depthposition-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Ollama for Fast Depth/Position Tuning
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-agent-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Agent Workflows
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-claudecommands-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      The .claude/commands/ Directory
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-agent-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Agent Output
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-agent-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Agent Mistakes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Agent Mistakes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wrong-file-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wrong File Paths
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#case-sensitivity-on-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      Case Sensitivity on Linux
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing-super-in-jinja2-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Missing {{ super() }} in Jinja2 Blocks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indented-front-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Indented Front Matter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cost-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cost Considerations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-pai-docs-as-a-production-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      The PAI Docs as a Production Example
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/nirholas/scroll-zoom-thing/edit/main/src/ai/agents.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="automating-parallax-assets-with-ai-agents">Automating Parallax Assets with AI Agents<a class="headerlink" href="#automating-parallax-assets-with-ai-agents" title="Permanent link">&para;</a></h1>
+<p>This guide documents how AI agents — specifically Claude Code — integrate into the CSS 3D Parallax Scrolling workflow for this project. It covers what agents can reliably automate, what they cannot, how the four built-in skills work, prompt patterns, multi-agent pipelines, and practical cost considerations drawn from real usage.</p>
+<hr />
+<h2 id="what-agents-can-and-cannot-automate">What Agents Can and Cannot Automate<a class="headerlink" href="#what-agents-can-and-cannot-automate" title="Permanent link">&para;</a></h2>
+<p>The honest answer is that agents are good at the mechanical, repetitive, and structural parts of this workflow and unreliable at the aesthetic ones.</p>
+<p><strong>Agents reliably automate:</strong></p>
+<ul>
+<li>Generating Stable Diffusion or Midjourney prompts for individual depth layers given a scene description</li>
+<li>Writing the Python scripts that batch-convert PNG/EXR/WebP source images to AVIF</li>
+<li>Scaffolding the initial <code>mkdocs.yml</code>, <code>home.html</code>, and <code>home.css</code> from a written brief</li>
+<li>Writing documentation pages (like this one) from the code and comments</li>
+<li>Running <code>mkdocs build</code>, reporting errors, and applying targeted fixes</li>
+<li>Adjusting CSS numeric values (depth, perspective, translateZ, scale) within defined bounds</li>
+<li>Cross-checking that all AVIF files referenced in <code>home.html</code> actually exist in <code>docs/assets/hero/</code></li>
+</ul>
+<p><strong>Agents require human judgment for:</strong></p>
+<ul>
+<li>Deciding whether a generated image looks right — agents cannot see rendered output without vision tooling</li>
+<li>Choosing the right depth order for a specific scene (what goes in front vs. behind)</li>
+<li>Color grading and mood: whether the sky layer should be warmer or cooler</li>
+<li>Final parallax speed ratios: the relationship between layers is a feel decision, not a math problem</li>
+<li>Typography and layout choices on the homepage</li>
+</ul>
+<p>Understanding this boundary matters because it determines how you structure the agent loop. You do not ask an agent to "make the parallax look good." You ask it to "generate four depth-ordered prompts for a mountain scene, then convert the output PNGs to AVIF, then wire them into <code>home.html</code>." You review the result visually and give specific feedback.</p>
+<hr />
+<h2 id="the-four-built-in-claude-code-skills">The Four Built-In Claude Code Skills<a class="headerlink" href="#the-four-built-in-claude-code-skills" title="Permanent link">&para;</a></h2>
+<p>Claude Code skills are stored in <code>skills/</code> and invoked with a slash command prefix. Each skill is a Markdown file containing a system prompt and structured instructions that Claude follows when you invoke it.</p>
+<h3 id="setup-parallax"><code>/setup-parallax</code><a class="headerlink" href="#setup-parallax" title="Permanent link">&para;</a></h3>
+<p>Scaffolds the full project structure. When invoked on a fresh MkDocs installation, it:</p>
+<ol>
+<li>Creates <code>docs/overrides/home.html</code> with the perspective/layer skeleton</li>
+<li>Creates <code>docs/assets/stylesheets/home.css</code> with the CSS 3D transform rules</li>
+<li>Adds <code>custom_dir: docs/overrides</code> to <code>mkdocs.yml</code> if not present</li>
+<li>Adds <code>extra_css: [assets/stylesheets/home.css]</code> to <code>mkdocs.yml</code></li>
+<li>Creates <code>docs/assets/hero/</code> if it does not exist</li>
+<li>Writes placeholder <code>&lt;img&gt;</code> tags in <code>home.html</code> for each expected layer</li>
+</ol>
+<p>Invoke it from the project root:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>claude
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># Then type:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>/setup-parallax
+</code></pre></div>
+<p>Or pass arguments for the number of layers:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/setup-parallax layers=5
+</code></pre></div>
+<h3 id="generate-prompts"><code>/generate-prompts</code><a class="headerlink" href="#generate-prompts" title="Permanent link">&para;</a></h3>
+<p>Takes a scene description and returns four Stable Diffusion (or Midjourney) prompts, one per depth layer, ordered from furthest-back to foreground:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>/generate-prompts &quot;foggy mountain valley at dawn, pine forest in midground, mossy rocks in foreground&quot;
+</code></pre></div>
+<p>Expected output format:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Layer 1 (sky/far background):
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Prompt: misty mountain peaks at dawn, soft pink sky, volumetric fog, no foreground elements,
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>          ultra-wide aspect ratio, photorealistic, –ar 16:9
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Layer 2 (mid-distance):
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  Prompt: pine forest silhouette, fog rolling through trees, no sky visible, dark green tones,
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>          depth of field, photorealistic, –ar 16:9
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>Layer 3 (near midground):
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  Prompt: rocky mountain path, scattered boulders, low ground fog, pine needles on ground,
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>          sharp detail, photorealistic, –ar 16:9
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>Layer 4 (foreground):
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>  Prompt: close-up mossy rocks and ferns, sharp foreground, blurred background, morning dew,
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>          photorealistic, –ar 16:9
+</code></pre></div>
+<p>The skill enforces that each prompt explicitly excludes elements belonging to other depth layers. This prevents the AI image generator from placing sky in the foreground layer or rocks in the sky layer — a common failure mode when prompts are written without depth awareness.</p>
+<h3 id="convert-images"><code>/convert-images</code><a class="headerlink" href="#convert-images" title="Permanent link">&para;</a></h3>
+<p>Writes and executes a Python script that batch-converts source images (PNG, WebP, JPEG, or EXR) in a given directory to AVIF using <code>cavif</code> or <code>pillow-avif-plugin</code>. The agent:</p>
+<ol>
+<li>Scans the source directory for image files</li>
+<li>Determines whether <code>cavif</code> (preferred, better quality) or <code>pillow</code> (fallback) is available</li>
+<li>Writes a Python script with configurable quality and effort settings</li>
+<li>Runs the script</li>
+<li>Reports the output sizes and conversion ratios</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/convert-images source=./raw-layers/ output=docs/assets/hero/ quality=80 effort=6
+</code></pre></div>
+<p>The generated script (not the skill file itself — the script the skill writes) looks like:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="ch">#!/usr/bin/env python3</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="sd">&quot;&quot;&quot;Batch convert layer images to AVIF. Generated by /convert-images skill.&quot;&quot;&quot;</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">SOURCE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./raw-layers/&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="n">OUTPUT</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;docs/assets/hero/&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="n">QUALITY</span> <span class="o">=</span> <span class="mi">80</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">EFFORT</span> <span class="o">=</span> <span class="mi">6</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="n">OUTPUT</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">SOURCE</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.png&quot;</span><span class="p">)):</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>    <span class="n">dest</span> <span class="o">=</span> <span class="n">OUTPUT</span> <span class="o">/</span> <span class="n">src</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.avif&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>        <span class="p">[</span><span class="s2">&quot;cavif&quot;</span><span class="p">,</span> <span class="s2">&quot;--quality&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">QUALITY</span><span class="p">),</span> <span class="s2">&quot;--effort&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">EFFORT</span><span class="p">),</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>         <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">dest</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">src</span><span class="p">)],</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>    <span class="p">)</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAILED: </span><span class="si">{</span><span class="n">src</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> — </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>        <span class="n">ratio</span> <span class="o">=</span> <span class="n">dest</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_size</span> <span class="o">/</span> <span class="n">src</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_size</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OK: </span><span class="si">{</span><span class="n">src</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">dest</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">ratio</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> of original)&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="tune-layers"><code>/tune-layers</code><a class="headerlink" href="#tune-layers" title="Permanent link">&para;</a></h3>
+<p>Reads the current CSS transform values from <code>home.css</code> and the layer positions from <code>home.html</code>, then proposes adjusted values to change the depth feel. The tuning is based on the mathematical relationship between <code>perspective</code>, <code>translateZ</code>, and the scale factor needed to maintain apparent size:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>scale = perspective / (perspective - translateZ)
+</code></pre></div>
+<p>Invoke it with a description of what feels wrong:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>/tune-layers &quot;the foreground moves too fast relative to the sky layer&quot;
+</code></pre></div>
+<p>The agent reads <code>home.css</code>, identifies the <code>translateZ</code> values for each layer, calculates the current speed ratios, and outputs a diff of proposed changes. It does not apply the changes automatically — it prints the CSS with proposed values highlighted so you can review before accepting.</p>
+<hr />
+<h2 id="claude-code-cli-integration">Claude Code CLI Integration<a class="headerlink" href="#claude-code-cli-integration" title="Permanent link">&para;</a></h2>
+<p>Claude Code is invoked from the project root. The <code>claude</code> binary reads the <code>CLAUDE.md</code> file in the current directory automatically:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">cd</span><span class="w"> </span>/path/to/scroll-zoom-thing
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>claude
+</code></pre></div>
+<p>For one-shot tasks without an interactive session:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;Convert all PNGs in ./raw-layers to AVIF in docs/assets/hero/ at quality 80&quot;</span>
+</code></pre></div>
+<p>For file access, Claude Code reads and writes files in the working directory tree. No special configuration is needed — if the shell user has read/write access to a file, so does the agent.</p>
+<p>For shell tool access (running <code>mkdocs build</code>, <code>cavif</code>, <code>python</code>), the project's <code>.claude/settings.json</code> controls which commands are allowed without an explicit permission prompt:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;permissions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nt">&quot;allow&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">      </span><span class="s2">&quot;Bash(mkdocs build*)&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">      </span><span class="s2">&quot;Bash(mkdocs serve*)&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">      </span><span class="s2">&quot;Bash(cavif *)&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">      </span><span class="s2">&quot;Bash(python *)&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">      </span><span class="s2">&quot;Bash(pip install *)&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">      </span><span class="s2">&quot;Bash(ls *)&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">      </span><span class="s2">&quot;Bash(find docs/ *)&quot;</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span><span class="p">]</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="p">}</span>
+</code></pre></div>
+<p>Keep the allow list narrow. There is no reason to give the agent <code>Bash(rm *)</code> or <code>Bash(git push *)</code>.</p>
+<hr />
+<h2 id="the-claudemd-file-behavioral-guidelines">The CLAUDE.md File: Behavioral Guidelines<a class="headerlink" href="#the-claudemd-file-behavioral-guidelines" title="Permanent link">&para;</a></h2>
+<p>The <code>CLAUDE.md</code> at the project root sets four behavioral guidelines that shape every agent interaction in this repo:</p>
+<p><strong>Think Before Coding:</strong> The agent is instructed to surface assumptions and ask clarifying questions before writing code. For the parallax workflow this means: if you say "add a new layer," the agent will ask whether you want it in front of or behind the current foreground, what image file to use, and what <code>translateZ</code> value to start with — rather than guessing.</p>
+<p><strong>Simplicity First:</strong> The agent will not add "flexibility" that was not requested. If you ask it to convert images, it writes a straight conversion script — not a configurable class hierarchy with YAML-driven settings.</p>
+<p><strong>Surgical Changes:</strong> When editing <code>home.css</code>, the agent touches only the property values you asked about and leaves adjacent rules alone. It matches the existing formatting (tabs vs. spaces, property ordering) rather than reformatting the file.</p>
+<p><strong>Goal-Driven Execution:</strong> For multi-step tasks the agent states a verification plan before executing:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>1. Add layer-5 div to home.html → verify: grep &quot;layer-5&quot; docs/overrides/home.html returns a match
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>2. Add .layer-5 CSS rule to home.css → verify: mkdocs build exits 0
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>3. Check layer-5.avif exists in docs/assets/hero/ → verify: ls docs/assets/hero/layer-5.avif
+</code></pre></div>
+<p>These guidelines matter because without them, LLMs tend to over-engineer solutions, make wide-ranging edits that break unrelated code, and proceed confidently when they should ask.</p>
+<hr />
+<h2 id="the-agentsmd-file">The AGENTS.md File<a class="headerlink" href="#the-agentsmd-file" title="Permanent link">&para;</a></h2>
+<p>Where <code>CLAUDE.md</code> sets behavioral guidelines, an <code>AGENTS.md</code> file (placed at the project root or in <code>agents/</code>) provides agent-specific workflow context: the directory layout, which commands are safe to run, which files are safe to modify, and the expected output format for each skill.</p>
+<p>A minimal <code>AGENTS.md</code> for this project:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="gh"># AGENTS.md</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="gu">## Safe to read: all files</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="gu">## Safe to write: docs/overrides/, docs/assets/, mkdocs.yml</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="gu">## Never write: src/, contracts/, public/</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="gu">## Commands available without prompting:</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="k">-</span><span class="w"> </span>mkdocs build
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="k">-</span><span class="w"> </span>mkdocs serve --dev-addr=127.0.0.1:8000
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="k">-</span><span class="w"> </span>cavif (if installed)
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="k">-</span><span class="w"> </span>python (any .py in this repo)
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="gu">## Layer naming convention:</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="k">-</span><span class="w"> </span>layer-1.avif = furthest back (sky)
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="k">-</span><span class="w"> </span>layer-4.avif = closest foreground
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="gu">## Expected AVIF dimensions: 2560x1440 or 1920x1080</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="gu">## Expected AVIF quality: 75-85 (higher = better, larger)</span>
+</code></pre></div>
+<p>The key difference from <code>CLAUDE.md</code>: <code>AGENTS.md</code> describes the project's structure and conventions. <code>CLAUDE.md</code> describes how the agent should reason and behave. Both are read by Claude Code on startup.</p>
+<hr />
+<h2 id="pattern-1-scene-description-to-four-layer-prompts">Pattern 1: Scene Description to Four Layer Prompts<a class="headerlink" href="#pattern-1-scene-description-to-four-layer-prompts" title="Permanent link">&para;</a></h2>
+<p>This is the starting point for every new parallax hero. The agent takes a plain English scene description and produces four image-generation prompts, one per CSS layer.</p>
+<p><strong>System prompt structure (inside the <code>/generate-prompts</code> skill):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>You are an expert at decomposing a scene description into depth-separated image layers
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>suitable for CSS 3D parallax. Each layer must be a standalone, photorealistic image
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>that looks correct when composited with the others. Each layer must contain ONLY
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>elements that belong at its depth. Include no other elements. Use PNG transparency
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>for foreground layers.
+</code></pre></div>
+<p><strong>User prompt structure:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Scene: &quot;rainy city street at night, neon signs reflecting on wet pavement, pedestrians
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>with umbrellas, taxis in foreground&quot;
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>Generate four prompts:
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>- Layer 1 (furthest back, sky/buildings): ...
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>- Layer 2 (mid-distance, street level): ...
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>- Layer 3 (near midground, reflections/umbrellas): ...
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>- Layer 4 (foreground, taxis/drops): ...
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>Rules:
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>- No layer should contain elements from another layer&#39;s depth.
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>- Foreground layers (3, 4) must be generated with transparent background.
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>- Each prompt must specify aspect ratio 16:9.
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>- Each prompt must end with: photorealistic, octane render, –q 2
+</code></pre></div>
+<p><strong>Expected output format</strong> — the agent returns a fenced code block containing the four prompts, labeled and ready to paste into an image generation tool.</p>
+<hr />
+<h2 id="pattern-2-image-processing-pipeline">Pattern 2: Image Processing Pipeline<a class="headerlink" href="#pattern-2-image-processing-pipeline" title="Permanent link">&para;</a></h2>
+<p>After the images are generated (externally, by a human using Midjourney or Stable Diffusion), the agent handles the mechanical conversion step.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;I have PNGs in ./raw-layers/. Convert them to AVIF at quality 82, effort 7,</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="s2">and place them in docs/assets/hero/ named layer-1.avif through layer-4.avif</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="s2">in alphabetical order of the source filenames.&quot;</span>
+</code></pre></div>
+<p>The agent:
+1. Lists <code>./raw-layers/</code> to see what files exist
+2. Writes a Python script to do the conversion
+3. Runs it with the Bash tool
+4. Confirms each output file exists and prints its size
+5. Reports any files that failed conversion</p>
+<p>The agent does not assume <code>cavif</code> is installed. It checks <code>which cavif</code> first and falls back to <code>pillow-avif-plugin</code> if needed, installing it with <code>pip install pillow pillow-avif-plugin</code> before proceeding.</p>
+<hr />
+<h2 id="pattern-3-full-site-scaffold-from-description">Pattern 3: Full Site Scaffold from Description<a class="headerlink" href="#pattern-3-full-site-scaffold-from-description" title="Permanent link">&para;</a></h2>
+<p>This is the highest-leverage agent task: going from a written brief to a working MkDocs site with a parallax hero.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="s">Scaffold a MkDocs Material site for a product called &#39;Axiom&#39;. The hero should have</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="s">4 AVIF layers already placed in docs/assets/hero/. Use indigo as the primary color,</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="s">slate dark scheme by default. The homepage should have no visible MkDocs content</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="s">below the hero — full-screen parallax only. Include a nav with: Home, Docs, API.</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="s">Create: mkdocs.yml, docs/index.md, docs/overrides/home.html, docs/assets/stylesheets/home.css.</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="s">Run mkdocs build at the end and report any errors.</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="s">EOF</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+<p>The agent creates all four files, then runs <code>mkdocs build --strict</code>. If the build fails (which it often does on the first pass due to a missing nav page), it reads the error, fixes the specific issue, and rebuilds.</p>
+<p>This pattern typically takes 2-3 iterations to reach a clean build. The agent is reliable at fixing structural errors (missing files, invalid YAML, broken Jinja2 blocks). It is not reliable at pixel-perfect layout — expect to tune the CSS manually after the scaffold is in place.</p>
+<hr />
+<h2 id="pattern-4-iterative-tuning-loop">Pattern 4: Iterative Tuning Loop<a class="headerlink" href="#pattern-4-iterative-tuning-loop" title="Permanent link">&para;</a></h2>
+<p>The tuning loop is a human-in-the-loop pattern. The agent reads current values, proposes a change, you review it in the browser, and give feedback.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>You: /tune-layers &quot;sky layer barely moves, foreground moves too much&quot;
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>Agent: Current values:
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>  .layer-1 { transform: translateZ(-400px) scale(1.4); }  /* sky */
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>  .layer-2 { transform: translateZ(-200px) scale(1.2); }  /* midground */
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>  .layer-3 { transform: translateZ(-100px) scale(1.1); }  /* near mid */
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>  .layer-4 { transform: translateZ(0px) scale(1.0); }     /* foreground */
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>  With perspective: 1000px, the scroll speed ratios are approximately:
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>  layer-1: 0.29x, layer-2: 0.56x, layer-3: 0.77x, layer-4: 1.0x
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>  Proposed fix: increase layer-1 translateZ from -400 to -200 to make sky move more,
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>  decrease layer-4 translateZ from 0 to -50 to slow foreground slightly.
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>  Proposed values:
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>  .layer-1 { transform: translateZ(-200px) scale(1.25); }
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>  .layer-4 { transform: translateZ(-50px) scale(1.05); }
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>  Apply? (yes/no)
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>You: yes
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a>
+<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>Agent: [applies changes to home.css, runs mkdocs build, confirms success]
+</code></pre></div>
+<p>The math behind speed ratios: in CSS 3D perspective, a layer at <code>translateZ(-d)</code> moves at <code>(perspective - d) / perspective</code> of the scroll speed relative to a layer at <code>translateZ(0)</code>. The agent knows this formula and uses it to reason about the proposed changes before suggesting them.</p>
+<hr />
+<h2 id="pattern-5-documentation-generation">Pattern 5: Documentation Generation<a class="headerlink" href="#pattern-5-documentation-generation" title="Permanent link">&para;</a></h2>
+<p>The agent can write documentation pages (like this one) from the codebase. The prompt structure:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>You are writing technical documentation for a MkDocs Material site. Read the following
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>files and write a complete guide covering [topic list]. The guide should be at least
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>2000 words, use professional technical writing, and include code blocks for all
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>configuration examples.
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>Files to read:
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>- CLAUDE.md
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>- docs/overrides/home.html
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>- docs/assets/stylesheets/home.css
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>- mkdocs.yml
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>- skills/ (all files)
+</code></pre></div>
+<p>The agent reads the files, extracts the relevant details, and writes the documentation. This is the most reliable documentation workflow: the agent cannot hallucinate file contents it has actually read.</p>
+<hr />
+<h2 id="giving-agents-shell-tool-access">Giving Agents Shell Tool Access<a class="headerlink" href="#giving-agents-shell-tool-access" title="Permanent link">&para;</a></h2>
+<p>The commands this project's agents need:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>mkdocs<span class="w"> </span>build<span class="w">          </span><span class="c1"># build the site, check for errors</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>mkdocs<span class="w"> </span>serve<span class="w">          </span><span class="c1"># local preview</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>cavif<span class="w">                 </span><span class="c1"># AVIF conversion (optional, preferred)</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>python<span class="w">                </span><span class="c1"># run conversion scripts</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>pip<span class="w"> </span>install<span class="w">           </span><span class="c1"># install missing Python packages</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>ffmpeg<span class="w">                </span><span class="c1"># video to AVIF (if animated layers are needed)</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>ls,<span class="w"> </span>find,<span class="w"> </span>cat<span class="w">         </span><span class="c1"># file inspection</span>
+</code></pre></div>
+<p>Safety considerations:</p>
+<ul>
+<li>Never grant <code>git push</code> without human review. The agent making a change to <code>home.css</code> should not be able to push it to production unreviewed.</li>
+<li>Never grant <code>rm -rf</code> or any recursive delete. The agent should write new files, not delete existing ones.</li>
+<li>Scope <code>pip install</code> to the local virtualenv (<code>pip install --user</code> or inside an activated venv) to avoid polluting system Python.</li>
+<li>If using Claude Code in a CI environment, run it in a container with no network access beyond what is strictly needed.</li>
+</ul>
+<hr />
+<h2 id="agent-evaluation-loop">Agent Evaluation Loop<a class="headerlink" href="#agent-evaluation-loop" title="Permanent link">&para;</a></h2>
+<p>The practical loop for any agent task in this workflow:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>1. Write: agent generates or modifies files
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>2. Build: agent runs mkdocs build --strict
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>3. Review: human opens http://127.0.0.1:8000 and inspects result
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>4. Feedback: human describes what is wrong
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>5. Iterate: return to step 1
+</code></pre></div>
+<p>Steps 1 and 2 are fully automated. Steps 3 and 4 always require a human. The agent cannot evaluate visual output without vision tooling (a screenshot + multimodal model), and even with vision tooling the feedback loop is slow and error-prone for subtle CSS issues.</p>
+<p>Expect 3-5 iterations on a new scaffold and 1-2 iterations on a targeted change like "move this layer forward" or "make the text larger."</p>
+<hr />
+<h2 id="using-ollama-for-fast-depthposition-tuning">Using Ollama for Fast Depth/Position Tuning<a class="headerlink" href="#using-ollama-for-fast-depthposition-tuning" title="Permanent link">&para;</a></h2>
+<p>Ollama runs LLMs locally. For the numerical tuning loop (adjusting <code>translateZ</code>, <code>scale</code>, <code>perspective</code>), a fast local model is preferable to a cloud model because the round-trip latency matters when you're making many small adjustments.</p>
+<p>Setup:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>ollama<span class="w"> </span>pull<span class="w"> </span>mistral:7b
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="c1"># or for better reasoning:</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>ollama<span class="w"> </span>pull<span class="w"> </span>qwen2.5-coder:14b
+</code></pre></div>
+<p>The model needs to understand the CSS 3D perspective formula. Inject it as a system message:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>You are a CSS 3D parallax tuning assistant. The key formula is:
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>  apparent_scroll_speed = (perspective - translateZ) / perspective
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>where perspective is the value set on the parent container (typically 800px-1200px).
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>A layer at translateZ(-400px) with perspective 1000px moves at 60% of native scroll speed.
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>Given current layer positions and the user&#39;s description of what feels wrong, propose
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>specific translateZ and scale values. Respond with only the changed CSS properties.
+</code></pre></div>
+<p>For a 14B model running locally on Apple Silicon or a mid-range GPU, response latency is under 5 seconds — fast enough for an interactive tuning session.</p>
+<hr />
+<h2 id="multi-agent-workflows">Multi-Agent Workflows<a class="headerlink" href="#multi-agent-workflows" title="Permanent link">&para;</a></h2>
+<p>Complex tasks can be split across specialized agents running in sequence:</p>
+<p><strong>Stage 1: Prompt generation agent</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;Generate Midjourney prompts for a 4-layer parallax hero: futuristic city skyline.</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="s2">Output to prompts/city-hero.txt&quot;</span>
+</code></pre></div>
+<p><strong>Stage 2: (Human) Run prompts through Midjourney, save output PNGs to ./raw-layers/</strong></p>
+<p><strong>Stage 3: Image processing agent</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;Convert all PNGs in ./raw-layers/ to AVIF in docs/assets/hero/ at quality 80&quot;</span>
+</code></pre></div>
+<p><strong>Stage 4: Site wiring agent</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;Update docs/overrides/home.html to reference the AVIF files in docs/assets/hero/.</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="s2">Verify mkdocs build passes.&quot;</span>
+</code></pre></div>
+<p><strong>Stage 5: Documentation agent</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;Read docs/overrides/home.html and docs/assets/stylesheets/home.css.</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="s2">Write docs/guide/layers.md explaining how the parallax layers are structured.&quot;</span>
+</code></pre></div>
+<p>This staged approach is more reliable than a single "do everything" prompt because each stage has a clear, verifiable output and human review points are natural between stages.</p>
+<hr />
+<h2 id="the-claudecommands-directory">The <code>.claude/commands/</code> Directory<a class="headerlink" href="#the-claudecommands-directory" title="Permanent link">&para;</a></h2>
+<p><code>.claude/commands/</code> is the local project-level equivalent of skills. Files placed here are available as slash commands in any Claude Code session started from this project:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>.claude/
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>  commands/
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>    rebuild.md       → /rebuild
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>    lint-css.md      → /lint-css
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>    check-layers.md  → /check-layers
+</code></pre></div>
+<p>The difference from <code>skills/</code> is scope. Skills in <code>skills/</code> are the canonical, documented skills for this project — they are checked into version control and documented. Commands in <code>.claude/commands/</code> are workspace-local shortcuts, often more task-specific or experimental.</p>
+<p>A useful <code>/check-layers</code> command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="gh"># check-layers</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>Check that every AVIF file referenced in docs/overrides/home.html
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>exists in docs/assets/hero/.
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>Steps:
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="k">1.</span> Read docs/overrides/home.html and extract all .avif src attributes
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="k">2.</span> For each extracted path, check if the file exists with <span class="sb">`ls`</span>
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="k">3.</span> Report any missing files
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="k">4.</span> Report any files in docs/assets/hero/ that are NOT referenced in home.html
+</code></pre></div>
+<hr />
+<h2 id="testing-agent-output">Testing Agent Output<a class="headerlink" href="#testing-agent-output" title="Permanent link">&para;</a></h2>
+<p>Before accepting agent-generated files, verify:</p>
+<p><strong>Valid YAML (<code>mkdocs.yml</code>):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import yaml; yaml.safe_load(open(&#39;mkdocs.yml&#39;))&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;OK&quot;</span>
+</code></pre></div>
+<p><strong>Valid Jinja2 (templates in <code>docs/overrides/</code>):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>mkdocs<span class="w"> </span>build<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;jinja\|template\|error&quot;</span>
+</code></pre></div>
+<p><strong>Valid CSS:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>npx<span class="w"> </span>stylelint<span class="w"> </span><span class="s2">&quot;docs/assets/stylesheets/*.css&quot;</span>
+</code></pre></div>
+<p><strong>Full build:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>mkdocs<span class="w"> </span>build<span class="w"> </span>--strict
+</code></pre></div>
+<p>The strict build is the integration test. It catches broken links, missing files, invalid YAML, and Jinja2 errors in a single command.</p>
+<hr />
+<h2 id="common-agent-mistakes">Common Agent Mistakes<a class="headerlink" href="#common-agent-mistakes" title="Permanent link">&para;</a></h2>
+<h3 id="wrong-file-paths">Wrong File Paths<a class="headerlink" href="#wrong-file-paths" title="Permanent link">&para;</a></h3>
+<p>Agents frequently confuse <code>docs_dir</code> relative paths with project root relative paths. A stylesheet at <code>docs/assets/stylesheets/home.css</code> is referenced in <code>mkdocs.yml</code> as <code>assets/stylesheets/home.css</code> — the <code>docs/</code> prefix is omitted. Agents often write the full path, breaking the build.</p>
+<p>Fix: In your prompt, specify paths explicitly: "reference it in mkdocs.yml as <code>assets/stylesheets/home.css</code> (relative to docs_dir, not project root)."</p>
+<h3 id="case-sensitivity-on-linux">Case Sensitivity on Linux<a class="headerlink" href="#case-sensitivity-on-linux" title="Permanent link">&para;</a></h3>
+<p>On macOS (case-insensitive filesystem), <code>Layer-1.avif</code> and <code>layer-1.avif</code> are the same file. On Linux (case-sensitive), they are not. Agents generating HTML that references <code>Layer-1.avif</code> while the actual file is <code>layer-1.avif</code> will produce a site that works locally on a Mac and breaks in CI on Linux.</p>
+<p>Fix: Always use lowercase filenames for all assets. Enforce this in <code>AGENTS.md</code>: "All asset filenames must be lowercase."</p>
+<h3 id="missing-super-in-jinja2-blocks">Missing <code>{{ super() }}</code> in Jinja2 Blocks<a class="headerlink" href="#missing-super-in-jinja2-blocks" title="Permanent link">&para;</a></h3>
+<p>An agent overriding the <code>{% block styles %}</code> block and omitting <code>{{ super() }}</code> will silently strip all of Material's built-in CSS, breaking the entire theme. The page will render as unstyled HTML.</p>
+<p>Fix: In your agent prompt or <code>AGENTS.md</code>, include the rule: "When overriding a Jinja2 block, always call <code>{{ super() }}</code> unless you explicitly intend to replace the entire block's output."</p>
+<h3 id="indented-front-matter">Indented Front Matter<a class="headerlink" href="#indented-front-matter" title="Permanent link">&para;</a></h3>
+<p>YAML front matter must start at column 1 with <code>---</code>. An agent that generates a Markdown file with indented front matter will produce a page that MkDocs cannot parse:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>  ---          ← WRONG: indented
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>  template: home.html
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>  ---
+</code></pre></div>
+<p>Fix: The CLAUDE.md "Simplicity First" guideline helps here — the agent will not add indentation for unclear reasons.</p>
+<hr />
+<h2 id="cost-considerations">Cost Considerations<a class="headerlink" href="#cost-considerations" title="Permanent link">&para;</a></h2>
+<p>Not all tasks justify using a cloud model. A rough guide:</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Recommended model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prompt generation (4 layer prompts)</td>
+<td>Cloud (Claude Sonnet, GPT-4o) — creative, benefits from RLHF</td>
+</tr>
+<tr>
+<td>Image conversion script</td>
+<td>Local (Qwen 7B, Mistral 7B) — mechanical, well-defined</td>
+</tr>
+<tr>
+<td>CSS tuning (numerical values)</td>
+<td>Local (Qwen 14B) — arithmetic, short context</td>
+</tr>
+<tr>
+<td>Full site scaffold</td>
+<td>Cloud (Claude Sonnet) — architectural decisions matter</td>
+</tr>
+<tr>
+<td>Documentation generation</td>
+<td>Cloud (Claude Sonnet) — long output, quality matters</td>
+</tr>
+<tr>
+<td>Check-layers audit</td>
+<td>Local (any model) — trivial file inspection</td>
+</tr>
+</tbody>
+</table>
+<p>For a typical new parallax site, the cloud model usage (scaffold + prompts + docs) costs on the order of $0.05-0.20 in API credits. The image generation cost (Midjourney, Stable Diffusion) is orders of magnitude higher and is the actual cost driver for this workflow.</p>
+<hr />
+<h2 id="the-pai-docs-as-a-production-example">The PAI Docs as a Production Example<a class="headerlink" href="#the-pai-docs-as-a-production-example" title="Permanent link">&para;</a></h2>
+<p><code>docs.pai.direct</code> is a production documentation site built with this exact stack: MkDocs Material, CSS 3D parallax hero, AVIF layers, and agent-assisted maintenance.</p>
+<p>The PAI team uses the agent workflow as follows:</p>
+<ul>
+<li>When a new product version ships, an agent reads the changelog and generates a draft of the "What's New" page. A human editor reviews and publishes.</li>
+<li>When AVIF layers need updating (seasonal or campaign-driven), the <code>/generate-prompts</code> skill produces new image prompts. The team runs them through their image generation pipeline externally, then uses <code>/convert-images</code> to process the outputs.</li>
+<li>Documentation pages are drafted by the <code>/generate-docs</code> agent (a custom <code>.claude/commands/</code> command specific to their setup) and edited by the technical writer.</li>
+<li><code>mkdocs build --strict</code> runs in GitHub Actions on every PR. The PAI team does not merge PRs with failing builds.</li>
+</ul>
+<p>The key insight from the PAI workflow: agents are most valuable as first-draft generators, not as final editors. Every agent-generated page goes through human review before it is published. The agents handle the structural and mechanical work; humans handle the judgment calls. This division of labor — which is exactly what <code>CLAUDE.md</code> enforces through its "Think Before Coding" and "Simplicity First" guidelines — is what makes the workflow sustainable at scale.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://x.com/nichxbt" target="_blank" rel="noopener" title="nichxbt on X" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/nirholas" target="_blank" rel="noopener" title="nirholas on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.instant", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
