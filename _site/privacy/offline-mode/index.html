@@ -1,0 +1,4300 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Run PAI with no network at all. How to go air-gapped, verify it, what works, what breaks, and a full offline AI workflow tutorial with Ollama.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.pai.direct/privacy/offline-mode/">
+      
+      
+        <link rel="prev" href="../mac-address-anonymization/">
+      
+      
+        <link rel="next" href="../tor-browser/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Running PAI Completely Offline — Air-Gapped Local AI - PAI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/pai-theme.css">
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#why-offline-mode-is-the-strongest-privacy-guarantee" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="PAI Documentation" class="md-header__button md-logo" aria-label="PAI Documentation" data-md-component="logo">
+      
+  <img src="../../assets/pai-logo-white.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PAI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Running PAI Completely Offline — Air-Gapped Local AI
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../general/how-pai-works/" class="md-tabs__link">
+          
+  
+  Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../first-steps/try-in-a-vm/" class="md-tabs__link">
+          
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../using-pai/" class="md-tabs__link">
+          
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ai/choosing-a-model/" class="md-tabs__link">
+          
+  
+  AI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../apps/password-management/" class="md-tabs__link">
+          
+  
+  Apps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../advanced/gpu-setup/" class="md-tabs__link">
+          
+  
+  Advanced
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../introduction-to-privacy/" class="md-tabs__link">
+          
+  
+  Privacy
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../examples/getting-started/" class="md-tabs__link">
+          
+  
+  Examples
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../PHILOSOPHY/" class="md-tabs__link">
+          
+  
+  About
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="PAI Documentation" class="md-nav__button md-logo" aria-label="PAI Documentation" data-md-component="logo">
+      
+  <img src="../../assets/pai-logo-white.png" alt="logo">
+
+    </a>
+    PAI Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/how-pai-works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How PAI works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/features-included/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Features included
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/system-requirements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System requirements
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/warnings-and-limitations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Warnings and limitations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Getting started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/try-in-a-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Try in a VM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quickstart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../USB-FLASHING/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    USB flashing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/starting-on-mac/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Starting on Mac
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/starting-on-windows/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Starting on Windows
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/installing-and-booting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installing and booting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/using-raspberry-pi-imager/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Raspberry Pi Imager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/using-ventoy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Ventoy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/first-boot-walkthrough/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    First boot walkthrough
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/desktop-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Desktop basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/browser-installer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Browser installer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/shutting-down/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shutting down
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../using-pai/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using PAI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/basic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/advanced/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advanced usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command line
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Persistence
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Persistence
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/creating-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating persistence
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/unlocking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Unlocking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/backing-up/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Backing up
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build-in-cloud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Build in cloud
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/building-from-source/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Building from source
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../UPGRADING/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Upgrading
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MIGRATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AI
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            AI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/choosing-a-model/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Choosing a model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/managing-models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Managing models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/using-ollama/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Ollama
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/using-open-webui/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Open WebUI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Apps
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Apps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/password-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/encrypting-files-gpg/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Encrypting files (GPG)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/secure-delete/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure delete
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Advanced
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/gpu-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPU setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/gpu-passthrough/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPU passthrough (VMs)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/running-in-a-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Running in a VM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/boot-options/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Boot options
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/windows-package-managers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows package managers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/arch-linux/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Arch Linux (AUR)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/homebrew/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Homebrew (macOS/Linux)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Privacy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction-to-privacy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../privacy-mode-tor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privacy mode (Tor)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mac-address-anonymization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MAC address anonymization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Offline mode
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Offline mode
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-offline-mode-is-the-strongest-privacy-guarantee" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why offline mode is the strongest privacy guarantee
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-go-fully-offline-on-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to go fully offline on PAI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-works-offline" class="md-nav__link">
+    <span class="md-ellipsis">
+      What works offline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-not-work-offline" class="md-nav__link">
+    <span class="md-ellipsis">
+      What does not work offline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-verify-you-are-actually-offline" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to verify you are actually offline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-run-a-complete-offline-ai-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorial: Run a complete offline AI workflow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-loading-ollama-models-for-offline-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-loading Ollama models for offline use
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-offline-versus-privacy-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing offline versus privacy mode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequently asked questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequently asked questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#can-i-still-use-open-webui-offline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I still use Open WebUI offline?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-the-ai-model-work-without-internet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does the AI model work without internet?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-pull-models-in-advance-for-offline-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I pull models in advance for offline use?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-if-i-need-to-look-something-up-while-in-offline-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      What if I need to look something up while in offline mode?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-copy-files-between-pai-and-my-host-machine-offline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I copy files between PAI and my host machine offline?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-offline-mode-survive-a-reboot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does offline mode survive a reboot?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-the-clock-still-work-offline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does the clock still work offline?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-offline-mode-the-same-as-airplane-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Is offline mode the same as airplane mode?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-know-if-a-pai-app-is-secretly-trying-to-phone-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I know if a PAI app is secretly trying to phone home?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tor-browser/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tor Browser
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Examples
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started example
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/local-ai-assistant/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Local AI assistant
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/crypto-cold-signing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Crypto cold signing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/travel-and-network-hardening/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Travel and network hardening
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/real-world-use-cases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-world use cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/guidelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guidelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/debugging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Debugging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/ci-cd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ops-cloud-builders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cloud builders runbook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agents overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/agent-registry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agent registry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/skill-catalog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Skill catalog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_1" id="__nav_11_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_1">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/components/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data flow
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/diagrams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../editions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Editions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Skills
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TOOLS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/keyboard-shortcuts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Keyboard shortcuts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_8" id="__nav_11_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_8">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/endpoints/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Endpoints
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/sdk/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SDK
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--experimental"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/cli-json-shapes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI JSON shapes
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            About
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PHILOSOPHY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Philosophy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../VISION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../VALUES/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Values
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../STRATEGY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../COMPARISON/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHANGELOG/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ETHICS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ethics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PRIVACY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ACCESSIBILITY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accessibility
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../governance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Governance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../INTERNATIONALIZATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internationalization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN_ISSUES/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Known issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RELEASE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MAINTAINERS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintainers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AUTHORS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CITATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Citation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ACKNOWLEDGMENTS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acknowledgments
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing-to-docs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing to docs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-offline-mode-is-the-strongest-privacy-guarantee" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why offline mode is the strongest privacy guarantee
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-go-fully-offline-on-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to go fully offline on PAI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-works-offline" class="md-nav__link">
+    <span class="md-ellipsis">
+      What works offline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-not-work-offline" class="md-nav__link">
+    <span class="md-ellipsis">
+      What does not work offline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-verify-you-are-actually-offline" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to verify you are actually offline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-run-a-complete-offline-ai-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorial: Run a complete offline AI workflow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-loading-ollama-models-for-offline-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-loading Ollama models for offline use
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-offline-versus-privacy-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing offline versus privacy mode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequently asked questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequently asked questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#can-i-still-use-open-webui-offline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I still use Open WebUI offline?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-the-ai-model-work-without-internet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does the AI model work without internet?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-pull-models-in-advance-for-offline-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I pull models in advance for offline use?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-if-i-need-to-look-something-up-while-in-offline-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      What if I need to look something up while in offline mode?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-copy-files-between-pai-and-my-host-machine-offline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I copy files between PAI and my host machine offline?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-offline-mode-survive-a-reboot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does offline mode survive a reboot?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-the-clock-still-work-offline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does the clock still work offline?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-offline-mode-the-same-as-airplane-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Is offline mode the same as airplane mode?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-know-if-a-pai-app-is-secretly-trying-to-phone-home" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I know if a PAI app is secretly trying to phone home?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/nirholas/scroll-zoom-thing/edit/main/src/privacy/offline-mode.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+  <h1>Offline mode</h1>
+
+<p><strong>Offline is the strongest privacy guarantee PAI offers.</strong> No traffic means no leaks — no DNS queries, no telemetry, no accidental API calls, no fingerprinting. When your ethernet cable is unplugged and your radios are off, every guarantee about "local AI" and "nothing leaves your device" stops being a promise and becomes a physical fact. This guide shows you how to go fully offline on PAI, how to prove you got there, what still works, what breaks, and how to run a complete air-gapped AI session from boot to shutdown.</p>
+<p>In this guide:
+- Why offline mode is the strongest privacy posture on PAI
+- Hardware-level and software-level methods to go offline
+- A full list of what works and what breaks when disconnected
+- How to verify, with real tools, that you are actually offline
+- An end-to-end tutorial for a productive offline AI workflow
+- How to pre-load Ollama models so they survive into offline sessions</p>
+<p><strong>Prerequisites</strong>: PAI booted from USB. Familiarity with a terminal is helpful for verification steps. No prior experience with <code>tcpdump</code> or <code>ss</code> required — commands are shown verbatim.</p>
+<h2 id="why-offline-mode-is-the-strongest-privacy-guarantee">Why offline mode is the strongest privacy guarantee<a class="headerlink" href="#why-offline-mode-is-the-strongest-privacy-guarantee" title="Permanent link">&para;</a></h2>
+<p>PAI already runs all AI inference locally, blocks outbound telemetry, and keeps your session in RAM. That baseline is strong. Offline mode is stronger because it removes an entire class of risk: misconfiguration.</p>
+<p>If a firewall rule is wrong, if an app you trusted added a phone-home feature, if a browser extension leaks DNS, if an Open WebUI toggle flipped on a web-search integration — none of it matters when the network interface is physically down. <strong>There is nothing to leak through.</strong> This is the same reason journalists, security researchers, and people handling classified material use air-gapped machines.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Think of offline mode as the difference between "I promise not to talk about this" and "I have no mouth." Software firewalls are promises; a pulled cable is a physical constraint.</p>
+</div>
+<p>Offline mode is appropriate when you are:</p>
+<ul>
+<li>Drafting a sensitive document before it leaves your machine</li>
+<li>Analyzing private files (medical records, legal discovery, leaked material)</li>
+<li>Working with a source whose identity must not be inferable from traffic patterns</li>
+<li>Traveling through a hostile network or airport Wi-Fi you do not trust</li>
+<li>Using PAI on a plane, a boat, or anywhere without connectivity anyway</li>
+</ul>
+<h2 id="how-to-go-fully-offline-on-pai">How to go fully offline on PAI<a class="headerlink" href="#how-to-go-fully-offline-on-pai" title="Permanent link">&para;</a></h2>
+<p>There are two ways to disconnect: hardware and software. Hardware is stronger because it cannot be undone by a misbehaving process. Software is faster and reversible. Use hardware for real threat scenarios. Use software for casual air-gap sessions.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Hardware-level (recommended)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<p>Physical disconnection is bulletproof. An attacker with code execution inside PAI cannot reach the network if the network hardware cannot reach it either.</p>
+<ul>
+<li><strong>Unplug the ethernet cable.</strong> Pull it out of the laptop or the dock.</li>
+<li><strong>Kill Wi-Fi at the hardware switch.</strong> Many ThinkPads, Dells, and older laptops have a physical slider or an <code>Fn</code> + <code>F-key</code> combo that cuts power to the wireless card. Use it.</li>
+<li><strong>Kill Bluetooth the same way</strong> if your device has a toggle.</li>
+<li><strong>Airplane mode</strong> on laptops that support it via firmware.</li>
+<li><strong>Remove the Wi-Fi card</strong> if you are seriously paranoid and the laptop supports it. Many business laptops do.</li>
+</ul>
+<p>After doing this, the operating system cannot bring you back online without physical intervention.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Some laptops "soft" disable Wi-Fi via the Fn key — the radio is still powered and the OS can re-enable it. Check <code>rfkill list</code> after toggling to confirm the block is <code>hard</code>, not just <code>soft</code>.</p>
+</div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Software-level (reversible)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<p>Software offline is convenient and reversible. Good for a quick air-gap during a session you will resume online later.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Stop NetworkManager so it does not try to reconnect</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>NetworkManager
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>NetworkManager-wait-online
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># Kill every radio: Wi-Fi, Bluetooth, WWAN</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>sudo<span class="w"> </span>rfkill<span class="w"> </span>block<span class="w"> </span>all
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># Bring every non-loopback interface down explicitly</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">for</span><span class="w"> </span>iface<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>ls<span class="w"> </span>/sys/class/net<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span>lo<span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span>sudo<span class="w"> </span>ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$iface</span><span class="s2">&quot;</span><span class="w"> </span>down
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">done</span>
+</code></pre></div>
+<p>Expected state after:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ ip link show
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; ...
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>2: wlan0: &lt;BROADCAST,MULTICAST&gt; ... state DOWN
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>3: eth0: &lt;BROADCAST,MULTICAST&gt; ... state DOWN
+</code></pre></div>
+<p>Re-enable later with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>rfkill<span class="w"> </span>unblock<span class="w"> </span>all
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>NetworkManager
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>PAI's default firewall already blocks inbound connections and most unexpected outbound traffic. The steps above go further — they remove the possibility of any traffic, wanted or not.</p>
+</div>
+<h2 id="what-works-offline">What works offline<a class="headerlink" href="#what-works-offline" title="Permanent link">&para;</a></h2>
+<p>PAI is designed so that its core experience works with zero connectivity. The AI stack, the desktop, every productivity app, and every privacy tool runs fully local.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Works offline?</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ollama inference (llama3.2:1b)</td>
+<td>Yes</td>
+<td>Baked into the ISO, no download needed</td>
+</tr>
+<tr>
+<td>Open WebUI chat</td>
+<td>Yes</td>
+<td>Runs on <code>localhost:8080</code>, talks to local Ollama</td>
+</tr>
+<tr>
+<td>Firefox to <code>localhost</code></td>
+<td>Yes</td>
+<td>Loads Open WebUI and local files fine</td>
+</tr>
+<tr>
+<td>Thunar file manager</td>
+<td>Yes</td>
+<td>All local file operations</td>
+</tr>
+<tr>
+<td>GPG encryption and signing</td>
+<td>Yes</td>
+<td>Key generation and use are fully local</td>
+</tr>
+<tr>
+<td>KeePassXC password vault</td>
+<td>Yes</td>
+<td>Opens and edits local <code>.kdbx</code> files</td>
+</tr>
+<tr>
+<td>LUKS disk encryption</td>
+<td>Yes</td>
+<td>Encrypt external drives entirely offline</td>
+</tr>
+<tr>
+<td><code>secure-delete</code> (<code>shred</code>, <code>wipe</code>)</td>
+<td>Yes</td>
+<td>No network dependency</td>
+</tr>
+<tr>
+<td>Drawing, mousepad, text editors</td>
+<td>Yes</td>
+<td>Fully local</td>
+</tr>
+<tr>
+<td>Screenshots (<code>grim</code>, <code>slurp</code>)</td>
+<td>Yes</td>
+<td>No network dependency</td>
+</tr>
+<tr>
+<td>PDF viewing (<code>zathura</code>, Firefox)</td>
+<td>Yes</td>
+<td>Local files only</td>
+</tr>
+<tr>
+<td>Audio and video playback (<code>mpv</code>, <code>vlc</code>)</td>
+<td>Yes</td>
+<td>Local files only</td>
+</tr>
+<tr>
+<td>Games (Solitaire, Mines, Sudoku)</td>
+<td>Yes</td>
+<td>No network code</td>
+</tr>
+<tr>
+<td>Terminal, shell, CLI tools</td>
+<td>Yes</td>
+<td>Everything in <code>/usr/bin</code> works</td>
+</tr>
+<tr>
+<td>Archive tools (<code>tar</code>, <code>7z</code>, <code>zip</code>)</td>
+<td>Yes</td>
+<td>Local operation</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-does-not-work-offline">What does not work offline<a class="headerlink" href="#what-does-not-work-offline" title="Permanent link">&para;</a></h2>
+<p>Being honest about limitations is more useful than pretending everything works. Here is what breaks when you disconnect.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Works offline?</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pulling new Ollama models</td>
+<td>No</td>
+<td><code>ollama pull</code> fetches from the internet</td>
+</tr>
+<tr>
+<td>Open WebUI RAG web search</td>
+<td>No</td>
+<td>External fetch if enabled</td>
+</tr>
+<tr>
+<td>Open WebUI image generation via API</td>
+<td>No</td>
+<td>External API call</td>
+</tr>
+<tr>
+<td>Firefox general web browsing</td>
+<td>No</td>
+<td>Pages fail to load</td>
+</tr>
+<tr>
+<td>Tor Browser</td>
+<td>No</td>
+<td>Needs network to reach the Tor network</td>
+</tr>
+<tr>
+<td>Waybar crypto price widget</td>
+<td>No</td>
+<td>Shows <code>BTC ---.--</code></td>
+</tr>
+<tr>
+<td>NTP clock sync</td>
+<td>No</td>
+<td>Clock drifts over long sessions</td>
+</tr>
+<tr>
+<td><code>apt update</code> / <code>apt install</code></td>
+<td>No</td>
+<td>Needs Debian mirrors</td>
+</tr>
+<tr>
+<td>Python <code>pip install</code></td>
+<td>No</td>
+<td>Needs PyPI</td>
+</tr>
+<tr>
+<td>Git push / pull to remotes</td>
+<td>No</td>
+<td>Local commits still work</td>
+</tr>
+<tr>
+<td>Email clients (Thunderbird)</td>
+<td>No</td>
+<td>Nothing to send or fetch</td>
+</tr>
+<tr>
+<td>Messaging apps</td>
+<td>No</td>
+<td>All require a network</td>
+</tr>
+<tr>
+<td>Map apps that need tile servers</td>
+<td>No</td>
+<td>Offline maps work if pre-downloaded</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Long offline sessions can drift the clock by seconds per day. If your workflow depends on accurate timestamps (signed commits, cryptographic nonces, log ordering), re-sync time with <code>sudo ntpdate pool.ntp.org</code> the next time you briefly reconnect.</p>
+</div>
+<h2 id="how-to-verify-you-are-actually-offline">How to verify you are actually offline<a class="headerlink" href="#how-to-verify-you-are-actually-offline" title="Permanent link">&para;</a></h2>
+<p>Assume nothing. Verify. Three tools — <code>ip</code>, <code>ss</code>, and <code>tcpdump</code> — prove whether you are actually disconnected. Use this flowchart to work through them in order.</p>
+<pre class="mermaid"><code>flowchart TD
+    A[Think you are offline?] --&gt; B[Run: ip route]
+    B --&gt; C{Default route present?}
+    C --&gt;|Yes| D[Not offline — a route exists]
+    C --&gt;|No| E[Run: ping -c 2 8.8.8.8]
+    E --&gt; F{Any replies?}
+    F --&gt;|Yes| G[Not offline — ICMP is reaching a gateway]
+    F --&gt;|No| H[Run: sudo ss -tupn]
+    H --&gt; I{Established external sockets?}
+    I --&gt;|Yes| J[Investigate which PID owns them]
+    I --&gt;|No| K[Run: sudo tcpdump -i any -nn not port 53]
+    K --&gt; L{Packets leaving?}
+    L --&gt;|Yes| M[Something is leaking — trace with lsof]
+    L --&gt;|No| N[You are air-gapped]
+
+    D --&gt; O[Kill NetworkManager, rfkill block all]
+    G --&gt; O
+    J --&gt; O
+    M --&gt; O
+    O --&gt; B</code></pre>
+<p>Command details:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># 1. Is there a default route? There shouldn&#39;t be.</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ip<span class="w"> </span>route
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Expected offline output: empty, or only local link-scope routes</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># 2. Can you reach anything? You shouldn&#39;t.</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>ping<span class="w"> </span>-c<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">8</span>.8.8.8
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Expected offline output: &quot;Network is unreachable&quot; or 100% packet loss</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="c1"># 3. Any live sockets to outside addresses?</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>sudo<span class="w"> </span>ss<span class="w"> </span>-tupn
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="c1"># Expected offline output: only 127.0.0.1 and ::1 lines</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="c1"># 4. Are any packets leaving the machine at all?</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>sudo<span class="w"> </span>tcpdump<span class="w"> </span>-i<span class="w"> </span>any<span class="w"> </span>-nn<span class="w"> </span>not<span class="w"> </span>port<span class="w"> </span><span class="m">53</span><span class="w"> </span>and<span class="w"> </span>not<span class="w"> </span>host<span class="w"> </span><span class="m">127</span>.0.0.1
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="c1"># Expected offline output: listens silently, no packets captured</span>
+</code></pre></div>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>If <code>tcpdump</code> captures any packet destined for a non-loopback address, you are not offline — a process is leaking. Identify it with <code>sudo lsof -i</code> and kill or block it before continuing sensitive work.</p>
+</div>
+<h2 id="tutorial-run-a-complete-offline-ai-workflow">Tutorial: Run a complete offline AI workflow<a class="headerlink" href="#tutorial-run-a-complete-offline-ai-workflow" title="Permanent link">&para;</a></h2>
+<p>Goal: go fully air-gapped, complete a productive AI session with Ollama and local tools, and reconnect cleanly.</p>
+<p>What you need:</p>
+<ul>
+<li>PAI booted from USB</li>
+<li>A laptop with a Wi-Fi kill switch or the ability to unplug ethernet</li>
+<li>
+<p>About 20 minutes</p>
+</li>
+<li>
+<p><strong>Pre-stage your materials while still online.</strong> Copy the documents or notes you plan to work with to <code>~/Documents</code> via Thunar or a USB stick. Confirm <code>llama3.2:1b</code> is present:</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ollama<span class="w"> </span>list
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>NAME               ID              SIZE      MODIFIED
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>llama3.2:1b        a2af6cc6c18c    1.3 GB    2 minutes ago
+</code></pre></div>
+<ol>
+<li>
+<p><strong>Go offline at the hardware level.</strong> Unplug your ethernet cable. Toggle the Wi-Fi hardware switch on your laptop, or press the airplane-mode key. If you do not have a physical switch, run <code>sudo rfkill block all</code>.</p>
+</li>
+<li>
+<p><strong>Verify you are offline.</strong> Run the four commands from the verification flowchart above:</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ip<span class="w"> </span>route
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>ping<span class="w"> </span>-c<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">8</span>.8.8.8
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>sudo<span class="w"> </span>ss<span class="w"> </span>-tupn
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>sudo<span class="w"> </span>tcpdump<span class="w"> </span>-i<span class="w"> </span>any<span class="w"> </span>-nn<span class="w"> </span>not<span class="w"> </span>port<span class="w"> </span><span class="m">53</span><span class="w"> </span>and<span class="w"> </span>not<span class="w"> </span>host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span><span class="p">&amp;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nv">TCPDUMP_PID</span><span class="o">=</span><span class="nv">$!</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>sleep<span class="w"> </span><span class="m">10</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>sudo<span class="w"> </span><span class="nb">kill</span><span class="w"> </span><span class="nv">$TCPDUMP_PID</span>
+</code></pre></div>
+<p>You want an empty route table, a failed ping, loopback-only sockets, and zero packets captured.</p>
+<ol>
+<li>
+<p><strong>Open Open WebUI and chat.</strong> Launch Firefox, navigate to <code>http://localhost:8080</code>, pick <code>llama3.2:1b</code>, and chat. It should feel exactly like an online session — because the model is on your SSD, not in the cloud.</p>
+</li>
+<li>
+<p><strong>Do the productive work.</strong> Draft a document in <code>mousepad</code>. Summarize a local PDF by pasting it into Open WebUI. Encrypt the result with GPG:</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>gpg<span class="w"> </span>--symmetric<span class="w"> </span>--cipher-algo<span class="w"> </span>AES256<span class="w"> </span>draft.md
+</code></pre></div>
+<p>Expected output: a new <code>draft.md.gpg</code> file in the current directory.</p>
+<ol>
+<li>
+<p><strong>Save to external media.</strong> Insert an encrypted USB stick. Mount it. Copy your output files over. Unmount cleanly with <code>udisksctl unmount</code>.</p>
+</li>
+<li>
+<p><strong>Reconnect carefully.</strong> When ready to rejoin the network, unblock radios and restart NetworkManager:</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>rfkill<span class="w"> </span>unblock<span class="w"> </span>all
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>NetworkManager
+</code></pre></div>
+<p>!!! tip</p>
+<div class="highlight"><pre><span></span><code>   Before reconnecting, close Open WebUI and any tool that might attempt a sync or update. A clean reconnect with nothing running is harder to fingerprint.
+</code></pre></div>
+<ol>
+<li><strong>Shut down when done.</strong> PAI wipes RAM on shutdown by default, so no trace of the session remains on the host machine unless you explicitly saved to persistence or external media.</li>
+</ol>
+<p><strong>What just happened?</strong> You completed an end-to-end air-gapped AI workflow: you verified disconnection with four independent tools, did real inference against a local model, produced encrypted output, moved it to external media, and cleaned up. At no point did any byte of your work leave the physical device.</p>
+<p>Next step: read about <a href="../../persistence/introduction/">PAI persistence</a> if you want pre-pulled models and saved configs to survive into future offline sessions.</p>
+<h2 id="pre-loading-ollama-models-for-offline-use">Pre-loading Ollama models for offline use<a class="headerlink" href="#pre-loading-ollama-models-for-offline-use" title="Permanent link">&para;</a></h2>
+<p><code>llama3.2:1b</code> is baked into the ISO. Any other model must be pulled while online, and without <a href="../../persistence/introduction/">persistence</a> it disappears on reboot.</p>
+<p>Two workflows to plan around:</p>
+<ul>
+<li><strong>Ephemeral (no persistence).</strong> Boot, connect, run <code>ollama pull llama3.2:3b</code>, disconnect, work offline. On reboot, the model is gone.</li>
+<li><strong>Persistent.</strong> Set up the persistence layer. Pull models once; they survive reboots and are available fully offline on every future boot.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Pull while online</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>ollama<span class="w"> </span>pull<span class="w"> </span>qwen2.5:3b
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>ollama<span class="w"> </span>pull<span class="w"> </span>phi3.5:3.8b
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># Verify they are local</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>ollama<span class="w"> </span>list
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>NAME              ID              SIZE      MODIFIED
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>llama3.2:1b       a2af6cc6c18c    1.3 GB    3 days ago
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>qwen2.5:3b        357c53fb659c    1.9 GB    1 minute ago
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>phi3.5:3.8b       61819fb370a3    2.2 GB    30 seconds ago
+</code></pre></div>
+<p>After pulling, disconnect and confirm the models still respond with <code>ollama run qwen2.5:3b "hello"</code>.</p>
+<h2 id="choosing-offline-versus-privacy-mode">Choosing offline versus privacy mode<a class="headerlink" href="#choosing-offline-versus-privacy-mode" title="Permanent link">&para;</a></h2>
+<p>Not every session needs a full air gap. PAI's <a href="../privacy-mode-tor/">privacy mode</a> routes traffic through Tor and gives strong anonymity without cutting you off entirely. Match the level to your threat model:</p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Recommended posture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Daily AI work on personal notes</td>
+<td>Default (firewall + local AI)</td>
+</tr>
+<tr>
+<td>Researching a sensitive topic</td>
+<td>Privacy mode with Tor</td>
+</tr>
+<tr>
+<td>Drafting a leak or confidential document</td>
+<td>Offline mode</td>
+</tr>
+<tr>
+<td>Reviewing legal discovery materials</td>
+<td>Offline mode</td>
+</tr>
+<tr>
+<td>Working on a plane or in a dead zone</td>
+<td>Offline mode</td>
+</tr>
+<tr>
+<td>Communicating with a source</td>
+<td>Privacy mode, never offline</td>
+</tr>
+</tbody>
+</table>
+<p>Offline is more paranoid than useful when you need to reach the outside world at all. Privacy mode is a better fit for active communication. Offline is the right tool for pure consumption and creation against local data.</p>
+<h2 id="frequently-asked-questions">Frequently asked questions<a class="headerlink" href="#frequently-asked-questions" title="Permanent link">&para;</a></h2>
+<h3 id="can-i-still-use-open-webui-offline">Can I still use Open WebUI offline?<a class="headerlink" href="#can-i-still-use-open-webui-offline" title="Permanent link">&para;</a></h3>
+<p>Yes. Open WebUI runs as a local service on <code>localhost:8080</code> and talks only to the local Ollama instance on <code>localhost:11434</code>. Both bind to loopback, so no external network is needed. The only features that break are opt-in integrations: web search, external image-generation APIs, and OpenAI-compatible remote endpoints. Leave those disabled and Open WebUI works identically offline and online.</p>
+<h3 id="does-the-ai-model-work-without-internet">Does the AI model work without internet?<a class="headerlink" href="#does-the-ai-model-work-without-internet" title="Permanent link">&para;</a></h3>
+<p>Yes. Ollama runs entirely on your local CPU or GPU. The <code>llama3.2:1b</code> model is baked into the PAI ISO — about 1.3 GB of weights that live on the USB stick and load into RAM. No inference call ever touches the network. You can confirm with <code>sudo tcpdump -i any -nn port 11434</code> while chatting; you will see local traffic only.</p>
+<h3 id="how-do-i-pull-models-in-advance-for-offline-use">How do I pull models in advance for offline use?<a class="headerlink" href="#how-do-i-pull-models-in-advance-for-offline-use" title="Permanent link">&para;</a></h3>
+<p>Connect to the internet, run <code>ollama pull &lt;model&gt;</code> for each model you want, and confirm with <code>ollama list</code>. Without PAI's persistence feature, the models vanish on reboot because PAI is RAM-only by default. With <a href="../../persistence/introduction/">persistence</a> enabled, pulled models survive reboots and are available on every future offline session. See <a href="../../ai/managing-models/">managing Ollama models</a> for the full workflow.</p>
+<h3 id="what-if-i-need-to-look-something-up-while-in-offline-mode">What if I need to look something up while in offline mode?<a class="headerlink" href="#what-if-i-need-to-look-something-up-while-in-offline-mode" title="Permanent link">&para;</a></h3>
+<p>You have three options. First, pre-stage reference material before disconnecting — download PDFs, save web pages as HTML, or copy notes to <code>~/Documents</code>. Second, use the AI model as a reference: ask Ollama to summarize or explain concepts from its training. Third, briefly reconnect, look up the specific thing, and go offline again. Never stay connected longer than the lookup needs.</p>
+<h3 id="can-i-copy-files-between-pai-and-my-host-machine-offline">Can I copy files between PAI and my host machine offline?<a class="headerlink" href="#can-i-copy-files-between-pai-and-my-host-machine-offline" title="Permanent link">&para;</a></h3>
+<p>Yes — via external media. Insert a USB stick or SD card, mount it in Thunar, and copy files. For sensitive data, encrypt the external drive with LUKS first (<code>sudo cryptsetup luksFormat /dev/sdX</code>). PAI cannot share files over a network if there is no network, but physical media works exactly as on any Linux system. See <a href="../../first-steps/first-boot-walkthrough/">first-boot-walkthrough</a> for file-move basics.</p>
+<h3 id="does-offline-mode-survive-a-reboot">Does offline mode survive a reboot?<a class="headerlink" href="#does-offline-mode-survive-a-reboot" title="Permanent link">&para;</a></h3>
+<p>No. PAI boots into its default networking state on every startup. To "stay offline," either leave the cable unplugged and the hardware switch off, or add a one-line script to your persistent startup that runs <code>rfkill block all</code>. Hardware disconnection is simpler and more reliable than scripting.</p>
+<h3 id="does-the-clock-still-work-offline">Does the clock still work offline?<a class="headerlink" href="#does-the-clock-still-work-offline" title="Permanent link">&para;</a></h3>
+<p>Yes, but it drifts. Linux keeps time with a monotonic counter while running, but without NTP the wall clock gains or loses a few seconds per day. For most work this is invisible. For time-sensitive operations like signed git commits, re-sync when you next reconnect: <code>sudo ntpdate pool.ntp.org</code>.</p>
+<h3 id="is-offline-mode-the-same-as-airplane-mode">Is offline mode the same as airplane mode?<a class="headerlink" href="#is-offline-mode-the-same-as-airplane-mode" title="Permanent link">&para;</a></h3>
+<p>Functionally similar, structurally different. Airplane mode on most laptops is a firmware toggle that kills radios through ACPI. PAI's offline mode can be achieved the same way or by software means (<code>rfkill</code>, <code>systemctl stop NetworkManager</code>). Either route gets you to the same end state: no packets in or out.</p>
+<h3 id="how-do-i-know-if-a-pai-app-is-secretly-trying-to-phone-home">How do I know if a PAI app is secretly trying to phone home?<a class="headerlink" href="#how-do-i-know-if-a-pai-app-is-secretly-trying-to-phone-home" title="Permanent link">&para;</a></h3>
+<p>Run <code>sudo tcpdump -i any -nn not host 127.0.0.1</code> in a terminal and leave it there while you use the app. Anything the app sends to the outside world will appear in the capture. PAI's default apps are vetted not to do this, but any software you install later should be checked this way before you trust it with sensitive work.</p>
+<h2 id="related-documentation">Related documentation<a class="headerlink" href="#related-documentation" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../introduction-to-privacy/"><strong>Introduction to PAI privacy</strong></a> — Threat
+  models and privacy philosophy on PAI</li>
+<li><a href="../privacy-mode-tor/"><strong>Privacy mode with Tor</strong></a> — Anonymous networking when
+  you need to stay online</li>
+<li><a href="../../ai/managing-models/"><strong>Managing Ollama models</strong></a> — Pulling, switching,
+  and removing local LLMs</li>
+<li><a href="../../persistence/introduction/"><strong>PAI persistence</strong></a> — Keep pulled models
+  and configs across reboots</li>
+<li><a href="../../general/warnings-and-limitations/"><strong>Warnings and limitations</strong></a> —
+  What PAI does and does not protect against</li>
+<li><a href="../../first-steps/first-boot-walkthrough/"><strong>First boot walkthrough</strong></a> —
+  What to expect on your first PAI session</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://x.com/nichxbt" target="_blank" rel="noopener" title="nichxbt on X" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/nirholas" target="_blank" rel="noopener" title="nirholas on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.instant", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

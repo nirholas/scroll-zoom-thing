@@ -1,0 +1,4438 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Install PAI on Windows in one PowerShell command with flash.ps1, or run PAI offline in VirtualBox, VMware, or Hyper-V. Covers Secure Boot and first AI use.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.pai.direct/first-steps/starting-on-windows/">
+      
+      
+        <link rel="prev" href="../starting-on-mac/">
+      
+      
+        <link rel="next" href="../installing-and-booting/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Running PAI on Windows — Flash a USB or Use a VM - PAI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/pai-theme.css">
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#flash-usb-or-use-a-vm-which-should-you-choose" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="PAI Documentation" class="md-header__button md-logo" aria-label="PAI Documentation" data-md-component="logo">
+      
+  <img src="../../assets/pai-logo-white.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PAI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Running PAI on Windows — Flash a USB or Use a VM
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../general/how-pai-works/" class="md-tabs__link">
+          
+  
+  Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../try-in-a-vm/" class="md-tabs__link">
+          
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../using-pai/" class="md-tabs__link">
+          
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ai/choosing-a-model/" class="md-tabs__link">
+          
+  
+  AI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../apps/password-management/" class="md-tabs__link">
+          
+  
+  Apps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../advanced/gpu-setup/" class="md-tabs__link">
+          
+  
+  Advanced
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../privacy/introduction-to-privacy/" class="md-tabs__link">
+          
+  
+  Privacy
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../examples/getting-started/" class="md-tabs__link">
+          
+  
+  Examples
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../PHILOSOPHY/" class="md-tabs__link">
+          
+  
+  About
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="PAI Documentation" class="md-nav__button md-logo" aria-label="PAI Documentation" data-md-component="logo">
+      
+  <img src="../../assets/pai-logo-white.png" alt="logo">
+
+    </a>
+    PAI Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/how-pai-works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How PAI works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/features-included/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Features included
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/system-requirements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System requirements
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/warnings-and-limitations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Warnings and limitations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Getting started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../try-in-a-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Try in a VM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quickstart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../USB-FLASHING/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    USB flashing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../starting-on-mac/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Starting on Mac
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Starting on Windows
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Starting on Windows
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#flash-usb-or-use-a-vm-which-should-you-choose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flash USB or use a VM — which should you choose?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Flash USB or use a VM — which should you choose?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comparison-which-setup-method-fits-your-needs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison: which setup method fits your needs?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#path-a-flash-a-usb-drive-native-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Path A — Flash a USB drive (native boot)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Path A — Flash a USB drive (native boot)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-you-need-for-a-pai-usb-on-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      What you need for a PAI USB on Windows
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-secure-boot-before-flashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable Secure Boot before flashing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flash-pai-with-the-powershell-one-liner-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flash PAI with the PowerShell one-liner (recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flash-pai-with-rufus-graphical-alternative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flash PAI with Rufus (graphical alternative)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boot-pai-from-the-usb" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boot PAI from the USB
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#path-b-run-pai-in-a-virtual-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Path B — Run PAI in a virtual machine
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-virtualbox-end-to-end-download-to-first-ai-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorial: VirtualBox end-to-end — download to first AI response
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-common-windows-setup-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting common Windows setup problems
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting common Windows setup problems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-bootable-device-after-flashing-the-usb" class="md-nav__link">
+    <span class="md-ellipsis">
+      "No bootable device" after flashing the USB
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtualbox-error-vt-x-is-not-available" class="md-nav__link">
+    <span class="md-ellipsis">
+      VirtualBox error: "VT-x is not available"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vm-shows-a-black-screen-after-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      VM shows a black screen after boot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-responses-are-very-slow-in-the-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI responses are very slow in the VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usb-is-not-detected-at-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      USB is not detected at boot
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequently asked questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequently asked questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#do-i-need-to-disable-secure-boot-to-use-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      Do I need to disable Secure Boot to use PAI?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#which-pai-iso-should-i-download-for-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Which PAI ISO should I download for Windows?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtualbox-vs-vmware-which-is-better-for-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      VirtualBox vs VMware — which is better for PAI?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-run-pai-in-wsl2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I run PAI in WSL2?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#will-pai-affect-my-windows-installation-or-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Will PAI affect my Windows installation or files?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-exit-the-vm-and-return-to-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I exit the VM and return to Windows?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pai-is-very-slow-in-virtualbox-why" class="md-nav__link">
+    <span class="md-ellipsis">
+      PAI is very slow in VirtualBox — why?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-copy-text-between-pai-in-a-vm-and-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I copy text between PAI in a VM and Windows?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installing-and-booting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installing and booting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../using-raspberry-pi-imager/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Raspberry Pi Imager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../using-ventoy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Ventoy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../first-boot-walkthrough/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    First boot walkthrough
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../desktop-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Desktop basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../browser-installer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Browser installer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shutting-down/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shutting down
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../using-pai/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using PAI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/basic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/advanced/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advanced usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command line
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Persistence
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Persistence
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/creating-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating persistence
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/unlocking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Unlocking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/backing-up/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Backing up
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build-in-cloud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Build in cloud
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/building-from-source/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Building from source
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../UPGRADING/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Upgrading
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MIGRATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AI
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            AI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/choosing-a-model/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Choosing a model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/managing-models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Managing models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/using-ollama/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Ollama
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/using-open-webui/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Open WebUI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Apps
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Apps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/password-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/encrypting-files-gpg/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Encrypting files (GPG)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/secure-delete/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure delete
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Advanced
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/gpu-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPU setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/gpu-passthrough/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPU passthrough (VMs)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/running-in-a-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Running in a VM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/boot-options/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Boot options
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/windows-package-managers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows package managers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/arch-linux/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Arch Linux (AUR)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/homebrew/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Homebrew (macOS/Linux)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Privacy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/introduction-to-privacy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/privacy-mode-tor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privacy mode (Tor)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/mac-address-anonymization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MAC address anonymization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/offline-mode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Offline mode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/tor-browser/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tor Browser
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Examples
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started example
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/local-ai-assistant/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Local AI assistant
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/crypto-cold-signing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Crypto cold signing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/travel-and-network-hardening/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Travel and network hardening
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/real-world-use-cases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-world use cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/guidelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guidelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/debugging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Debugging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/ci-cd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ops-cloud-builders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cloud builders runbook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agents overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/agent-registry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agent registry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/skill-catalog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Skill catalog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_1" id="__nav_11_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_1">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/components/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data flow
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/diagrams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../editions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Editions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Skills
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TOOLS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/keyboard-shortcuts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Keyboard shortcuts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_8" id="__nav_11_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_8">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/endpoints/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Endpoints
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/sdk/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SDK
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--experimental"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/cli-json-shapes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI JSON shapes
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            About
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PHILOSOPHY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Philosophy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../VISION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../VALUES/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Values
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../STRATEGY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../COMPARISON/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHANGELOG/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ETHICS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ethics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PRIVACY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ACCESSIBILITY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accessibility
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../governance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Governance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../INTERNATIONALIZATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internationalization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN_ISSUES/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Known issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RELEASE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MAINTAINERS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintainers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AUTHORS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CITATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Citation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ACKNOWLEDGMENTS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acknowledgments
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing-to-docs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing to docs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#flash-usb-or-use-a-vm-which-should-you-choose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flash USB or use a VM — which should you choose?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Flash USB or use a VM — which should you choose?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comparison-which-setup-method-fits-your-needs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison: which setup method fits your needs?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#path-a-flash-a-usb-drive-native-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Path A — Flash a USB drive (native boot)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Path A — Flash a USB drive (native boot)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-you-need-for-a-pai-usb-on-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      What you need for a PAI USB on Windows
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-secure-boot-before-flashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable Secure Boot before flashing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flash-pai-with-the-powershell-one-liner-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flash PAI with the PowerShell one-liner (recommended)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flash-pai-with-rufus-graphical-alternative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flash PAI with Rufus (graphical alternative)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boot-pai-from-the-usb" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boot PAI from the USB
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#path-b-run-pai-in-a-virtual-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Path B — Run PAI in a virtual machine
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-virtualbox-end-to-end-download-to-first-ai-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorial: VirtualBox end-to-end — download to first AI response
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-common-windows-setup-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting common Windows setup problems
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting common Windows setup problems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-bootable-device-after-flashing-the-usb" class="md-nav__link">
+    <span class="md-ellipsis">
+      "No bootable device" after flashing the USB
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtualbox-error-vt-x-is-not-available" class="md-nav__link">
+    <span class="md-ellipsis">
+      VirtualBox error: "VT-x is not available"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vm-shows-a-black-screen-after-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      VM shows a black screen after boot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-responses-are-very-slow-in-the-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI responses are very slow in the VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usb-is-not-detected-at-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      USB is not detected at boot
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequently asked questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequently asked questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#do-i-need-to-disable-secure-boot-to-use-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      Do I need to disable Secure Boot to use PAI?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#which-pai-iso-should-i-download-for-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Which PAI ISO should I download for Windows?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtualbox-vs-vmware-which-is-better-for-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      VirtualBox vs VMware — which is better for PAI?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-run-pai-in-wsl2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I run PAI in WSL2?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#will-pai-affect-my-windows-installation-or-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Will PAI affect my Windows installation or files?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-exit-the-vm-and-return-to-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I exit the VM and return to Windows?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pai-is-very-slow-in-virtualbox-why" class="md-nav__link">
+    <span class="md-ellipsis">
+      PAI is very slow in VirtualBox — why?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-copy-text-between-pai-in-a-vm-and-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I copy text between PAI in a VM and Windows?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/nirholas/scroll-zoom-thing/edit/main/src/first-steps/starting-on-windows.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+  <h1>Starting on Windows</h1>
+
+<div class="admonition tip">
+<p class="admonition-title">Just want a USB?</p>
+<p>Skip the VM and run the PowerShell one-liner in an <strong>elevated</strong> PowerShell window:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">irm </span><span class="n">https</span><span class="p">://</span><span class="n">pai</span><span class="p">.</span><span class="n">direct</span><span class="p">/</span><span class="n">flash</span><span class="p">.</span><span class="n">ps1</span> <span class="p">|</span> <span class="nb">iex</span>
+</code></pre></div>
+<p>See <a href="../installing-and-booting/">Installing and Booting PAI</a> for the full walkthrough, prerequisites, and a verify-before-run flow.</p>
+</div>
+<p>PAI is a bootable Linux operating system that runs <strong>local AI models entirely offline</strong> — no cloud, no account, no data leaving your machine. On Windows, you have two ways to run it: flash a USB drive (one PowerShell command with <code>flash.ps1</code>, or Rufus as a graphical alternative) and boot PAI natively (best for privacy and performance), or load the PAI ISO into a virtual machine without rebooting (fastest way to try it). This guide walks through both paths, helps you choose the right one, and gets you to your first AI response.</p>
+<p>In this guide:
+- Choosing between a native USB boot and a virtual machine
+- Flashing a PAI USB drive on Windows with the <code>flash.ps1</code> PowerShell one-liner (or Rufus as a graphical alternative)
+- Setting up PAI in VirtualBox, VMware Workstation Player, and Hyper-V
+- Disabling Secure Boot and configuring BIOS/UEFI for USB boot
+- End-to-end VirtualBox tutorial from download to first AI response
+- Troubleshooting the most common Windows setup failures</p>
+<p><strong>Prerequisites</strong>: A Windows 10 or Windows 11 machine with at least 8 GB of RAM, a PAI ISO downloaded from the <a href="../../">release page</a>, and an internet connection for the initial download only. No Linux experience required.</p>
+<hr />
+<h2 id="flash-usb-or-use-a-vm-which-should-you-choose">Flash USB or use a VM — which should you choose?<a class="headerlink" href="#flash-usb-or-use-a-vm-which-should-you-choose" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart TD
+    A[I want to run PAI on Windows] --&gt; B{Do you need strong privacy?}
+    B --&gt;|Yes| C{Can you reboot your machine?}
+    B --&gt;|No| D{Do you want to avoid rebooting?}
+    C --&gt;|Yes| E[Path A — Flash USB with flash.ps1]
+    C --&gt;|No| F[Path B — VM, but note: Windows logs remain]
+    D --&gt;|Yes| G[Path B — VirtualBox or VMware]
+    D --&gt;|No| E
+    E --&gt; H[Native PAI boot — best performance and privacy]
+    G --&gt; I[PAI in a VM — convenient, slower AI inference]
+    F --&gt; I</code></pre>
+<h3 id="comparison-which-setup-method-fits-your-needs">Comparison: which setup method fits your needs?<a class="headerlink" href="#comparison-which-setup-method-fits-your-needs" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Native USB (flash.ps1 or graphical Rufus)</th>
+<th>VirtualBox</th>
+<th>VMware Player</th>
+<th>Hyper-V</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Privacy</strong></td>
+<td>Best — host OS sees nothing</td>
+<td>Windows retains VM logs</td>
+<td>Windows retains VM logs</td>
+<td>Windows retains VM logs</td>
+</tr>
+<tr>
+<td><strong>AI performance</strong></td>
+<td>Full hardware speed</td>
+<td>Slower — CPU only, no GPU passthrough by default</td>
+<td>Slower — CPU only</td>
+<td>Slower — CPU only</td>
+</tr>
+<tr>
+<td><strong>Setup complexity</strong></td>
+<td>Medium (BIOS change needed)</td>
+<td>Low</td>
+<td>Low</td>
+<td>Medium (Pro/Enterprise only)</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Free</td>
+<td>Free</td>
+<td>Free for personal use</td>
+<td>Included with Windows Pro</td>
+</tr>
+<tr>
+<td><strong>GPU support</strong></td>
+<td>Full (native drivers)</td>
+<td>No (software rendering)</td>
+<td>Limited (no Ollama GPU)</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Recommended for</strong></td>
+<td>Privacy work, daily use</td>
+<td>Testing, evaluation</td>
+<td>Testing, evaluation</td>
+<td>Enterprise users</td>
+</tr>
+</tbody>
+</table>
+<p><strong>[Recommended]</strong> <strong>For real privacy work</strong>: flash a USB (Path A). PAI boots from the USB, uses RAM only, and leaves no trace on the Windows machine after shutdown.</p>
+<p><strong>[Easiest]</strong> <strong>For a quick test</strong>: use VirtualBox (Path B). No BIOS changes, no rebooting, up in five minutes.</p>
+<hr />
+<h2 id="path-a-flash-a-usb-drive-native-boot">Path A — Flash a USB drive (native boot)<a class="headerlink" href="#path-a-flash-a-usb-drive-native-boot" title="Permanent link">&para;</a></h2>
+<p><strong>[~10 minutes]</strong></p>
+<p>Writing the PAI ISO directly to a USB drive produces a native boot environment with full CPU and GPU access, complete RAM isolation, and no footprint on the Windows host. The recommended way to do this on Windows is the PowerShell one-liner <code>flash.ps1</code>; a graphical alternative using Rufus is documented below as a fallback.</p>
+<h3 id="what-you-need-for-a-pai-usb-on-windows">What you need for a PAI USB on Windows<a class="headerlink" href="#what-you-need-for-a-pai-usb-on-windows" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Windows 10 (build 17763) or Windows 11</li>
+<li>A USB drive with 16 GB or more of storage (the drive will be fully overwritten)</li>
+<li>Administrator rights on the Windows machine</li>
+<li>An internet connection for the initial download</li>
+</ul>
+<h3 id="disable-secure-boot-before-flashing">Disable Secure Boot before flashing<a class="headerlink" href="#disable-secure-boot-before-flashing" title="Permanent link">&para;</a></h3>
+<p>PAI does not include signed UEFI boot shims in early releases. You must disable Secure Boot in your BIOS/UEFI firmware before the USB will boot. Enter firmware setup at startup (the key varies by vendor — common keys are Del, F2, F10, or F12 during the POST screen) and change these settings:</p>
+<ul>
+<li><strong>Secure Boot</strong>: Disabled</li>
+<li><strong>Fast Boot</strong>: Disabled (prevents the firmware from skipping USB detection)</li>
+<li><strong>Boot order</strong>: move USB / Removable Media above the internal drive</li>
+</ul>
+<p>Save and exit. You can re-enable Secure Boot after you are done using PAI.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Write down your original BIOS settings before changing them. On some enterprise laptops, Secure Boot is enforced by policy and cannot be disabled without a supervisor password. Contact your IT department if the option is grayed out.</p>
+</div>
+<h3 id="flash-pai-with-the-powershell-one-liner-recommended">Flash PAI with the PowerShell one-liner (recommended)<a class="headerlink" href="#flash-pai-with-the-powershell-one-liner-recommended" title="Permanent link">&para;</a></h3>
+<p>Open <strong>PowerShell as Administrator</strong> — right-click Start, choose <em>Windows PowerShell (Admin)</em> or <em>Terminal (Admin)</em> — and run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">irm </span><span class="n">https</span><span class="p">://</span><span class="n">pai</span><span class="p">.</span><span class="n">direct</span><span class="p">/</span><span class="n">flash</span><span class="p">.</span><span class="n">ps1</span> <span class="p">|</span> <span class="nb">iex</span>
+</code></pre></div>
+<p>The script walks you through:</p>
+<ol>
+<li>Fetching the latest release metadata from GitHub</li>
+<li>Downloading <code>pai-&lt;version&gt;-amd64.iso</code> with a progress bar</li>
+<li>Verifying its SHA256 against the published sidecar</li>
+<li>Showing every removable USB drive it sees and asking you to pick one</li>
+<li>Writing the ISO raw to the selected drive</li>
+<li>Re-reading the partition table so Windows sees the new labels</li>
+</ol>
+<p>The whole flow takes three to seven minutes on a USB 3.0 drive. When it prints a green "Flash complete" banner you can safely remove the USB and reboot.</p>
+<p>If you want to read the script before running it, see <a href="../installing-and-booting/#how-to-flash-the-pai-iso-to-a-usb-drive">Installing and Booting PAI → Verify before run (advanced)</a> for the SHA256-pin flow.</p>
+<h3 id="flash-pai-with-rufus-graphical-alternative">Flash PAI with Rufus (graphical alternative)<a class="headerlink" href="#flash-pai-with-rufus-graphical-alternative" title="Permanent link">&para;</a></h3>
+<p>Rufus is a free, portable graphical tool. Use it when you want a GUI or when <code>flash.ps1</code> can't run in your environment.</p>
+<ol>
+<li>
+<p>Download the <strong>Rufus</strong> graphical tool from <a href="https://rufus.ie">rufus.ie</a>. The portable version (no install) works fine. Run it as Administrator.</p>
+</li>
+<li>
+<p>Insert your USB drive. The Rufus graphical tool detects it automatically in the <strong>Device</strong> dropdown. Confirm it shows the correct drive before proceeding — the Rufus graphical tool will erase everything on it.</p>
+</li>
+<li>
+<p>Under <strong>Boot selection</strong>, click <strong>SELECT</strong> and browse to your <code>pai-&lt;version&gt;-amd64.iso</code> file.</p>
+</li>
+<li>
+<p>Set <strong>Partition scheme</strong> to MBR for older BIOS systems, or GPT for modern UEFI-only systems. If you are unsure, choose MBR — it works on both.</p>
+</li>
+<li>
+<p>Leave <strong>File system</strong> and <strong>Cluster size</strong> at their defaults.</p>
+</li>
+<li>
+<p>Click <strong>START</strong>.</p>
+</li>
+<li>
+<p>The Rufus graphical tool will ask which write mode to use. <strong>Choose "Write in DD Image mode"</strong> and click OK.</p>
+</li>
+</ol>
+<p>!!! danger</p>
+<div class="highlight"><pre><span></span><code>   You must select **DD Image mode** — not ISO Image mode. ISO mode creates a partially-written drive that looks complete in Windows but will not boot. This is the single most common reason a PAI USB fails to boot. If your USB was already flashed in ISO mode, reflash it in DD mode — there is no fix short of reflashing.
+</code></pre></div>
+<ol>
+<li>
+<p>Click <strong>OK</strong> through the warning that the drive will be erased. The Rufus graphical tool writes the image — this takes three to seven minutes depending on your USB speed.</p>
+</li>
+<li>
+<p>When the status bar shows <strong>READY</strong>, close the Rufus graphical tool. Do not eject the USB yet.</p>
+</li>
+</ol>
+<h3 id="boot-pai-from-the-usb">Boot PAI from the USB<a class="headerlink" href="#boot-pai-from-the-usb" title="Permanent link">&para;</a></h3>
+<p>With the USB still inserted, restart Windows. As the machine starts up, press the boot menu key (commonly F11, F12, or Esc — check the vendor table in <a href="../installing-and-booting/">Installing and Booting PAI</a> for a full list). Select the USB entry from the boot menu. PAI loads into RAM and the Sway desktop appears within about 30 seconds.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If the USB entry does not appear in the boot menu, Secure Boot may still be enabled, or Fast Boot is preventing USB detection. Re-enter firmware setup and confirm both are disabled.</p>
+</div>
+<hr />
+<h2 id="path-b-run-pai-in-a-virtual-machine">Path B — Run PAI in a virtual machine<a class="headerlink" href="#path-b-run-pai-in-a-virtual-machine" title="Permanent link">&para;</a></h2>
+<p><strong>[~5 minutes]</strong></p>
+<p>A virtual machine runs PAI inside Windows without rebooting. This is the fastest way to evaluate PAI, run it alongside your normal workflow, or develop and test against its APIs. AI responses are slower than native because Ollama uses the CPU instead of a GPU, but for testing on <code>llama3.2:1b</code> or <code>gemma3:1b</code> the experience is usable.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">VirtualBox</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<p><strong>VirtualBox</strong> is free, open source, and runs on any edition of Windows 10/11. It is the most widely tested VM for PAI.</p>
+<p><strong>Requirements</strong>: VirtualBox 7.0 or later. If you have Hyper-V or WSL2 enabled, see the troubleshooting section — they conflict with VirtualBox's hardware virtualization.</p>
+<ol>
+<li>
+<p>Download and install <strong>VirtualBox</strong> from <a href="https://virtualbox.org">virtualbox.org</a>. Accept the default options.</p>
+</li>
+<li>
+<p>Open VirtualBox Manager and click <strong>New</strong>.</p>
+</li>
+<li>
+<p>Set:</p>
+</li>
+<li><strong>Name</strong>: PAI</li>
+<li><strong>Type</strong>: Linux</li>
+<li><strong>Version</strong>: Debian (64-bit)</li>
+<li>
+<p>Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Set <strong>Memory size</strong> to at least <strong>8192 MB</strong> (8 GB). For better performance with larger models, use 12288 MB or more. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Create a virtual hard disk now</strong>, click <strong>Create</strong>. Choose <strong>VDI</strong> and <strong>Dynamically allocated</strong>, set size to <strong>20 GB</strong>, click <strong>Create</strong>.</p>
+</li>
+<li>
+<p>With the new VM selected, click <strong>Settings</strong>.</p>
+</li>
+<li>
+<p>Under <strong>Storage</strong>: click the empty CD/DVD icon under "Controller: IDE", then click the disc icon on the right and choose <strong>Choose a disk file</strong>. Browse to your <code>pai-&lt;version&gt;-amd64.iso</code>.</p>
+</li>
+<li>
+<p>Under <strong>System → Processor</strong>: set <strong>Processors</strong> to 4 or more.</p>
+</li>
+<li>
+<p>Under <strong>Display</strong>: set <strong>Graphics Controller</strong> to <strong>VBoxSVGA</strong>, <strong>Video Memory</strong> to <strong>128 MB</strong>, and enable <strong>3D Acceleration</strong>.</p>
+</li>
+<li>
+<p>Under <strong>Network</strong>: leave the default <strong>NAT</strong> adapter — this gives PAI internet access through Windows if needed for the initial model pull.</p>
+</li>
+<li>
+<p>Click <strong>OK</strong>, then click <strong>Start</strong>. PAI boots and the Sway desktop appears.</p>
+</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The VirtualBox Guest Additions do not need to be installed for PAI to work. The desktop, clipboard, and shared folders are not needed for AI use.</p>
+</div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">VMware Player</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<p><strong>VMware Workstation Player</strong> is free for personal use and often performs slightly better than VirtualBox on Windows hosts due to tighter hypervisor integration.</p>
+<ol>
+<li>
+<p>Download <strong>VMware Workstation Player</strong> from <a href="https://www.vmware.com/products/workstation-player.html">vmware.com</a>. Install with default options. A free personal-use license is applied automatically.</p>
+</li>
+<li>
+<p>Open VMware Player and click <strong>Create a New Virtual Machine</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Installer disc image file (iso)</strong>: browse to your <code>pai-&lt;version&gt;-amd64.iso</code>. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Linux</strong> and <strong>Debian 12.x 64-bit</strong>. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Name the VM <strong>PAI</strong> and choose a storage location. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Set <strong>Maximum disk size</strong> to <strong>20 GB</strong> and choose <strong>Store virtual disk as a single file</strong>. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Customize Hardware</strong>:</p>
+</li>
+<li><strong>Memory</strong>: 8192 MB minimum</li>
+<li><strong>Processors</strong>: 4 cores, 1 processor</li>
+<li>
+<p><strong>Display</strong>: leave defaults (VMware handles graphics automatically)
+   Click <strong>Close</strong>, then <strong>Finish</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Play virtual machine</strong>. PAI boots within 30 seconds.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>VMware may prompt you to install VMware Tools. You can skip this for PAI — the tools are designed for persistent OS installs and add no value to a RAM-only session.</p>
+</div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:1"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Hyper-V</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<p><strong>Hyper-V</strong> is Microsoft's built-in hypervisor, available on Windows 10/11 Pro, Enterprise, and Education. It is not available on Windows Home.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Hyper-V and VirtualBox cannot run simultaneously on the same machine. If you enable Hyper-V, VirtualBox will stop working. Choose one or the other.</p>
+</div>
+<ol>
+<li>
+<p>Enable Hyper-V: open <strong>Windows Features</strong> (search "Turn Windows features on or off"), check <strong>Hyper-V</strong>, click <strong>OK</strong>, and restart.</p>
+</li>
+<li>
+<p>Open <strong>Hyper-V Manager</strong> from the Start menu.</p>
+</li>
+<li>
+<p>In the right panel, click <strong>New → Virtual Machine</strong>. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Name the VM <strong>PAI</strong>. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Generation 2</strong>. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Set <strong>Startup Memory</strong> to <strong>8192 MB</strong>. Uncheck <strong>Use Dynamic Memory</strong>. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Leave <strong>Connection</strong> as <strong>Default Switch</strong> (gives internet access through Windows). Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Create a virtual hard disk</strong>, set size to <strong>20 GB</strong>. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Install an operating system from a bootable image file</strong> and browse to your <code>pai-&lt;version&gt;-amd64.iso</code>. Click <strong>Next</strong>, then <strong>Finish</strong>.</p>
+</li>
+<li>
+<p>Before starting the VM, right-click it and choose <strong>Settings</strong>. Under <strong>Security</strong>, uncheck <strong>Enable Secure Boot</strong> — this is required for PAI to boot.</p>
+</li>
+<li>
+<p>Under <strong>Integration Services</strong>, uncheck <strong>Guest services</strong> (not needed for a RAM session).</p>
+</li>
+<li>
+<p>Click <strong>OK</strong>. Right-click the VM and choose <strong>Connect</strong>, then click <strong>Start</strong>. PAI boots in the Hyper-V window.</p>
+</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Use <strong>Basic Session</strong> rather than Enhanced Session for PAI. Enhanced Session redirects your Windows audio and clipboard, which adds complexity with no benefit for AI use.</p>
+</div>
+<hr />
+<h2 id="tutorial-virtualbox-end-to-end-download-to-first-ai-response">Tutorial: VirtualBox end-to-end — download to first AI response<a class="headerlink" href="#tutorial-virtualbox-end-to-end-download-to-first-ai-response" title="Permanent link">&para;</a></h2>
+<p>This tutorial takes you from a fresh Windows machine to running an AI conversation in PAI using VirtualBox. Expect about 15 minutes including the model download.</p>
+<p><strong>Goal</strong>: Boot PAI in VirtualBox and get a response from a local AI model.</p>
+<p><strong>What you need</strong>:
+- Windows 10 or 11 (any edition)
+- 8 GB RAM available (close other heavy applications)
+- 4 GB of free disk space minimum (the PAI ISO is ~3 GB)
+- An internet connection (for the initial Ollama model pull only)
+- The PAI ISO downloaded from the release page</p>
+<ol>
+<li><strong>Install VirtualBox.</strong> Download the Windows installer from <a href="https://virtualbox.org">virtualbox.org</a>. Run it and accept all defaults. Restart if prompted.</li>
+</ol>
+<p>Expected result: VirtualBox Manager opens and shows an empty VM list.</p>
+<ol>
+<li>
+<p><strong>Create a new VM.</strong> Click <strong>New</strong>. Name it <strong>PAI</strong>, set Type to <strong>Linux</strong>, Version to <strong>Debian (64-bit)</strong>. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p><strong>Allocate memory.</strong> Set memory to <strong>8192 MB</strong>. If your machine has 16 GB or more, use 12288 MB for noticeably faster model responses. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p><strong>Create a virtual disk.</strong> Select <strong>Create a virtual hard disk now</strong>, click <strong>Create</strong>. Choose <strong>VDI</strong>, <strong>Dynamically allocated</strong>, <strong>20 GB</strong>. Click <strong>Create</strong>.</p>
+</li>
+<li>
+<p><strong>Attach the PAI ISO.</strong> Select the new PAI VM in the list and click <strong>Settings → Storage</strong>. Click the empty disc icon under <strong>Controller: IDE</strong>. Click the small disc icon on the right side of the <strong>Optical Drive</strong> row and choose <strong>Choose a disk file</strong>. Navigate to your downloaded <code>pai-&lt;version&gt;-amd64.iso</code> and click <strong>Open</strong>. Click <strong>OK</strong>.</p>
+</li>
+<li>
+<p><strong>Configure processors and display.</strong> Back in Settings: under <strong>System → Processor</strong>, set Processors to <strong>4</strong>. Under <strong>Display</strong>, set Video Memory to <strong>128 MB</strong> and Graphics Controller to <strong>VBoxSVGA</strong>. Click <strong>OK</strong>.</p>
+</li>
+<li>
+<p><strong>Start the VM.</strong> Click <strong>Start</strong>. A VirtualBox window opens and PAI boots. The Sway desktop appears in about 30 seconds.</p>
+</li>
+</ol>
+<p>Expected result: A dark desktop with a status bar at the bottom. You may see a first-boot model picker dialog.</p>
+<ol>
+<li><strong>Open a terminal.</strong> Press <code>Super+Return</code> (Windows key + Enter) to open a terminal. Verify Ollama is running:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ollama<span class="w"> </span>list
+</code></pre></div>
+<p>Expected output (models already included in the ISO):
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>NAME               ID              SIZE      MODIFIED
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>llama3.2:1b        a2af6cc6c18c    1.3 GB    2 minutes ago
+</code></pre></div></p>
+<p>If the list is empty, pull a model:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>ollama<span class="w"> </span>pull<span class="w"> </span>llama3.2:1b
+</code></pre></div>
+<ol>
+<li><strong>Open the AI chat interface.</strong> Open Firefox from the app launcher (or press <code>Super+W</code>). Navigate to <code>http://localhost:8080</code>. Open WebUI loads.</li>
+</ol>
+<p>Expected result: The Open WebUI login page. Create an account with any username and password — this is local only.</p>
+<ol>
+<li><strong>Send your first message.</strong> Select <strong>llama3.2:1b</strong> from the model dropdown and type a message. Within 10–30 seconds (longer on first load), the model responds.</li>
+</ol>
+<p>Expected result: A text response generated entirely on your Windows machine, with no internet traffic.</p>
+<p><strong>What just happened?</strong> VirtualBox ran PAI as a guest operating system inside Windows. Ollama served <code>llama3.2:1b</code> locally, and Open WebUI provided the chat interface over localhost. All inference happened on your CPU inside the VM — no data left your machine.</p>
+<p><strong>Next steps</strong>: See <a href="../../ai/choosing-a-model/">Choosing a Model</a> for guidance on which models work well on CPU-only setups, and <a href="../first-boot-walkthrough/">First Boot Walkthrough</a> for an overview of the full PAI environment.</p>
+<hr />
+<h2 id="troubleshooting-common-windows-setup-problems">Troubleshooting common Windows setup problems<a class="headerlink" href="#troubleshooting-common-windows-setup-problems" title="Permanent link">&para;</a></h2>
+<h3 id="no-bootable-device-after-flashing-the-usb">"No bootable device" after flashing the USB<a class="headerlink" href="#no-bootable-device-after-flashing-the-usb" title="Permanent link">&para;</a></h3>
+<p>If you used the graphical Rufus alternative, it was likely run in <strong>ISO Image mode</strong> instead of <strong>DD Image mode</strong>. Reflash the USB: either run the PowerShell one-liner (<code>irm https://pai.direct/flash.ps1 | iex</code>), which always writes in raw/DD mode, or reopen the Rufus graphical tool, select the ISO, click <strong>Start</strong>, and this time choose <strong>Write in DD Image mode</strong> when prompted. Do not click "Write in ISO Image mode" even if Rufus recommends it for this ISO.</p>
+<h3 id="virtualbox-error-vt-x-is-not-available">VirtualBox error: "VT-x is not available"<a class="headerlink" href="#virtualbox-error-vt-x-is-not-available" title="Permanent link">&para;</a></h3>
+<p>Hardware virtualization is consumed by Hyper-V or WSL2. Open <strong>Windows Features</strong>, uncheck <strong>Hyper-V</strong> and <strong>Virtual Machine Platform</strong> (which backs WSL2), and restart. VirtualBox requires exclusive access to VT-x/AMD-V on most Intel and AMD CPUs.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Disabling Hyper-V also disables WSL2 and Windows Sandbox. If you rely on WSL2, use VMware Workstation Player instead — it can coexist with Hyper-V on Windows 11.</p>
+</div>
+<h3 id="vm-shows-a-black-screen-after-boot">VM shows a black screen after boot<a class="headerlink" href="#vm-shows-a-black-screen-after-boot" title="Permanent link">&para;</a></h3>
+<p>Increase <strong>Video Memory</strong> to 128 MB in VM Settings → Display. If the screen is black with a cursor, the display driver may have failed to initialize — try switching the Graphics Controller to <strong>VBoxSVGA</strong> or <strong>VMSVGA</strong> and restarting the VM.</p>
+<h3 id="ai-responses-are-very-slow-in-the-vm">AI responses are very slow in the VM<a class="headerlink" href="#ai-responses-are-very-slow-in-the-vm" title="Permanent link">&para;</a></h3>
+<p>CPU-only inference is inherently slower than GPU inference. On a mid-range laptop, <code>llama3.2:1b</code> produces responses in 10–30 seconds per reply in a VM. To improve speed:</p>
+<ul>
+<li>Allocate more CPU cores to the VM (Settings → System → Processor)</li>
+<li>Use <code>llama3.2:1b</code> instead of larger models</li>
+<li>Close other applications to free memory for the VM</li>
+<li>Consider flashing a USB for native boot with GPU access — see <a href="#path-a-flash-a-usb-drive-native-boot">Path A</a></li>
+</ul>
+<h3 id="usb-is-not-detected-at-boot">USB is not detected at boot<a class="headerlink" href="#usb-is-not-detected-at-boot" title="Permanent link">&para;</a></h3>
+<p>Fast Boot in the BIOS prevents the firmware from scanning USB devices. Re-enter BIOS setup and disable both <strong>Fast Boot</strong> and <strong>Secure Boot</strong>. Also confirm the USB is connected before the machine powers on, not after POST starts.</p>
+<hr />
+<h2 id="frequently-asked-questions">Frequently asked questions<a class="headerlink" href="#frequently-asked-questions" title="Permanent link">&para;</a></h2>
+<h3 id="do-i-need-to-disable-secure-boot-to-use-pai">Do I need to disable Secure Boot to use PAI?<a class="headerlink" href="#do-i-need-to-disable-secure-boot-to-use-pai" title="Permanent link">&para;</a></h3>
+<p>Yes, for native USB boot. PAI does not yet ship with signed UEFI shims, so standard Secure Boot will block the bootloader. Enter your BIOS/UEFI setup at startup (Del, F2, or F10 on most systems) and disable Secure Boot. Virtual machines (VirtualBox, VMware) do not use the host Secure Boot setting — the Hyper-V VM has its own Secure Boot setting that must also be disabled.</p>
+<h3 id="which-pai-iso-should-i-download-for-windows">Which PAI ISO should I download for Windows?<a class="headerlink" href="#which-pai-iso-should-i-download-for-windows" title="Permanent link">&para;</a></h3>
+<p>Download the <code>pai-&lt;version&gt;-amd64.iso</code> file. PAI uses the standard x86-64 architecture that all Intel and AMD Windows PCs run. The ARM64 ISO is for Apple Silicon and Raspberry Pi hardware. Windows on ARM (Surface Pro X, Snapdragon-based laptops) is not officially supported yet.</p>
+<h3 id="virtualbox-vs-vmware-which-is-better-for-pai">VirtualBox vs VMware — which is better for PAI?<a class="headerlink" href="#virtualbox-vs-vmware-which-is-better-for-pai" title="Permanent link">&para;</a></h3>
+<p>Both work well. VirtualBox is fully open source and has slightly better documentation for Linux guests. VMware Workstation Player often delivers 10–20% better CPU throughput in benchmarks, which matters for AI inference. If you already have WSL2 or Hyper-V enabled, VMware Player coexists with them on Windows 11 without requiring changes — VirtualBox does not.</p>
+<h3 id="can-i-run-pai-in-wsl2">Can I run PAI in WSL2?<a class="headerlink" href="#can-i-run-pai-in-wsl2" title="Permanent link">&para;</a></h3>
+<p>No. WSL2 is a Linux compatibility layer, not a full system emulator. PAI is a complete bootable operating system that requires a full virtualization layer (VirtualBox, VMware, or Hyper-V) or native hardware boot. WSL2 cannot boot an ISO or run Sway, Ollama, or the full PAI stack.</p>
+<h3 id="will-pai-affect-my-windows-installation-or-files">Will PAI affect my Windows installation or files?<a class="headerlink" href="#will-pai-affect-my-windows-installation-or-files" title="Permanent link">&para;</a></h3>
+<p>When run in a VM, PAI has no access to your Windows files unless you explicitly set up shared folders. When booted natively from a USB, PAI uses RAM only and cannot mount NTFS volumes by default — your Windows partition is not touched. After shutdown, nothing persists unless you have configured <a href="../../persistence/introduction/">PAI's optional persistence layer</a>.</p>
+<h3 id="how-do-i-exit-the-vm-and-return-to-windows">How do I exit the VM and return to Windows?<a class="headerlink" href="#how-do-i-exit-the-vm-and-return-to-windows" title="Permanent link">&para;</a></h3>
+<p>In VirtualBox, press the <strong>Right Ctrl</strong> key to release mouse and keyboard capture, then close the VM window. Choose <strong>Power off the machine</strong> for a clean shutdown. In VMware, press <strong>Ctrl+Alt</strong> to release the mouse, then click the X to close the window and choose <strong>Power Off</strong>. In Hyper-V, close the connection window and choose <strong>Turn Off</strong> in Hyper-V Manager.</p>
+<h3 id="pai-is-very-slow-in-virtualbox-why">PAI is very slow in VirtualBox — why?<a class="headerlink" href="#pai-is-very-slow-in-virtualbox-why" title="Permanent link">&para;</a></h3>
+<p>VirtualBox uses software-emulated graphics and CPU-only Ollama inference. There is no GPU passthrough by default, so every AI token is computed on your CPU through the hypervisor. This is expected behavior. To check: open a terminal in PAI and run <code>ollama ps</code> — the <strong>Processor</strong> column should show <code>cpu</code>. For better performance, use <a href="#path-a-flash-a-usb-drive-native-boot">Path A</a> (native USB boot), which gives Ollama direct GPU access and typically produces 5–10x faster inference.</p>
+<h3 id="how-do-i-copy-text-between-pai-in-a-vm-and-windows">How do I copy text between PAI in a VM and Windows?<a class="headerlink" href="#how-do-i-copy-text-between-pai-in-a-vm-and-windows" title="Permanent link">&para;</a></h3>
+<p>In VirtualBox, enable the <strong>Shared Clipboard</strong> (Devices → Shared Clipboard → Bidirectional) after starting the VM. In VMware Player, clipboard sharing is enabled by default once VMware Tools would be installed — but since PAI is a read-only session, clipboard bridging may be limited. The most reliable method is to copy text via a file in a shared folder or over a local SSH session.</p>
+<hr />
+<h2 id="related-documentation">Related documentation<a class="headerlink" href="#related-documentation" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../installing-and-booting/"><strong>Installing and Booting PAI</strong></a> — Full vendor BIOS key table, Secure Boot details, and USB flashing for macOS and Linux</li>
+<li><a href="../first-boot-walkthrough/"><strong>First Boot Walkthrough</strong></a> — What to expect on your first PAI session, including the model picker and desktop overview</li>
+<li><a href="../../ai/choosing-a-model/"><strong>Choosing a Model</strong></a> — Which Ollama models run well on CPU-only setups and how to match model size to RAM</li>
+<li><a href="../../advanced/running-in-a-vm/"><strong>Running PAI in a VM</strong></a> — Advanced VM configuration including network bridges, shared folders, and GPU passthrough</li>
+<li><a href="../../persistence/introduction/"><strong>PAI Persistence Layer</strong></a> — How to set up encrypted persistent storage so your data survives reboots</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://x.com/nichxbt" target="_blank" rel="noopener" title="nichxbt on X" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/nirholas" target="_blank" rel="noopener" title="nirholas on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.instant", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

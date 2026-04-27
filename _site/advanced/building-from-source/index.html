@@ -1,0 +1,4622 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Build PAI from source with Debian live-build. Covers local builds, GCP cloud builders, custom VMs, tar-pipe sync, model customization, and QEMU testing.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.pai.direct/advanced/building-from-source/">
+      
+      
+        <link rel="prev" href="../../build-in-cloud/">
+      
+      
+        <link rel="next" href="../../UPGRADING/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Building PAI from Source — Custom ISO with Debian live-build - PAI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/pai-theme.css">
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#who-this-guide-is-for" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="PAI Documentation" class="md-header__button md-logo" aria-label="PAI Documentation" data-md-component="logo">
+      
+  <img src="../../assets/pai-logo-white.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PAI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Building PAI from Source — Custom ISO with Debian live-build
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../general/how-pai-works/" class="md-tabs__link">
+          
+  
+  Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../first-steps/try-in-a-vm/" class="md-tabs__link">
+          
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../using-pai/" class="md-tabs__link">
+          
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ai/choosing-a-model/" class="md-tabs__link">
+          
+  
+  AI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../apps/password-management/" class="md-tabs__link">
+          
+  
+  Apps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../gpu-setup/" class="md-tabs__link">
+          
+  
+  Advanced
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../privacy/introduction-to-privacy/" class="md-tabs__link">
+          
+  
+  Privacy
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../examples/getting-started/" class="md-tabs__link">
+          
+  
+  Examples
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../PHILOSOPHY/" class="md-tabs__link">
+          
+  
+  About
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="PAI Documentation" class="md-nav__button md-logo" aria-label="PAI Documentation" data-md-component="logo">
+      
+  <img src="../../assets/pai-logo-white.png" alt="logo">
+
+    </a>
+    PAI Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/how-pai-works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How PAI works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/features-included/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Features included
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/system-requirements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System requirements
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/warnings-and-limitations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Warnings and limitations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Getting started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/try-in-a-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Try in a VM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quickstart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../USB-FLASHING/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    USB flashing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/starting-on-mac/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Starting on Mac
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/starting-on-windows/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Starting on Windows
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/installing-and-booting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installing and booting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/using-raspberry-pi-imager/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Raspberry Pi Imager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/using-ventoy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Ventoy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/first-boot-walkthrough/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    First boot walkthrough
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/desktop-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Desktop basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/browser-installer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Browser installer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/shutting-down/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shutting down
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../using-pai/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using PAI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/basic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/advanced/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advanced usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command line
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Persistence
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Persistence
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/creating-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating persistence
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/unlocking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Unlocking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/backing-up/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Backing up
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build-in-cloud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Build in cloud
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Building from source
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Building from source
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#who-this-guide-is-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who this guide is for
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-build-produces" class="md-nav__link">
+    <span class="md-ellipsis">
+      What the build produces
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What the build produces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raspberry-pi-image-gap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Raspberry Pi image (gap)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#repository-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Repository layout
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-live-build-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      The live-build pipeline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choose-your-build-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choose your build path
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-developer-inner-loop-tar-pipe-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      The developer inner loop: tar-pipe sync
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-build-a-custom-pai-iso-with-a-different-model-baked-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorial: build a custom PAI ISO with a different model baked in
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customizing-more-than-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Customizing more than the model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Customizing more than the model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-a-package-to-the-iso" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add a package to the ISO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-your-own-app-or-binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add your own app or binary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#change-the-desktop-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Change the desktop environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rebrand" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rebrand
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reproducible-builds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reproducible builds
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-your-build-without-flashing-a-usb" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing your build without flashing a USB
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-build-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common build failures
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#publishing-your-custom-iso" class="md-nav__link">
+    <span class="md-ellipsis">
+      Publishing your custom ISO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequently asked questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequently asked questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#do-i-need-debian-to-build-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      Do I need Debian to build PAI?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-build-pai-on-macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I build PAI on macOS?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-add-my-own-app-to-the-iso" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I add my own app to the ISO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-long-does-a-build-take" class="md-nav__link">
+    <span class="md-ellipsis">
+      How long does a build take?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-change-the-baked-in-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I change the baked-in model?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-build-pai-in-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I build PAI in Docker?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-test-my-build-without-flashing-a-usb" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I test my build without flashing a USB?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-is-my-iso-bigger-than-the-official-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why is my ISO bigger than the official release?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-a-pai-build-reproducible" class="md-nav__link">
+    <span class="md-ellipsis">
+      Is a PAI build reproducible?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../UPGRADING/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Upgrading
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MIGRATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AI
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            AI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/choosing-a-model/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Choosing a model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/managing-models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Managing models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/using-ollama/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Ollama
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/using-open-webui/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Open WebUI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Apps
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Apps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/password-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/encrypting-files-gpg/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Encrypting files (GPG)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/secure-delete/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure delete
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Advanced
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gpu-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPU setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gpu-passthrough/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPU passthrough (VMs)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../running-in-a-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Running in a VM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boot-options/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Boot options
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../windows-package-managers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows package managers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arch-linux/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Arch Linux (AUR)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../homebrew/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Homebrew (macOS/Linux)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Privacy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/introduction-to-privacy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/privacy-mode-tor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privacy mode (Tor)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/mac-address-anonymization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MAC address anonymization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/offline-mode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Offline mode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/tor-browser/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tor Browser
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Examples
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started example
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/local-ai-assistant/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Local AI assistant
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/crypto-cold-signing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Crypto cold signing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/travel-and-network-hardening/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Travel and network hardening
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/real-world-use-cases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-world use cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/guidelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guidelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/debugging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Debugging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/ci-cd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ops-cloud-builders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cloud builders runbook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agents overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/agent-registry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agent registry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/skill-catalog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Skill catalog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_1" id="__nav_11_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_1">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/components/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data flow
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/diagrams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../editions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Editions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Skills
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TOOLS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/keyboard-shortcuts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Keyboard shortcuts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_8" id="__nav_11_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_8">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/endpoints/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Endpoints
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/sdk/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SDK
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--experimental"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/cli-json-shapes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI JSON shapes
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            About
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PHILOSOPHY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Philosophy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../VISION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../VALUES/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Values
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../STRATEGY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../COMPARISON/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHANGELOG/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ETHICS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ethics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PRIVACY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ACCESSIBILITY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accessibility
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../governance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Governance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../INTERNATIONALIZATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internationalization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN_ISSUES/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Known issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RELEASE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MAINTAINERS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintainers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AUTHORS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CITATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Citation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ACKNOWLEDGMENTS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acknowledgments
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing-to-docs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing to docs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#who-this-guide-is-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who this guide is for
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-build-produces" class="md-nav__link">
+    <span class="md-ellipsis">
+      What the build produces
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What the build produces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raspberry-pi-image-gap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Raspberry Pi image (gap)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#repository-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Repository layout
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-live-build-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      The live-build pipeline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choose-your-build-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choose your build path
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-developer-inner-loop-tar-pipe-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      The developer inner loop: tar-pipe sync
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-build-a-custom-pai-iso-with-a-different-model-baked-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorial: build a custom PAI ISO with a different model baked in
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customizing-more-than-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Customizing more than the model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Customizing more than the model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-a-package-to-the-iso" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add a package to the ISO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-your-own-app-or-binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add your own app or binary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#change-the-desktop-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Change the desktop environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rebrand" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rebrand
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reproducible-builds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reproducible builds
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-your-build-without-flashing-a-usb" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing your build without flashing a USB
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-build-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common build failures
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#publishing-your-custom-iso" class="md-nav__link">
+    <span class="md-ellipsis">
+      Publishing your custom ISO
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequently asked questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequently asked questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#do-i-need-debian-to-build-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      Do I need Debian to build PAI?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-build-pai-on-macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I build PAI on macOS?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-add-my-own-app-to-the-iso" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I add my own app to the ISO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-long-does-a-build-take" class="md-nav__link">
+    <span class="md-ellipsis">
+      How long does a build take?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-change-the-baked-in-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I change the baked-in model?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-build-pai-in-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I build PAI in Docker?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-test-my-build-without-flashing-a-usb" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I test my build without flashing a USB?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-is-my-iso-bigger-than-the-official-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why is my ISO bigger than the official release?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-a-pai-build-reproducible" class="md-nav__link">
+    <span class="md-ellipsis">
+      Is a PAI build reproducible?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/nirholas/scroll-zoom-thing/edit/main/src/advanced/building-from-source.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+  <h1>Building from source</h1>
+
+<p><strong>PAI</strong> is a Debian 12 live-image built with <a href="https://live-team.pages.debian.net/live-manual/html/live-manual/index.en.html">Debian live-build</a>. This guide is the canonical reference for building PAI from source: on a local Debian host, on the always-on Google Cloud builders, or on your own VM. You will learn the full live-build pipeline, the developer inner loop for iterating on the image, and how to bake in your own models, packages, and branding.</p>
+<p>In this guide:</p>
+<ul>
+<li>What the build produces and how the repo is laid out</li>
+<li>Building PAI locally on Debian or Ubuntu</li>
+<li>Building PAI in the cloud (GCP builders or your own VM)</li>
+<li>The live-build pipeline: from source files to hybrid ISO</li>
+<li>A full tutorial for baking a different Ollama model into the ISO</li>
+<li>The developer inner loop (tar-pipe sync and partial rebuilds)</li>
+<li>Testing your build in QEMU without flashing a USB</li>
+<li>Reproducibility, common failures, and publishing your ISO</li>
+</ul>
+<p><strong>Prerequisites</strong>: Familiarity with the Linux command line, <code>apt</code>, <code>ssh</code>, and <code>git</code>. You do not need to be a Debian Developer; live-build handles the packaging for you. If you have never booted PAI, start with <a href="../../first-steps/first-boot-walkthrough/">First Boot Walkthrough</a> first.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page is the deeper reference for contributors, maintainers, and power users. If you only want to flash a pre-built ISO and boot it, see <a href="../../first-steps/installing-and-booting/">Installing and Booting PAI</a> instead.</p>
+</div>
+<h2 id="who-this-guide-is-for">Who this guide is for<a class="headerlink" href="#who-this-guide-is-for" title="Permanent link">&para;</a></h2>
+<p>Building PAI from source makes sense if you are:</p>
+<ul>
+<li><strong>Contributing to PAI</strong> — fixing bugs, adding packages, or hardening the default image</li>
+<li><strong>A security researcher</strong> verifying what ships in the ISO and reproducing the binary from source</li>
+<li><strong>A power user</strong> creating a custom ISO with your own model baked in, your own branding, or extra packages for a specific workflow</li>
+<li><strong>An operator</strong> deploying PAI to fleet hardware with a custom fingerprint (hostname, keyboard layout, firewall rules)</li>
+</ul>
+<p>If you are just running PAI for yourself, the official ISOs from the release page are signed, reproducible, and ready to use. You do not need to build.</p>
+<h2 id="what-the-build-produces">What the build produces<a class="headerlink" href="#what-the-build-produces" title="Permanent link">&para;</a></h2>
+<p>A full build produces one of two hybrid ISO images:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Architecture</th>
+<th>Source tree</th>
+<th>Typical size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>live-image-amd64.hybrid.iso</code></td>
+<td>x86_64</td>
+<td>repo root (<code>build.sh</code>)</td>
+<td>6–8 GB</td>
+</tr>
+<tr>
+<td><code>live-image-arm64.hybrid.iso</code></td>
+<td>aarch64</td>
+<td><code>arm64/</code> subdirectory</td>
+<td>6–8 GB</td>
+</tr>
+</tbody>
+</table>
+<p>Both are <strong>hybrid ISOs</strong>: the same file works as a DVD image or flashed to USB with <code>dd</code>. Size is dominated by the pre-pulled Ollama model baked into <code>/usr/share/ollama/.ollama/models/</code> inside the chroot. Changing <code>PAI_DEFAULT_MODEL</code> is the single largest lever on output size.</p>
+<p><strong>[amd64]</strong> <strong>[arm64]</strong> <strong>[hybrid ISO]</strong></p>
+<h3 id="raspberry-pi-image-gap">Raspberry Pi image (gap)<a class="headerlink" href="#raspberry-pi-image-gap" title="Permanent link">&para;</a></h3>
+<p>The arm64 live-build above produces a <strong>UEFI/grub-efi ISO</strong>, not a raw Pi-bootable disk image. Raspberry Pi boards need a FAT32 <code>/boot/firmware</code> partition with the Pi's proprietary bootloader chain (<code>bootcode.bin</code>, <code>start*.elf</code>, <code>config.txt</code>, kernel + DTB) — live-build's <code>iso-hybrid</code> output does not provide this.</p>
+<p>Until a dedicated Pi image pipeline lands, the Raspberry Pi Imager integration (<code>website/public/imager.json</code>, generated by <a href="https://github.com/nirholas/pai/blob/main/scripts/gen-imager-manifest.mjs"><code>scripts/gen-imager-manifest.mjs</code></a>) ships in a "pending" state — <code>os_list: []</code> plus a <code>note</code> field — and Imager gracefully reports no images available.</p>
+<p><strong>When a raw Pi image does exist</strong>, package it into the expected release artifacts with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>scripts/package-arm64-img.sh<span class="w"> </span>path/to/pai-&lt;version&gt;-arm64.img
+</code></pre></div>
+<p>That writes <code>dist/pai-&lt;version&gt;-arm64.img.xz</code> and <code>dist/pai-&lt;version&gt;-arm64.img.json</code> (size + sha256 sidecar). The generator picks them up automatically on the next run. Track the Pi build work at <a href="https://github.com/nirholas/pai/issues">github.com/nirholas/pai/issues</a>.</p>
+<h2 id="repository-layout">Repository layout<a class="headerlink" href="#repository-layout" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pai/
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── build.sh                            # amd64 live-build entry point
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>├── config/                             # live-build config for amd64
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│   ├── package-lists/
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│   │   └── pai.list.chroot       # every apt package in the ISO
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│   ├── hooks/live/                     # ordered chroot hooks (see below)
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│   │   ├── 0050-install-profile-system.hook.chroot
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│   │   ├── 0100-install-ollama.hook.chroot
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│   │   ├── 0150-prepull-ollama-models.hook.chroot
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│   │   ├── 0200-install-open-webui.hook.chroot
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>│   │   ├── 0300-configure-desktop.hook.chroot
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>│   │   ├── 0500-firewall.hook.chroot
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>│   │   └── ...                         # 19 hooks total
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>│   └── includes.chroot_after_packages/ # files copied into the ISO
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>├── arm64/                              # parallel tree for aarch64
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>│   ├── build.sh
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>│   └── config/
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>├── branding/                           # logos, wallpapers, theming assets
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>├── docs/                               # documentation source (Astro Starlight)
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>├── prompts/                            # agent task prompts (not in the ISO)
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>├── scripts/                            # helper scripts (flashing, publishing)
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>└── website/                            # marketing site
+</code></pre></div>
+<p>The amd64 and arm64 config trees are intentionally kept in parallel. When you change a package list or a hook on one side, mirror the change on the other. The <a href="https://github.com/nirholas/pai/blob/main/CLAUDE.md">CLAUDE.md</a> project rules call this out explicitly.</p>
+<h2 id="the-live-build-pipeline">The live-build pipeline<a class="headerlink" href="#the-live-build-pipeline" title="Permanent link">&para;</a></h2>
+<p>Debian live-build is a wrapper around <code>debootstrap</code>, <code>apt</code>, and a set of image-assembly helpers. Every PAI build flows through the same four stages, in order:</p>
+<pre class="mermaid"><code>flowchart TD
+    A[Source files&lt;br/&gt;config/, hooks/, branding/] --&gt; B[lb config&lt;br/&gt;write .build/config]
+    B --&gt; C[lb bootstrap&lt;br/&gt;debootstrap bookworm into chroot/]
+    C --&gt; D[lb chroot&lt;br/&gt;install packages + run hooks]
+    D --&gt; E[Cleanup&lt;br/&gt;purge apt cache, docs, unused locales]
+    E --&gt; F[lb binary&lt;br/&gt;assemble squashfs + bootloader]
+    F --&gt; G[live-image-*.hybrid.iso]
+
+    subgraph hooks[Chroot hooks, run in order]
+        H1[0050 install-profile-system]
+        H2[0100 install-ollama]
+        H3[0150 prepull-ollama-models]
+        H4[0200 install-open-webui]
+        H5[0300 configure-desktop]
+        H6[... 14 more hooks]
+    end
+
+    D -.-&gt; hooks</code></pre>
+<p><strong>What each stage does:</strong></p>
+<ol>
+<li><strong><code>lb config</code></strong> reads flags from <code>build.sh</code> and writes them into <code>.build/config</code>. No network activity yet.</li>
+<li><strong><code>lb bootstrap</code></strong> runs <code>debootstrap</code> to create a minimal Debian bookworm system in <code>chroot/</code>. This is the single longest network-bound step on a cold build.</li>
+<li><strong><code>lb chroot</code></strong> installs every package listed in <code>config/package-lists/pai.list.chroot</code> and runs each hook in <code>config/hooks/live/</code> in filename order. The hooks install Ollama, pre-pull the default model, install Open WebUI, configure Sway, set up the firewall, and more.</li>
+<li><strong><code>lb binary</code></strong> compresses the chroot into a squashfs, generates the ISO filesystem, and writes the hybrid bootloader (GRUB for amd64, GRUB-EFI for arm64).</li>
+</ol>
+<p>After <code>lb chroot</code>, <code>build.sh</code> runs an aggressive cleanup pass that trims ~3 GB of unused data: apt caches, man pages, non-English locales, NVIDIA firmware blobs (CPU-only ISO), and Ollama GPU backends (CUDA, ROCm, Vulkan). Without this pass the ISO balloons past 10 GB.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The pipeline is <strong>idempotent from <code>lb bootstrap</code> onward</strong>. If <code>lb chroot</code> fails on hook 0650, you can fix the hook and re-run <code>sudo lb chroot &amp;&amp; sudo lb binary</code> without repeating <code>debootstrap</code>. This is the foundation of the developer inner loop.</p>
+</div>
+<h2 id="choose-your-build-path">Choose your build path<a class="headerlink" href="#choose-your-build-path" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Local Debian host</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<p><strong>Best for</strong>: one-off builds, contributors with a Debian or Ubuntu workstation, reproducibility checks.</p>
+<p><strong>Build time</strong>: 30–45 minutes on an 8-core machine with an SSD and a 100 Mbps link. First build is slower because <code>debootstrap</code> pulls ~1.5 GB from the Debian mirror.</p>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li>Debian 12 (bookworm) or Ubuntu 22.04+ host</li>
+<li>Root access (live-build operates as root)</li>
+<li>30 GB free disk space</li>
+<li>8 GB RAM minimum, 16 GB recommended</li>
+<li>
+<p>A working internet connection</p>
+</li>
+<li>
+<p>Install <code>live-build</code> from the Debian repos.</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>live-build<span class="w"> </span>git
+</code></pre></div>
+<ol>
+<li>Clone the PAI repo.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/nirholas/pai.git
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">cd</span><span class="w"> </span>pai
+</code></pre></div>
+<ol>
+<li>Run the amd64 build. This must run as root.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>bash<span class="w"> </span>build.sh<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>build.log
+</code></pre></div>
+<p>Expected final output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>[pai] Disk usage after cleanup:
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>/dev/sda1        30G   12G   17G  42% /
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>6.8G    chroot/
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>P: Begin building binary iso-hybrid image...
+</code></pre></div>
+<ol>
+<li>Verify the ISO exists and check its size.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ls<span class="w"> </span>-lh<span class="w"> </span>live-image-amd64.hybrid.iso
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>sha256sum<span class="w"> </span>live-image-amd64.hybrid.iso
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>-rw-r--r-- 1 root root 6.7G Apr 20 14:03 live-image-amd64.hybrid.iso
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>4a...  live-image-amd64.hybrid.iso
+</code></pre></div>
+<ol>
+<li>(Optional) Build the arm64 ISO from the <code>arm64/</code> subtree.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">cd</span><span class="w"> </span>arm64
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>sudo<span class="w"> </span>bash<span class="w"> </span>build.sh<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>build.log
+</code></pre></div>
+<p>On an amd64 host this is a cross-build via <code>qemu-user-static</code>. It is noticeably slower (roughly 1.5–2x wall time) and requires <code>qemu-user-static</code> and <code>binfmt-support</code> installed.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Google Cloud (PAI builders)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<p><strong>Best for</strong>: PAI maintainers running their own Google Cloud project. Provision two VMs (<code>pai-builder</code> in <code>us-central1-a</code> and <code>pai-builder-arm</code> in <code>us-central1-f</code>) with the repo cloned at <code>~/pai</code>. Full operational runbook lives at <a href="../../ops-cloud-builders/">ops-cloud-builders.md</a>.</p>
+<p><strong>Build time</strong>: 25–30 minutes on <code>n2-highcpu-96</code> (amd64) or <code>t2a-standard-48</code> (arm64).</p>
+<ol>
+<li>Authenticate gcloud (every fresh shell or Codespace).</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>gcloud<span class="w"> </span>auth<span class="w"> </span>login
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>gcloud<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>project<span class="w"> </span>&lt;your-gcp-project&gt;
+</code></pre></div>
+<ol>
+<li>Start the builders.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>start<span class="w"> </span>pai-builder<span class="w">     </span>--zone<span class="o">=</span>us-central1-a
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>start<span class="w"> </span>pai-builder-arm<span class="w"> </span>--zone<span class="o">=</span>us-central1-f
+</code></pre></div>
+<ol>
+<li>Kick off a clean amd64 build, detached.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>pai-builder<span class="w"> </span>--zone<span class="o">=</span>us-central1-a<span class="w"> </span>--command<span class="o">=</span><span class="s2">&quot;\</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="s2">    cd ~/pai &amp;&amp; sudo rm -rf chroot cache binary .build *.iso build.log; \</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="s2">    (nohup sudo bash build.sh &gt; ~/build.log 2&gt;&amp;1 &amp;)&quot;</span>
+</code></pre></div>
+<ol>
+<li>Tail progress from your laptop while the VM builds.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>pai-builder<span class="w"> </span>--zone<span class="o">=</span>us-central1-a<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span>--command<span class="o">=</span><span class="s1">&#39;sudo tail -f /home/codespace/build.log&#39;</span>
+</code></pre></div>
+<ol>
+<li>Pull the finished ISO back to your laptop.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>scp<span class="w"> </span>--zone<span class="o">=</span>us-central1-a<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span>pai-builder:/home/codespace/pai/live-image-amd64.hybrid.iso<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span>/tmp/pai-amd64.iso
+</code></pre></div>
+<ol>
+<li>Stop the builders when you are done. <strong>You are billed by the hour while a VM runs.</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>stop<span class="w"> </span>pai-builder<span class="w">     </span>--zone<span class="o">=</span>us-central1-a
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>stop<span class="w"> </span>pai-builder-arm<span class="w"> </span>--zone<span class="o">=</span>us-central1-f
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>n2-highcpu-96</code> costs roughly $2.70/hour. Leaving a builder running over a weekend by accident burns ~$130. Stop the VM as soon as your build finishes, and set a billing budget alert in the GCP console.</p>
+</div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:1"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Custom VM</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<p><strong>Best for</strong>: contributors without GCP access who still want fast cloud builds, or anyone using AWS, Hetzner, Azure, or a self-hosted hypervisor.</p>
+<p><strong>Build time</strong>: depends on the instance. As a rule of thumb, you want at least 16 vCPUs and 32 GB of RAM for a 25-minute build. Smaller instances work but take an hour or more.</p>
+<ol>
+<li>
+<p>Provision a Debian 12 VM with at least:</p>
+</li>
+<li>
+<p>16 vCPUs (AMD Ryzen, Intel Xeon, or Ampere Altra all work)</p>
+</li>
+<li>32 GB RAM</li>
+<li>200 GB SSD boot disk</li>
+<li>
+<p>Public IPv4 for SSH and outbound mirrors access</p>
+</li>
+<li>
+<p>SSH in and install the build prerequisites.</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>live-build<span class="w"> </span>git<span class="w"> </span>qemu-user-static<span class="w"> </span>binfmt-support
+</code></pre></div>
+<ol>
+<li>Clone the repo and run the build.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/nirholas/pai.git
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="nb">cd</span><span class="w"> </span>pai
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>sudo<span class="w"> </span>bash<span class="w"> </span>build.sh
+</code></pre></div>
+<ol>
+<li>Copy the ISO back with <code>rsync</code> or <code>scp</code>.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># From your laptop</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>rsync<span class="w"> </span>-avzP<span class="w"> </span>user@your-vm:~/pai/live-image-amd64.hybrid.iso<span class="w"> </span>./
+</code></pre></div>
+<p>For arm64 on AWS, use a <code>c7g</code> or <code>m7g</code> instance and skip <code>qemu-user-static</code>; the native ARM host is much faster than cross-building.</p>
+<h2 id="the-developer-inner-loop-tar-pipe-sync">The developer inner loop: tar-pipe sync<a class="headerlink" href="#the-developer-inner-loop-tar-pipe-sync" title="Permanent link">&para;</a></h2>
+<p>A full build takes 30 minutes. When you are iterating on a single hook or a package list change, you do <strong>not</strong> want to rebuild from scratch each time. The PAI workflow for cloud builders is a <strong>tar-pipe sync</strong>: tar the small subset of files that changed, stream them over SSH, re-extract on the builder, and re-run only the stages that matter.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant L as Your laptop
+    participant B as pai-builder VM
+    L-&gt;&gt;L: edit config/hooks/live/0150-...
+    L-&gt;&gt;B: tar -cz config branding build.sh&lt;br/&gt;| gcloud compute ssh ... tar -xzf -
+    B-&gt;&gt;B: sudo lb chroot (re-runs hooks)
+    B-&gt;&gt;B: sudo lb binary (re-assembles ISO)
+    B--&gt;&gt;L: gcloud compute scp ...hybrid.iso
+    L-&gt;&gt;L: qemu-system-x86_64 -cdrom ...</code></pre>
+<p>The canonical tar-pipe command (amd64):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># From the repo root on your laptop</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>tar<span class="w"> </span>-cz<span class="w"> </span>--exclude<span class="o">=</span><span class="s1">&#39;.git&#39;</span><span class="w"> </span>--exclude<span class="o">=</span><span class="s1">&#39;chroot&#39;</span><span class="w"> </span>--exclude<span class="o">=</span><span class="s1">&#39;cache&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">        </span>--exclude<span class="o">=</span><span class="s1">&#39;binary&#39;</span><span class="w"> </span>--exclude<span class="o">=</span><span class="s1">&#39;*.iso&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">        </span>config<span class="w"> </span>branding<span class="w"> </span>build.sh<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="p">|</span><span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>pai-builder<span class="w"> </span>--zone<span class="o">=</span>us-central1-a<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">        </span>--command<span class="o">=</span><span class="s2">&quot;cd ~/pai &amp;&amp; tar -xzf -&quot;</span>
+</code></pre></div>
+<p>For arm64, swap the include list to <code>arm64 branding</code> and target <code>pai-builder-arm</code> in <code>us-central1-f</code>.</p>
+<p><strong>Why tar-pipe and not <code>rsync</code>?</strong></p>
+<ul>
+<li>Builders in isolated VPCs may block inbound SSH-on-port-22 that <code>rsync</code> needs.</li>
+<li><code>gcloud compute ssh</code> handles IAP tunneling, auth, and host keys transparently.</li>
+<li>Streaming the tarball is one SSH round-trip; <code>rsync</code> is many.</li>
+<li>You can easily add or remove paths from the tar command without maintaining an <code>--exclude-from</code> file.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Pair the tar-pipe with a partial rebuild. If you only changed a hook, you can skip <code>lb bootstrap</code> entirely:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>pai-builder<span class="w"> </span>--zone<span class="o">=</span>us-central1-a<span class="w"> </span>--command<span class="o">=</span><span class="s2">&quot;\</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="s2">    cd ~/pai &amp;&amp; sudo rm -rf binary .build/binary *.iso; \</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="s2">    sudo lb chroot &amp;&amp; sudo lb binary&quot;</span>
+</code></pre></div>
+<p>This is roughly 8–12 minutes instead of 25–30.</p>
+</div>
+<h2 id="tutorial-build-a-custom-pai-iso-with-a-different-model-baked-in">Tutorial: build a custom PAI ISO with a different model baked in<a class="headerlink" href="#tutorial-build-a-custom-pai-iso-with-a-different-model-baked-in" title="Permanent link">&para;</a></h2>
+<p><strong>Goal</strong>: produce a custom PAI ISO that ships with <code>qwen2.5:3b</code> pre-pulled instead of the default <code>llama3.2:1b</code>, and verify the new model is present in the booted ISO.</p>
+<p><strong>What you need</strong>:</p>
+<ul>
+<li>A working PAI source checkout (local, GCP builder, or custom VM)</li>
+<li>30 GB free disk (a 3B-parameter model adds ~2 GB to the ISO)</li>
+<li>
+<p>QEMU installed for test-boot (<code>qemu-system-x86_64</code> on Linux, UTM on macOS)</p>
+</li>
+<li>
+<p>Open the model pre-pull hook and note the current model.</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>head<span class="w"> </span>-n<span class="w"> </span><span class="m">10</span><span class="w"> </span>config/hooks/live/0150-prepull-ollama-models.hook.chroot
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="nb">set</span><span class="w"> </span>-euo<span class="w"> </span>pipefail
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="c1"># Pre-pull default Ollama model into the chroot so the ISO ships with a</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="c1"># working model out of the box (zero-internet first boot).</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="nv">MODEL</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PAI_DEFAULT_MODEL</span><span class="k">:-</span><span class="nv">llama3</span><span class="p">.2:</span><span class="nv">1b</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[pai] Pre-pulling Ollama model: </span><span class="nv">$MODEL</span><span class="s2">&quot;</span>
+</code></pre></div>
+<ol>
+<li>Change the default model. You have two options.</li>
+</ol>
+<p><strong>Option A (edit the hook directly):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/llama3.2:1b/qwen2.5:3b/&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">    </span>config/hooks/live/0150-prepull-ollama-models.hook.chroot
+</code></pre></div>
+<p><strong>Option B (export an environment override)</strong> — only works if your build wrapper passes the variable into <code>lb chroot</code>. Easier to just edit the hook.</p>
+<ol>
+<li>(Optional) Mirror the change on the arm64 side if you want both ISOs to match.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/llama3.2:1b/qwen2.5:3b/&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">    </span>arm64/config/hooks/live/0150-prepull-ollama-models.hook.chroot
+</code></pre></div>
+<ol>
+<li>Rebuild. On a cloud builder with the tar-pipe:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>tar<span class="w"> </span>-cz<span class="w"> </span>--exclude<span class="o">=</span><span class="s1">&#39;.git&#39;</span><span class="w"> </span>--exclude<span class="o">=</span><span class="s1">&#39;chroot&#39;</span><span class="w"> </span>--exclude<span class="o">=</span><span class="s1">&#39;cache&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">        </span>--exclude<span class="o">=</span><span class="s1">&#39;binary&#39;</span><span class="w"> </span>--exclude<span class="o">=</span><span class="s1">&#39;*.iso&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">        </span>config<span class="w"> </span>branding<span class="w"> </span>build.sh<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="p">|</span><span class="w"> </span>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>pai-builder<span class="w"> </span>--zone<span class="o">=</span>us-central1-a<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">        </span>--command<span class="o">=</span><span class="s2">&quot;cd ~/pai &amp;&amp; tar -xzf -&quot;</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>pai-builder<span class="w"> </span>--zone<span class="o">=</span>us-central1-a<span class="w"> </span>--command<span class="o">=</span><span class="s2">&quot;\</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="s2">    cd ~/pai &amp;&amp; sudo rm -rf chroot cache binary .build *.iso build.log; \</span>
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="s2">    (nohup sudo bash build.sh &gt; ~/build.log 2&gt;&amp;1 &amp;)&quot;</span>
+</code></pre></div>
+<p>Locally:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>sudo<span class="w"> </span>lb<span class="w"> </span>clean<span class="w"> </span>--purge
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>sudo<span class="w"> </span>bash<span class="w"> </span>build.sh
+</code></pre></div>
+<ol>
+<li>Verify the model is baked into the chroot before <code>lb binary</code> cleans up. Watch the build log:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>grep<span class="w"> </span>-A2<span class="w"> </span><span class="s1">&#39;Pre-pulling Ollama model&#39;</span><span class="w"> </span>build.log
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>[pai] Pre-pulling Ollama model: qwen2.5:3b
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>pulling manifest
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>pulling a80c4f17acd5... 100% ▕████████▏ 1.9 GB
+</code></pre></div>
+<ol>
+<li>Test-boot the ISO in QEMU without writing to a USB.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>qemu-system-x86_64<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">    </span>-cdrom<span class="w"> </span>live-image-amd64.hybrid.iso<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">    </span>-m<span class="w"> </span><span class="m">6144</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">    </span>-smp<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">    </span>-enable-kvm
+</code></pre></div>
+<ol>
+<li>Once the Sway desktop is up, open a <code>foot</code> terminal and confirm the new model is present offline.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>ollama<span class="w"> </span>list
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>NAME              ID              SIZE      MODIFIED
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>qwen2.5:3b        a80c4f17acd5    1.9 GB    10 minutes ago
+</code></pre></div>
+<ol>
+<li>Run a sanity prompt with the network disconnected (QEMU <code>-nic none</code> if you want to be fully sure):</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>ollama<span class="w"> </span>run<span class="w"> </span>qwen2.5:3b<span class="w"> </span><span class="s2">&quot;In one sentence, what is Debian live-build?&quot;</span>
+</code></pre></div>
+<p><strong>What just happened?</strong> You changed a single shell variable in one hook. <code>lb chroot</code> re-ran the hook, Ollama pulled the new model into <code>/usr/share/ollama/.ollama/models/</code> inside the chroot, the cleanup pass left those files in place, and <code>lb binary</code> packed them into the squashfs. Because the model is inside the ISO, the booted system has the model available with zero internet.</p>
+<p><strong>Next steps</strong>: see <a href="../../ai/managing-models/">Managing Models</a> for details on model sizes, quantizations, and how the runtime loads them.</p>
+<h2 id="customizing-more-than-the-model">Customizing more than the model<a class="headerlink" href="#customizing-more-than-the-model" title="Permanent link">&para;</a></h2>
+<h3 id="add-a-package-to-the-iso">Add a package to the ISO<a class="headerlink" href="#add-a-package-to-the-iso" title="Permanent link">&para;</a></h3>
+<p>Edit <code>config/package-lists/pai.list.chroot</code> and add one package per line:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># Add obs-studio to the image</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;obs-studio&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>config/package-lists/pai.list.chroot
+</code></pre></div>
+<p>Rebuild. <code>lb chroot</code> picks up the new entry and <code>apt install</code>s it. If the package is only in <code>contrib</code>, <code>non-free</code>, or <code>non-free-firmware</code>, it is already available — <code>build.sh</code> configures all three archive areas.</p>
+<h3 id="add-your-own-app-or-binary">Add your own app or binary<a class="headerlink" href="#add-your-own-app-or-binary" title="Permanent link">&para;</a></h3>
+<p>Drop files into <code>config/includes.chroot_after_packages/</code> mirroring the filesystem layout you want inside the ISO:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>config/includes.chroot_after_packages/
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>├── etc/
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>│   └── pai/my-app.conf
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>└── usr/
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>    └── local/
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>        └── bin/
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>            └── my-app
+</code></pre></div>
+<p>Anything under this directory is copied verbatim into the chroot after packages install. For anything requiring compilation, add a hook under <code>config/hooks/live/0700-build-my-app.hook.chroot</code> and compile inside the chroot.</p>
+<h3 id="change-the-desktop-environment">Change the desktop environment<a class="headerlink" href="#change-the-desktop-environment" title="Permanent link">&para;</a></h3>
+<p>PAI uses <a href="https://swaywm.org/">Sway</a>. If you want GNOME, KDE, or XFCE, swap the relevant packages in <code>config/package-lists/pai.list.chroot</code>, update the session entry under <code>config/includes.chroot_after_packages/etc/skel/.config/</code>, and replace the <code>0300-configure-desktop.hook.chroot</code> hook. Expect the ISO to grow by 1–2 GB for GNOME.</p>
+<h3 id="rebrand">Rebrand<a class="headerlink" href="#rebrand" title="Permanent link">&para;</a></h3>
+<p>Replace files in <code>branding/</code> (logos, wallpapers). The build copies them into <code>/usr/share/pai/</code> inside the ISO. For the Open WebUI name, edit <code>WEBUI_NAME=PAI</code> in <code>/etc/pai/open-webui.env</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Rebrand to your heart's content — the license permits it. The upstream project name "PAI" stays as-is in this repo (per project policy).</p>
+</div>
+<h2 id="reproducible-builds">Reproducible builds<a class="headerlink" href="#reproducible-builds" title="Permanent link">&para;</a></h2>
+<p>The same repo tree plus the same Debian snapshot <strong>should</strong> produce a bit-identical ISO. live-build supports reproducibility, but a handful of sources of nondeterminism creep in:</p>
+<ul>
+<li><strong>Package versions drift.</strong> <code>deb.debian.org</code> is a rolling mirror; yesterday's build of <code>bookworm</code> may pull newer patch versions than today's. Pin to a <code>snapshot.debian.org</code> mirror (edit <code>--parent-mirror-bootstrap</code> in <code>build.sh</code>) if you need byte-for-byte reproducibility.</li>
+<li><strong>Build timestamps.</strong> Some files embed the build date. Set <code>SOURCE_DATE_EPOCH</code> before running <code>build.sh</code>:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">SOURCE_DATE_EPOCH</span><span class="o">=</span><span class="k">$(</span>git<span class="w"> </span>log<span class="w"> </span>-1<span class="w"> </span>--pretty<span class="o">=</span>%ct<span class="k">)</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>sudo<span class="w"> </span>-E<span class="w"> </span>bash<span class="w"> </span>build.sh
+</code></pre></div>
+<ul>
+<li><strong>Locale and umask.</strong> Run builds with <code>LC_ALL=C.UTF-8</code> and <code>umask 022</code> for deterministic sort order and permissions.</li>
+<li><strong>Ollama model downloads.</strong> Ollama serves each model blob by a content-addressed hash, so a given tag is stable — but if a tag is moved upstream (e.g. <code>llama3.2:1b</code> is repackaged), your ISO changes.</li>
+</ul>
+<p>For security-critical verification, compare <code>SHA256SUMS</code> between your build and the official release. If they differ, diff the per-file manifests inside the squashfs:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>unsquashfs<span class="w"> </span>-l<span class="w"> </span>live-image-amd64.hybrid.iso<span class="w"> </span>&gt;<span class="w"> </span>local.manifest
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>diff<span class="w"> </span>local.manifest<span class="w"> </span>official.manifest
+</code></pre></div>
+<h2 id="testing-your-build-without-flashing-a-usb">Testing your build without flashing a USB<a class="headerlink" href="#testing-your-build-without-flashing-a-usb" title="Permanent link">&para;</a></h2>
+<p>QEMU is the fastest feedback loop. Two hardware-adjacent caveats:</p>
+<ul>
+<li><strong>Persistence and LUKS are ignored</strong> unless you also attach a writable disk image and label it correctly. See <a href="../../persistence/introduction/">Persistence</a>.</li>
+<li><strong>Wi-Fi and Bluetooth</strong> do not show up in a standard QEMU run. Use <code>virtio-net</code> for network and skip Wi-Fi testing until you flash to real hardware.</li>
+</ul>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:1"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Linux (KVM)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="c1"># amd64 hybrid ISO, 6 GB RAM, 4 vCPU, KVM acceleration</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>qemu-system-x86_64<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">    </span>-cdrom<span class="w"> </span>live-image-amd64.hybrid.iso<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">    </span>-m<span class="w"> </span><span class="m">6144</span><span class="w"> </span>-smp<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">    </span>-enable-kvm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="w">    </span>-vga<span class="w"> </span>virtio<span class="w"> </span>-display<span class="w"> </span>gtk,gl<span class="o">=</span>on
+</code></pre></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:1"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">macOS (UTM)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<ol>
+<li>Open UTM, click <strong>Create a New Virtual Machine → Virtualize</strong>.</li>
+<li>Choose <strong>Linux</strong>, pick <strong>Boot from ISO</strong> and select <code>live-image-arm64.hybrid.iso</code> on Apple Silicon or <code>live-image-amd64.hybrid.iso</code> on Intel Macs (emulation mode).</li>
+<li>Allocate 6 GB RAM, 4 cores, 20 GB virtual disk.</li>
+<li>Boot. First-boot walkthrough applies identically.</li>
+</ol>
+<p>See <a href="../../first-steps/starting-on-mac/">Starting on Mac</a> for full UTM setup.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:1"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">Windows (Hyper-V)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<p>Hyper-V boots hybrid ISOs as DVDs. Create a Generation 2 VM, disable Secure Boot (PAI does not ship Secure-Boot signed kernels), attach the ISO, and boot.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:1"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">Flash to USB</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block"></div>
+</div>
+</div>
+<p>Only after a successful QEMU boot. <strong>Double-check the device node</strong> — <code>dd</code> overwrites without asking.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="c1"># Linux</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>sudo<span class="w"> </span>dd<span class="w"> </span><span class="k">if</span><span class="o">=</span>live-image-amd64.hybrid.iso<span class="w"> </span><span class="nv">of</span><span class="o">=</span>/dev/sdX<span class="w"> </span><span class="nv">bs</span><span class="o">=</span>4M<span class="w"> </span><span class="nv">status</span><span class="o">=</span>progress<span class="w"> </span><span class="nv">conv</span><span class="o">=</span>fsync
+</code></pre></div>
+<p>On macOS use <code>diskutil list</code> then <code>sudo dd if=... of=/dev/rdiskN</code>. On Windows run <code>irm https://pai.direct/flash.ps1 | iex</code> in an elevated PowerShell, or use the Rufus graphical tool in <strong>DD image mode</strong> as an alternative.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Writing to the wrong <code>/dev/sdX</code> destroys the target drive. Always run <code>lsblk</code> immediately before <code>dd</code> and confirm the size and removable flag match your USB stick.</p>
+</div>
+<h2 id="common-build-failures">Common build failures<a class="headerlink" href="#common-build-failures" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Root cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>E: Unable to locate package X</code></td>
+<td>Package moved to backports or a PPA</td>
+<td>Enable the archive area in <code>build.sh</code>, or drop the package</td>
+</tr>
+<tr>
+<td><code>Failed to create chroot</code></td>
+<td>Out of disk space</td>
+<td><code>sudo lb clean --purge</code>, verify 30 GB free</td>
+</tr>
+<tr>
+<td><code>Hash Sum mismatch</code></td>
+<td>Corrupt package cache or mirror glitch</td>
+<td><code>sudo rm -rf cache/</code> and rebuild</td>
+</tr>
+<tr>
+<td><code>Unable to execute /usr/bin/lb</code></td>
+<td><code>live-build</code> not installed</td>
+<td><code>sudo apt install live-build</code></td>
+</tr>
+<tr>
+<td>Hook fails with <code>permission denied</code></td>
+<td>Hook missing executable bit</td>
+<td><code>chmod +x config/hooks/live/*.hook.chroot</code></td>
+</tr>
+<tr>
+<td>arm64 build hangs on <code>debootstrap</code></td>
+<td>Missing <code>qemu-user-static</code> and <code>binfmt-support</code></td>
+<td>Install both on the amd64 host</td>
+</tr>
+<tr>
+<td>Build stops at <code>lb binary</code> with "no space left"</td>
+<td><code>/tmp</code> or chroot filled the disk</td>
+<td>Rerun <code>build.sh</code> — cleanup between stages is aggressive, or mount extra scratch space</td>
+</tr>
+</tbody>
+</table>
+<h2 id="publishing-your-custom-iso">Publishing your custom ISO<a class="headerlink" href="#publishing-your-custom-iso" title="Permanent link">&para;</a></h2>
+<p>Once a build is green:</p>
+<ol>
+<li>Generate a checksum file:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>sha256sum<span class="w"> </span>live-image-*.hybrid.iso<span class="w"> </span>&gt;<span class="w"> </span>SHA256SUMS
+</code></pre></div>
+<ol>
+<li>
+<p>Host the ISO somewhere verifiable: GitHub Releases for small projects, or an object store (GCS, S3, R2, Backblaze B2) for public downloads. See <a href="../../ops-cloud-builders/">ops-cloud-builders.md</a> for the GCS publishing workflow PAI maintainers use.</p>
+</li>
+<li>
+<p>Document <strong>build provenance</strong> in your release notes: the exact commit hash, the Debian snapshot date, the build host, and the output SHA256. This is what lets downstream users verify what they are booting.</p>
+</li>
+</ol>
+<h2 id="frequently-asked-questions">Frequently asked questions<a class="headerlink" href="#frequently-asked-questions" title="Permanent link">&para;</a></h2>
+<h3 id="do-i-need-debian-to-build-pai">Do I need Debian to build PAI?<a class="headerlink" href="#do-i-need-debian-to-build-pai" title="Permanent link">&para;</a></h3>
+<p>A Debian 12 or Ubuntu 22.04+ host is the path of least resistance because <code>live-build</code> is in the Debian repos and is tested against matching package versions. You <strong>can</strong> build on other Debian-derived distros (Mint, Pop!_OS, MX Linux) but may hit subtle <code>live-build</code> version mismatches. Non-Debian Linux (Fedora, Arch) needs a Debian chroot or a VM — see the custom-VM tab above. See <a href="../../general/system-requirements/">System Requirements</a> for host-side hardware guidance.</p>
+<h3 id="can-i-build-pai-on-macos">Can I build PAI on macOS?<a class="headerlink" href="#can-i-build-pai-on-macos" title="Permanent link">&para;</a></h3>
+<p>Not directly. <code>live-build</code> is Debian-specific and depends on <code>debootstrap</code>, which needs Linux syscalls. Run a Debian VM in UTM, Parallels, or Lima (<code>brew install lima</code>) and build inside the VM. On Apple Silicon, targeting arm64 is native and fast; targeting amd64 from the same VM requires <code>qemu-user-static</code>. Many PAI contributors keep a small Lima VM around just for builds.</p>
+<h3 id="how-do-i-add-my-own-app-to-the-iso">How do I add my own app to the ISO?<a class="headerlink" href="#how-do-i-add-my-own-app-to-the-iso" title="Permanent link">&para;</a></h3>
+<p>Two choices. <strong>If it is packaged as a <code>.deb</code></strong>, add the package name to <code>config/package-lists/pai.list.chroot</code> and rebuild. <strong>If it is not packaged</strong>, drop the binary and config files into <code>config/includes.chroot_after_packages/</code> mirroring the target filesystem path (e.g. <code>.../usr/local/bin/my-app</code>). For anything that needs compilation, add a chroot hook under <code>config/hooks/live/</code> with a four-digit sort prefix that slots after <code>0100-install-ollama</code>. See <a href="#customizing-more-than-the-model">Customizing more than the model</a>.</p>
+<h3 id="how-long-does-a-build-take">How long does a build take?<a class="headerlink" href="#how-long-does-a-build-take" title="Permanent link">&para;</a></h3>
+<p>On a 16-core modern laptop with an SSD and a 100 Mbps link, a clean amd64 build runs <strong>30–45 minutes</strong>. On the GCP <code>n2-highcpu-96</code> builder, a clean build runs <strong>25–30 minutes</strong>. Incremental builds using the tar-pipe sync pattern complete in <strong>8–12 minutes</strong> because <code>lb bootstrap</code> and the apt download phase are skipped. arm64 cross-builds on an amd64 host are roughly 1.5–2x slower; native arm64 (Apple Silicon VM, GCP <code>t2a-standard-48</code>) matches amd64 times.</p>
+<h3 id="how-do-i-change-the-baked-in-model">How do I change the baked-in model?<a class="headerlink" href="#how-do-i-change-the-baked-in-model" title="Permanent link">&para;</a></h3>
+<p>Edit the <code>MODEL="..."</code> line in <code>config/hooks/live/0150-prepull-ollama-models.hook.chroot</code> and rebuild. The hook runs <code>ollama pull</code> inside the chroot during <code>lb chroot</code>, so whatever tag you set ends up in <code>/usr/share/ollama/.ollama/models/</code> in the final ISO. Remember: bigger model = bigger ISO. A 3B-parameter model adds ~2 GB; a 7B model adds ~4 GB. Full tutorial above.</p>
+<h3 id="can-i-build-pai-in-docker">Can I build PAI in Docker?<a class="headerlink" href="#can-i-build-pai-in-docker" title="Permanent link">&para;</a></h3>
+<p>Yes, with privileged mode. live-build needs to call <code>chroot</code>, <code>mount</code>, and loopback devices, which Docker normally blocks. Start a privileged Debian 12 container, mount the repo as a volume, and run <code>build.sh</code> inside. This is fragile and not the recommended path — a Debian VM gives you a cleaner environment with fewer surprises. A sample command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--privileged<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="w">    </span>-v<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/pai<span class="w"> </span>-w<span class="w"> </span>/pai<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="w">    </span>debian:bookworm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="w">    </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;apt update &amp;&amp; apt install -y live-build &amp;&amp; bash build.sh&#39;</span>
+</code></pre></div>
+<h3 id="how-do-i-test-my-build-without-flashing-a-usb">How do I test my build without flashing a USB?<a class="headerlink" href="#how-do-i-test-my-build-without-flashing-a-usb" title="Permanent link">&para;</a></h3>
+<p>QEMU on Linux, UTM on macOS, Hyper-V on Windows. Point the VM at the hybrid ISO as a boot medium, allocate 4 GB RAM minimum (6 GB is more comfortable for Ollama), and boot. Everything on the PAI desktop works in a VM except Wi-Fi, Bluetooth, and physical-hardware-only features. Persistence works if you attach a writable virtual disk and label it per <a href="../../persistence/introduction/">Persistence</a>. Full QEMU commands in <a href="#testing-your-build-without-flashing-a-usb">Testing your build without flashing a USB</a>.</p>
+<h3 id="why-is-my-iso-bigger-than-the-official-release">Why is my ISO bigger than the official release?<a class="headerlink" href="#why-is-my-iso-bigger-than-the-official-release" title="Permanent link">&para;</a></h3>
+<p>The single biggest lever is the pre-pulled model. Check <code>du -sh chroot/usr/share/ollama/.ollama/models/</code> before <code>lb binary</code>. Other offenders: uncleaned apt caches (check <code>chroot/var/cache/apt/archives/</code>), extra locales you forgot to purge, and accidentally shipping the <code>.git</code> directory via <code>config/includes.chroot_after_packages/</code>. <code>build.sh</code> runs a cleanup pass that normally catches these, but if you added your own hook that re-installs caches after the cleanup, size balloons.</p>
+<h3 id="is-a-pai-build-reproducible">Is a PAI build reproducible?<a class="headerlink" href="#is-a-pai-build-reproducible" title="Permanent link">&para;</a></h3>
+<p>Mostly. With <code>SOURCE_DATE_EPOCH</code> set, <code>LC_ALL=C.UTF-8</code>, a pinned <code>snapshot.debian.org</code> mirror, and a stable Ollama model tag, PAI builds are bit-identical across hosts. In practice the official release is rebuilt periodically to pick up security updates, so the SHA256 of the signed release ISO tracks the Debian package set at release time. See <a href="#reproducible-builds">Reproducible builds</a>.</p>
+<h2 id="related-documentation">Related documentation<a class="headerlink" href="#related-documentation" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../ops-cloud-builders/"><strong>Cloud Build Infrastructure</strong></a> — The internal runbook for the GCP builders (auth, start/stop, resize, cost hygiene)</li>
+<li><a href="../../general/how-pai-works/"><strong>How PAI Works</strong></a> — The boot flow, the live system, and how Ollama fits in at runtime</li>
+<li><a href="../../general/system-requirements/"><strong>System Requirements</strong></a> — Host-side requirements for both running and building PAI</li>
+<li><a href="../../general/features-included/"><strong>Features Included</strong></a> — Everything that ships in the default ISO, useful when deciding what to add or remove</li>
+<li><a href="../../ai/managing-models/"><strong>Managing Models</strong></a> — Pulling, pinning, and removing Ollama models at runtime</li>
+<li><a href="../../first-steps/first-boot-walkthrough/"><strong>First Boot Walkthrough</strong></a> — What to expect once you flash your custom ISO</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://x.com/nichxbt" target="_blank" rel="noopener" title="nichxbt on X" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/nirholas" target="_blank" rel="noopener" title="nirholas on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.instant", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

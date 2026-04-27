@@ -1,0 +1,4760 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Deep-dive into PAI's architecture: how a bootable USB runs local AI with Ollama and Open WebUI on Debian 12 + Sway, with zero installs and zero cloud calls.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.pai.direct/general/how-pai-works/">
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../features-included/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>How PAI Works — Architecture of a Private Offline AI Linux OS - PAI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/pai-theme.css">
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-30-second-overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="PAI Documentation" class="md-header__button md-logo" aria-label="PAI Documentation" data-md-component="logo">
+      
+  <img src="../../assets/pai-logo-white.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PAI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              How PAI Works — Architecture of a Private Offline AI Linux OS
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../first-steps/try-in-a-vm/" class="md-tabs__link">
+          
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../using-pai/" class="md-tabs__link">
+          
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ai/choosing-a-model/" class="md-tabs__link">
+          
+  
+  AI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../apps/password-management/" class="md-tabs__link">
+          
+  
+  Apps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../advanced/gpu-setup/" class="md-tabs__link">
+          
+  
+  Advanced
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../privacy/introduction-to-privacy/" class="md-tabs__link">
+          
+  
+  Privacy
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../examples/getting-started/" class="md-tabs__link">
+          
+  
+  Examples
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../PHILOSOPHY/" class="md-tabs__link">
+          
+  
+  About
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="PAI Documentation" class="md-nav__button md-logo" aria-label="PAI Documentation" data-md-component="logo">
+      
+  <img src="../../assets/pai-logo-white.png" alt="logo">
+
+    </a>
+    PAI Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    How PAI works
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    How PAI works
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-30-second-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      The 30-second overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-architecture-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      System architecture diagram
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boot-sequence-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boot sequence diagram
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-stack-layer-by-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      The stack, layer by layer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The stack, layer by layer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hardware
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bootloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bootloader
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kernel-and-initrd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kernel and initrd
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filesystem-live-boot-squashfs-tmpfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filesystem (live-boot + squashfs + tmpfs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base-os" class="md-nav__link">
+    <span class="md-ellipsis">
+      Base OS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#init-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Init system
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Networking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      Firewall
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Display server
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-bar-and-launcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status bar and launcher
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI runtime
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-user-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI user interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#browser" class="md-nav__link">
+    <span class="md-ellipsis">
+      Browser
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#privacy-tools-opt-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      Privacy tools (opt-in)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistence-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      Persistence (optional)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-filesystem-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How the filesystem works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-localhost-network-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How the localhost network works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-profile-system-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How the profile system works
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How the profile system works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#writing-a-custom-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Writing a custom profile
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-allocation-and-the-oom-killer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory allocation and the OOM killer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-update-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      The update model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pai-vs-tails-vs-qubes-vs-standard-debian" class="md-nav__link">
+    <span class="md-ellipsis">
+      PAI vs Tails vs Qubes vs standard Debian
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-inspect-the-running-pai-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorial: Inspect the running PAI system
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequently asked questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequently asked questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-debian-and-not-ubuntu-or-arch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Debian and not Ubuntu or Arch?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-sway-and-not-gnome-or-kde" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Sway and not GNOME or KDE?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-ollama-and-not-llamacpp-directly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Ollama and not llama.cpp directly?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-live-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is a live system?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-big-is-the-pai-iso" class="md-nav__link">
+    <span class="md-ellipsis">
+      How big is the PAI ISO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-modify-pai-or-build-my-own-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I modify PAI or build my own version?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-pai-use-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does PAI use Docker?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-to-my-ai-conversations-when-i-shut-down" class="md-nav__link">
+    <span class="md-ellipsis">
+      What happens to my AI conversations when I shut down?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-pai-work-without-an-internet-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does PAI work without an internet connection?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-is-pai-different-from-running-ollama-on-my-regular-os" class="md-nav__link">
+    <span class="md-ellipsis">
+      How is PAI different from running Ollama on my regular OS?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-run-pai-in-a-virtual-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I run PAI in a virtual machine?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features-included/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Features included
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../system-requirements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System requirements
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../warnings-and-limitations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Warnings and limitations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Getting started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/try-in-a-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Try in a VM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quickstart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../USB-FLASHING/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    USB flashing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/starting-on-mac/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Starting on Mac
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/starting-on-windows/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Starting on Windows
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/installing-and-booting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installing and booting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/using-raspberry-pi-imager/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Raspberry Pi Imager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/using-ventoy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Ventoy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/first-boot-walkthrough/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    First boot walkthrough
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/desktop-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Desktop basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/browser-installer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Browser installer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/shutting-down/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shutting down
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../using-pai/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using PAI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/basic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/advanced/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advanced usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command line
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Persistence
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Persistence
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/creating-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating persistence
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/unlocking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Unlocking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/backing-up/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Backing up
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build-in-cloud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Build in cloud
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/building-from-source/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Building from source
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../UPGRADING/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Upgrading
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MIGRATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AI
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            AI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/choosing-a-model/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Choosing a model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/managing-models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Managing models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/using-ollama/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Ollama
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/using-open-webui/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Open WebUI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Apps
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Apps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/password-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/encrypting-files-gpg/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Encrypting files (GPG)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/secure-delete/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure delete
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Advanced
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/gpu-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPU setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/gpu-passthrough/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPU passthrough (VMs)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/running-in-a-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Running in a VM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/boot-options/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Boot options
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/windows-package-managers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows package managers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/arch-linux/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Arch Linux (AUR)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/homebrew/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Homebrew (macOS/Linux)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Privacy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/introduction-to-privacy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/privacy-mode-tor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privacy mode (Tor)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/mac-address-anonymization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MAC address anonymization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/offline-mode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Offline mode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../privacy/tor-browser/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tor Browser
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Examples
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started example
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/local-ai-assistant/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Local AI assistant
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/crypto-cold-signing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Crypto cold signing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/travel-and-network-hardening/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Travel and network hardening
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/real-world-use-cases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-world use cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/guidelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guidelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/debugging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Debugging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/ci-cd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ops-cloud-builders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cloud builders runbook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agents overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/agent-registry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agent registry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/skill-catalog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Skill catalog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_1" id="__nav_11_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_1">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/components/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data flow
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/diagrams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../editions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Editions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Skills
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TOOLS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/keyboard-shortcuts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Keyboard shortcuts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_8" id="__nav_11_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_8">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/endpoints/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Endpoints
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/sdk/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SDK
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--experimental"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/cli-json-shapes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI JSON shapes
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            About
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PHILOSOPHY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Philosophy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../VISION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../VALUES/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Values
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../STRATEGY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../COMPARISON/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHANGELOG/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ETHICS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ethics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PRIVACY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ACCESSIBILITY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accessibility
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../governance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Governance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../INTERNATIONALIZATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internationalization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN_ISSUES/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Known issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RELEASE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MAINTAINERS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintainers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AUTHORS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CITATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Citation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ACKNOWLEDGMENTS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acknowledgments
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing-to-docs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing to docs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-30-second-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      The 30-second overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-architecture-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      System architecture diagram
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boot-sequence-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boot sequence diagram
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-stack-layer-by-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      The stack, layer by layer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The stack, layer by layer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hardware
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bootloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bootloader
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kernel-and-initrd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kernel and initrd
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filesystem-live-boot-squashfs-tmpfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filesystem (live-boot + squashfs + tmpfs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base-os" class="md-nav__link">
+    <span class="md-ellipsis">
+      Base OS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#init-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Init system
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Networking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      Firewall
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Display server
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-bar-and-launcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      Status bar and launcher
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI runtime
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-user-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      AI user interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#browser" class="md-nav__link">
+    <span class="md-ellipsis">
+      Browser
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#privacy-tools-opt-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      Privacy tools (opt-in)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistence-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      Persistence (optional)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-filesystem-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How the filesystem works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-localhost-network-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How the localhost network works
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-profile-system-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How the profile system works
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How the profile system works">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#writing-a-custom-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      Writing a custom profile
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-allocation-and-the-oom-killer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory allocation and the OOM killer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-update-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      The update model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pai-vs-tails-vs-qubes-vs-standard-debian" class="md-nav__link">
+    <span class="md-ellipsis">
+      PAI vs Tails vs Qubes vs standard Debian
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-inspect-the-running-pai-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorial: Inspect the running PAI system
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequently asked questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequently asked questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-debian-and-not-ubuntu-or-arch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Debian and not Ubuntu or Arch?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-sway-and-not-gnome-or-kde" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Sway and not GNOME or KDE?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-ollama-and-not-llamacpp-directly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Ollama and not llama.cpp directly?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-live-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is a live system?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-big-is-the-pai-iso" class="md-nav__link">
+    <span class="md-ellipsis">
+      How big is the PAI ISO?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-modify-pai-or-build-my-own-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I modify PAI or build my own version?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-pai-use-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does PAI use Docker?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-to-my-ai-conversations-when-i-shut-down" class="md-nav__link">
+    <span class="md-ellipsis">
+      What happens to my AI conversations when I shut down?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-pai-work-without-an-internet-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does PAI work without an internet connection?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-is-pai-different-from-running-ollama-on-my-regular-os" class="md-nav__link">
+    <span class="md-ellipsis">
+      How is PAI different from running Ollama on my regular OS?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-run-pai-in-a-virtual-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I run PAI in a virtual machine?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/nirholas/scroll-zoom-thing/edit/main/src/general/how-pai-works.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+  <h1>How PAI works</h1>
+
+<p>PAI is a bootable Debian 12 Linux system that lives entirely on a USB stick. You plug it in, boot from it, and run local AI models directly on your machine's hardware — nothing installs to the host computer, nothing reaches the cloud, and shutdown erases everything. This page is the definitive technical reference for how that works, layer by layer.</p>
+<p><img alt="The ephemeral architecture: RAM-disk execution, zero host-drive footprint" src="../../assets/slideshow/6.png" /></p>
+<p><img alt="Deployment strategy matrix: VM vs Native USB vs Raspberry Pi" src="../../assets/slideshow/5.png" /></p>
+<p>In this guide:
+- How a live USB system works and why nothing persists by default
+- The full software stack from hardware up, with links to each upstream project
+- What happens during the boot sequence, step by step
+- How the localhost network keeps AI traffic off the internet
+- How PAI profiles change your keybindings without removing any software
+- How memory is allocated and what happens when you run out
+- How PAI compares to Tails, Qubes OS, and standard Debian</p>
+<p><strong>Prerequisites</strong>: No experience with Linux internals required. If you have used PAI and want to understand what's happening under the hood, this page is for you.</p>
+<hr />
+<h2 id="the-30-second-overview">The 30-second overview<a class="headerlink" href="#the-30-second-overview" title="Permanent link">&para;</a></h2>
+<p>PAI is a <strong>live Linux system</strong>. A live system boots entirely into RAM from a read-only image. Your host machine's storage is never touched. When you shut down, RAM is cleared — your conversations, browser history, downloaded files, and any configuration changes vanish. The machine goes back to exactly the state it was in before you plugged in the USB.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>USB Stick (read-only squashfs image)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>         │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>         ▼
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  BIOS / UEFI firmware
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>         │  finds the USB, hands off to bootloader
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>         ▼
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  GRUB (UEFI) or ISOLINUX (BIOS)
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>         │  loads kernel + initrd into RAM
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>         ▼
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  Linux kernel + live-boot
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>         │  mounts squashfs, adds tmpfs overlay
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>         ▼
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  Debian 12 &quot;bookworm&quot; in RAM
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    ┌────┴────────────────────────────────────┐
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    │                                         │
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    ▼                                         ▼
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a> Ollama :11434                         Sway desktop
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a> (AI model runtime)                    + waybar + wofi
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    │
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    ▼
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a> Open WebUI :8080
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    │
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    ▼
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a> Firefox (auto-opens localhost:8080)
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    │
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    ▼
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a> You (offline — no cloud, no tracking)
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a> ─ ─ ─ ─ ─ ─ ─ ─ ─ optional ─ ─ ─ ─ ─ ─ ─ ─ ─
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a> UFW → Tor SOCKS proxy → internet (opt-in only)
+</code></pre></div>
+<hr />
+<h2 id="system-architecture-diagram">System architecture diagram<a class="headerlink" href="#system-architecture-diagram" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph TD
+    USB["USB Stick\n(squashfs image)"]
+    BL["Bootloader\nGRUB / ISOLINUX"]
+    K["Linux Kernel\n+ initrd + live-boot"]
+    FS["Filesystem in RAM\nsquashfs root + tmpfs overlay"]
+    SD["systemd\n(stripped live unit set)"]
+    NM["NetworkManager\n(wifi / ethernet)"]
+    OL["Ollama\nlocalhost:11434"]
+    OW["Open WebUI\nlocalhost:8080"]
+    SW["Sway WM\n+ waybar + wofi"]
+    FF["Firefox ESR\nauto-opens :8080"]
+    USR["You"]
+    TOR["Tor (opt-in)\nSOCKS5 proxy"]
+    NET["Internet"]
+
+    USB --&gt; BL --&gt; K --&gt; FS --&gt; SD
+    SD --&gt; NM
+    SD --&gt; OL
+    SD --&gt; SW
+    OL --&gt; OW
+    SW --&gt; FF
+    FF --&gt; OW
+    OW --&gt; USR
+    NM --&gt;|"optional"| TOR --&gt; NET
+    NM --&gt;|"direct (default)"| NET</code></pre>
+<hr />
+<h2 id="boot-sequence-diagram">Boot sequence diagram<a class="headerlink" href="#boot-sequence-diagram" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart TD
+    A([Power on]) --&gt; B{USB present\nand selected\nin boot order?}
+    B --&gt;|No| C[Host OS boots normally]
+    B --&gt;|Yes| D[BIOS/UEFI loads\nbootloader from USB]
+    D --&gt; E{UEFI or BIOS?}
+    E --&gt;|UEFI| F[GRUB 2]
+    E --&gt;|BIOS| G[ISOLINUX]
+    F --&gt; H[Load Linux kernel\n+ initrd into RAM]
+    G --&gt; H
+    H --&gt; I[live-boot mounts\nsquashfs as /\nplus tmpfs overlay]
+    I --&gt; J[systemd starts\nstripped unit set]
+    J --&gt; K[NetworkManager\nbrings up networking]
+    K --&gt; L[Ollama service starts\nloads llama3.2:1b]
+    L --&gt; M[Sway starts\nWayland compositor]
+    M --&gt; N[waybar launches\nstatus bar visible]
+    N --&gt; O[Firefox opens\nlocalhost:8080]
+    O --&gt; P([You are ready\n~15–30 seconds after POST])</code></pre>
+<hr />
+<h2 id="the-stack-layer-by-layer">The stack, layer by layer<a class="headerlink" href="#the-stack-layer-by-layer" title="Permanent link">&para;</a></h2>
+<p>This section walks the software stack from the hardware upward. Each layer links to its upstream project.</p>
+<h3 id="hardware">Hardware<a class="headerlink" href="#hardware" title="Permanent link">&para;</a></h3>
+<p>PAI runs on any x86-64 or ARM64 machine that can boot from USB. Ollama uses CPU inference by default; GPU acceleration is available for NVIDIA and AMD GPUs when the appropriate firmware is present. For the bare minimum, see the <a href="../system-requirements/">System Requirements</a> page.</p>
+<h3 id="bootloader">Bootloader<a class="headerlink" href="#bootloader" title="Permanent link">&para;</a></h3>
+<p>PAI ships two bootloaders on the same USB to cover both firmware types:</p>
+<ul>
+<li><strong><a href="https://www.gnu.org/software/grub/">GRUB 2</a></strong> handles UEFI systems (most hardware made after 2012).</li>
+<li><strong><a href="https://wiki.syslinux.org/wiki/index.php?title=ISOLINUX">ISOLINUX</a></strong> handles legacy BIOS systems.</li>
+</ul>
+<p>Both are embedded in the ISO image. No configuration is needed — the correct one is selected automatically by your firmware.</p>
+<h3 id="kernel-and-initrd">Kernel and initrd<a class="headerlink" href="#kernel-and-initrd" title="Permanent link">&para;</a></h3>
+<p>The Linux kernel version tracks Debian 12 stable. The <code>initrd</code> (initial RAM disk) contains the minimal environment needed to find and mount the USB during early boot. <strong><a href="https://salsa.debian.org/live-team/live-boot">live-boot</a></strong> — the Debian project's live-system tooling — runs inside the initrd to set up the RAM-based root filesystem.</p>
+<h3 id="filesystem-live-boot-squashfs-tmpfs">Filesystem (live-boot + squashfs + tmpfs)<a class="headerlink" href="#filesystem-live-boot-squashfs-tmpfs" title="Permanent link">&para;</a></h3>
+<p>This is the part that makes a live system live:</p>
+<ol>
+<li>live-boot finds the USB and mounts the <strong><a href="https://docs.kernel.org/filesystems/squashfs.html">squashfs</a></strong> image (<code>filesystem.squashfs</code>) read-only.</li>
+<li>It creates a <strong>tmpfs</strong> (RAM-backed) overlay on top of the squashfs using the <strong><a href="https://docs.kernel.org/filesystems/overlayfs.html">OverlayFS</a></strong> kernel driver.</li>
+<li>The combined view is mounted as <code>/</code>. Reads hit the squashfs; writes go to RAM only.</li>
+</ol>
+<p>The result: the USB is never written to during a session, and the entire working filesystem disappears when RAM is cleared at shutdown.</p>
+<h3 id="base-os">Base OS<a class="headerlink" href="#base-os" title="Permanent link">&para;</a></h3>
+<p><strong><a href="https://www.debian.org/releases/bookworm/">Debian 12 "Bookworm"</a></strong> — the current stable release. Debian was chosen for its stability, its long-established live-system tooling, its commitment to free software, and its massive package archive. The PAI build process starts from the official Debian live base and adds only what is needed.</p>
+<h3 id="init-system">Init system<a class="headerlink" href="#init-system" title="Permanent link">&para;</a></h3>
+<p><strong><a href="https://systemd.io/">systemd</a></strong> is the init system, but PAI disables units that are unnecessary or wrong for a live environment — no swap, no filesystem checks, no SSH by default. Running <code>systemctl list-units --state=running</code> on a booted system shows exactly which units are active.</p>
+<h3 id="networking">Networking<a class="headerlink" href="#networking" title="Permanent link">&para;</a></h3>
+<p><strong><a href="https://networkmanager.dev/">NetworkManager</a></strong> manages wired and wireless connections. The <code>nmtui</code> terminal UI lets you connect to Wi-Fi without leaving the terminal. PAI does not auto-connect to any network — joining a network is always an explicit user action.</p>
+<h3 id="firewall">Firewall<a class="headerlink" href="#firewall" title="Permanent link">&para;</a></h3>
+<p><strong><a href="https://launchpad.net/ufw">UFW</a></strong> (Uncomplicated Firewall) runs with a default-deny inbound policy. All AI traffic stays on localhost. No port is exposed to the local network unless you explicitly open one.</p>
+<h3 id="display-server">Display server<a class="headerlink" href="#display-server" title="Permanent link">&para;</a></h3>
+<p><strong><a href="https://wayland.freedesktop.org/">Wayland</a></strong> via <strong><a href="https://swaywm.org/">Sway</a></strong> — a tiling compositor that is a drop-in Wayland replacement for the i3 window manager. PAI uses Wayland exclusively; there is no X11 server running.</p>
+<h3 id="status-bar-and-launcher">Status bar and launcher<a class="headerlink" href="#status-bar-and-launcher" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><a href="https://github.com/Alexays/Waybar">waybar</a></strong> — the status bar showing time, battery, wifi, and app launchers.</li>
+<li><strong><a href="https://hg.sr.ht/~scoopta/wofi">wofi</a></strong> — the application launcher (bound to <code>$mod+d</code> by default).</li>
+</ul>
+<h3 id="ai-runtime">AI runtime<a class="headerlink" href="#ai-runtime" title="Permanent link">&para;</a></h3>
+<p><strong><a href="https://ollama.com/">Ollama</a></strong> is the AI model runtime. It is a single Go binary that:
+- Serves a REST API on <code>localhost:11434</code>
+- Manages model storage and loading
+- Handles CPU and GPU inference
+- Provides a <code>docker pull</code>-style <code>ollama pull</code> interface for downloading models</p>
+<p>Ollama starts as a systemd service at boot and pre-loads <code>llama3.2:1b</code> — the model baked into the ISO.</p>
+<h3 id="ai-user-interface">AI user interface<a class="headerlink" href="#ai-user-interface" title="Permanent link">&para;</a></h3>
+<p><strong><a href="https://github.com/open-webui/open-webui">Open WebUI</a></strong> is a Python/FastAPI web application that provides the chat interface at <code>localhost:8080</code>. It communicates only with the local Ollama instance — it makes no external requests.</p>
+<h3 id="browser">Browser<a class="headerlink" href="#browser" title="Permanent link">&para;</a></h3>
+<p><strong><a href="https://www.mozilla.org/en-US/firefox/enterprise/">Firefox ESR</a></strong> — the Extended Support Release. Firefox auto-opens to <code>localhost:8080</code> at login. ESR is used for stability over the multi-year life of a PAI release.</p>
+<h3 id="privacy-tools-opt-in">Privacy tools (opt-in)<a class="headerlink" href="#privacy-tools-opt-in" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><a href="https://www.torproject.org/">Tor</a></strong> — routes all outbound traffic through the Tor network when privacy mode is enabled.</li>
+<li><strong><a href="https://github.com/alobbs/macchanger">macchanger</a></strong> — randomizes the MAC address on boot to prevent device tracking on local networks.</li>
+</ul>
+<h3 id="persistence-optional">Persistence (optional)<a class="headerlink" href="#persistence-optional" title="Permanent link">&para;</a></h3>
+<p>A LUKS-encrypted second partition on the USB can be used to persist files, models, and configuration across reboots. This is opt-in and documented separately in the <a href="../../persistence/introduction/">Persistence guide</a>.</p>
+<hr />
+<h2 id="how-the-filesystem-works">How the filesystem works<a class="headerlink" href="#how-the-filesystem-works" title="Permanent link">&para;</a></h2>
+<p>Understanding the filesystem is essential for trusting the system.</p>
+<p>The ISO contains a compressed <strong>squashfs</strong> archive — think of it as a zip file that Linux can mount directly. squashfs is read-only by design; nothing can write to it. When PAI boots, live-boot mounts the squashfs as the root filesystem.</p>
+<p>But a read-only root is not usable — many programs need to write to <code>/var</code>, <code>/tmp</code>, <code>/home</code>, and <code>/etc</code>. live-boot solves this with an <strong>OverlayFS</strong>: a transparent layer that sits on top of the squashfs and redirects all writes to a tmpfs (a filesystem backed by RAM).</p>
+<p>From your perspective, the filesystem looks and behaves like a normal writable Debian system. Under the hood:
+- <strong>Reads</strong> come from squashfs (what was baked into the ISO).
+- <strong>Writes</strong> go to tmpfs (your RAM).</p>
+<p>When you reboot, the tmpfs is gone. The squashfs is unchanged. PAI is exactly as it was when it left the build server — every single time you boot.</p>
+<p>This is the same technique used by <strong><a href="https://tails.boum.org/">Tails</a></strong>, <strong><a href="https://puppylinux-woof-ce.github.io/">Puppy Linux</a></strong>, and <strong><a href="http://www.knopper.net/knoppix/">Knoppix</a></strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The squashfs image is compressed with zstd by default. Decompression happens on the fly as files are read. The CPU cost is minimal; the payoff is a smaller ISO and faster USB reads.</p>
+</div>
+<hr />
+<h2 id="how-the-localhost-network-works">How the localhost network works<a class="headerlink" href="#how-the-localhost-network-works" title="Permanent link">&para;</a></h2>
+<p>AI traffic in PAI never touches the network interface. Open WebUI and Ollama communicate exclusively over the loopback interface (<code>lo</code>) at <code>127.0.0.1</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>┌──────────────────────────────────────────────────────────┐
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>│                    Your Hardware (RAM)                    │
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│                                                          │
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│   Firefox                                                │
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│   (browser)                                              │
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│       │  HTTP GET localhost:8080                         │
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│       ▼                                                  │
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│  ┌────────────┐         ┌────────────────┐               │
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│  │ Open WebUI │─────────│    Ollama      │               │
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│  │  :8080     │  REST   │    :11434      │               │
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>│  │ (Python)   │  API    │    (Go)        │               │
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>│  └────────────┘         └───────┬────────┘               │
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>│                                 │                        │
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>│                         ┌───────▼────────┐               │
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>│                         │  llama3.2:1b   │               │
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>│                         │  (model file   │               │
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>│                         │   in RAM)      │               │
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>│                         └────────────────┘               │
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>│                                                          │
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>│  ─ ─ ─ ─ ─ ─ ─ ─ ─ optional path ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>│  Firefox → UFW → NetworkManager → [Tor] → internet       │
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>└──────────────────────────────────────────────────────────┘
+</code></pre></div>
+<p>UFW blocks all inbound connections. The only way traffic leaves the machine is through the browser making explicit web requests — and even that can be routed through Tor with a single command.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can verify the network listeners yourself with <code>ss -tulpen</code>. You will see Ollama on <code>127.0.0.1:11434</code> and Open WebUI on <code>127.0.0.1:8080</code> — and nothing on public interfaces.</p>
+</div>
+<hr />
+<h2 id="how-the-profile-system-works">How the profile system works<a class="headerlink" href="#how-the-profile-system-works" title="Permanent link">&para;</a></h2>
+<p>PAI ships with multiple <strong>profiles</strong> — configurations that change which applications are bound to keyboard shortcuts in Sway. Profiles do not install or remove software; all tools are always present in the squashfs.</p>
+<p>The active profile is loaded from <code>/etc/sway/profile.d/active.conf</code> when Sway starts. Swapping which file <code>active.conf</code> points to changes your keybindings:</p>
+<ul>
+<li><code>ai.conf</code> — Open WebUI, Ollama terminal, model management</li>
+<li><code>crypto.conf</code> — GPG, KeePassXC, secure-delete utilities</li>
+<li><code>privacy.conf</code> — Tor browser, network monitor, macchanger</li>
+</ul>
+<p>To see which profile is active:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>cat<span class="w"> </span>/etc/sway/profile.d/active.conf
+</code></pre></div>
+<p>To switch profiles, replace <code>active.conf</code> with a different profile file and reload Sway (<code>$mod+Shift+r</code>). Because all writes go to RAM, the switch lasts only for the current session unless you have persistence enabled.</p>
+<h3 id="writing-a-custom-profile">Writing a custom profile<a class="headerlink" href="#writing-a-custom-profile" title="Permanent link">&para;</a></h3>
+<p>A profile file is plain Sway config syntax. Minimum example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a># Custom profile: research tools
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>bindsym $mod+b exec firefox
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>bindsym $mod+n exec mousepad
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>bindsym $mod+t exec foot
+</code></pre></div>
+<p>Place it in <code>/etc/sway/profile.d/</code> and symlink it as <code>active.conf</code>.</p>
+<hr />
+<h2 id="memory-allocation-and-the-oom-killer">Memory allocation and the OOM killer<a class="headerlink" href="#memory-allocation-and-the-oom-killer" title="Permanent link">&para;</a></h2>
+<p>PAI is designed for machines with 8 GB RAM or more. Here is how that RAM is typically allocated in a session:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Approximate RAM use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linux kernel + live system</td>
+<td>~300 MB</td>
+</tr>
+<tr>
+<td>squashfs decompression cache</td>
+<td>~200–500 MB</td>
+</tr>
+<tr>
+<td>Sway + waybar + wofi</td>
+<td>~50 MB</td>
+</tr>
+<tr>
+<td>Firefox (idle)</td>
+<td>~300–600 MB</td>
+</tr>
+<tr>
+<td>Open WebUI (Python runtime)</td>
+<td>~200–400 MB</td>
+</tr>
+<tr>
+<td>llama3.2:1b model</td>
+<td>~900 MB–1.2 GB</td>
+</tr>
+<tr>
+<td>llama3.2:3b model</td>
+<td>~2.0–2.5 GB</td>
+</tr>
+<tr>
+<td>llama3.2:8b model</td>
+<td>~5.0–6.0 GB</td>
+</tr>
+</tbody>
+</table>
+<p>On a machine with 8 GB RAM, the default <code>llama3.2:1b</code> leaves roughly 4–5 GB for browser tabs and working memory — comfortable for most use. On 16 GB you can comfortably run an 8B model alongside a full browser and still have headroom. PAI uses RAM aggressively because that is how it stays fast and leaves zero trace on your disk — every byte of system state is right where you can see it.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>PAI does not configure a swap partition by default. If total memory use exceeds available RAM, the Linux OOM (out-of-memory) killer terminates the largest process — usually the AI model or the browser. You will see the application close unexpectedly. This is not a crash in the traditional sense; it is the kernel protecting system stability.</p>
+</div>
+<p>To check whether swap is active:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>swapon<span class="w"> </span>--show
+</code></pre></div>
+<p>If the output is empty, no swap is configured. Persistence mode lets you create a swap file on the encrypted partition.</p>
+<hr />
+<h2 id="the-update-model">The update model<a class="headerlink" href="#the-update-model" title="Permanent link">&para;</a></h2>
+<p>PAI is <strong>immutable</strong>. There is no <code>apt upgrade</code> that modifies the running system and persists across reboots. The squashfs is fixed at build time.</p>
+<p>"Updating" PAI means:</p>
+<ol>
+<li>Downloading a new ISO from the release page.</li>
+<li>Flashing it to the USB with the same tool you used initially (<code>flash.ps1</code> on Windows, <code>dd</code>, Etcher, or the graphical Rufus alternative).</li>
+<li>Rebooting.</li>
+</ol>
+<p>This is a deliberate design choice. Immutability means:
+- No dependency drift over time.
+- No broken system states from interrupted upgrades.
+- Every user of version X has exactly the same system.</p>
+<p>The cost is that you cannot install a package and have it survive a reboot without persistence mode. For a tool you need permanently, you either enable persistence and install there, or you request it be included in the next PAI release.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you have persistence enabled, your persistent partition survives re-flashing as long as the partition layout on the USB does not change. Your files and models are preserved even when you update the PAI base image.</p>
+</div>
+<hr />
+<h2 id="pai-vs-tails-vs-qubes-vs-standard-debian">PAI vs Tails vs Qubes vs standard Debian<a class="headerlink" href="#pai-vs-tails-vs-qubes-vs-standard-debian" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>PAI</th>
+<th>Tails</th>
+<th>Qubes OS</th>
+<th>Standard Debian</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Base</strong></td>
+<td>Debian 12</td>
+<td>Debian</td>
+<td>Fedora (dom0)</td>
+<td>Debian</td>
+</tr>
+<tr>
+<td><strong>Boot medium</strong></td>
+<td>USB (live)</td>
+<td>USB (live)</td>
+<td>Installed to disk</td>
+<td>Installed to disk</td>
+</tr>
+<tr>
+<td><strong>Primary purpose</strong></td>
+<td>Local private AI</td>
+<td>Anonymity / journalism</td>
+<td>Security isolation</td>
+<td>General-purpose OS</td>
+</tr>
+<tr>
+<td><strong>Tor</strong></td>
+<td>Opt-in</td>
+<td>Always on (mandatory)</td>
+<td>App-level (optional)</td>
+<td>Manual setup</td>
+</tr>
+<tr>
+<td><strong>AI tooling</strong></td>
+<td>Built-in (Ollama + Open WebUI)</td>
+<td>None</td>
+<td>None</td>
+<td>Manual install</td>
+</tr>
+<tr>
+<td><strong>Desktop</strong></td>
+<td>Sway (Wayland tiling)</td>
+<td>GNOME</td>
+<td>Xfce</td>
+<td>Your choice</td>
+</tr>
+<tr>
+<td><strong>Amnesic by default</strong></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No (persistent)</td>
+<td>No (persistent)</td>
+</tr>
+<tr>
+<td><strong>Persistence</strong></td>
+<td>Opt-in LUKS partition</td>
+<td>Opt-in LUKS partition</td>
+<td>Full disk encryption</td>
+<td>Full disk encryption</td>
+</tr>
+<tr>
+<td><strong>Hardware requirement</strong></td>
+<td>8 GB RAM, USB 3.0</td>
+<td>2 GB RAM</td>
+<td>16 GB RAM, SSD</td>
+<td>2 GB RAM</td>
+</tr>
+<tr>
+<td><strong>Threat model focus</strong></td>
+<td>AI privacy, data sovereignty</td>
+<td>Network surveillance</td>
+<td>Application compromise</td>
+<td>General use</td>
+</tr>
+</tbody>
+</table>
+<p>Tails and PAI share a Debian base and a live-USB amnesic design, but their goals diverge: Tails forces all traffic through Tor to protect against network surveillance, while PAI keeps AI traffic off the network entirely and treats Tor as an optional enhancement.</p>
+<p>Qubes OS takes a different approach — it runs every application in its own isolated virtual machine. This protects against application-level compromise but requires significantly more RAM and a more complex mental model.</p>
+<p>Standard Debian gives you maximum flexibility but requires you to install and configure everything yourself, and changes persist (for better and worse).</p>
+<hr />
+<h2 id="tutorial-inspect-the-running-pai-system">Tutorial: Inspect the running PAI system<a class="headerlink" href="#tutorial-inspect-the-running-pai-system" title="Permanent link">&para;</a></h2>
+<p>This tutorial walks you through verifying every architectural claim on this page using shell commands. No prior Linux experience is required — each command is explained.</p>
+<p><strong>Goal</strong>: Confirm that PAI is exactly what this page says it is.</p>
+<p><strong>What you need</strong>: A booted PAI session and the <code>foot</code> terminal emulator (press <code>$mod+Return</code> to open it).</p>
+<ol>
+<li><strong>Confirm the base OS</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cat<span class="w"> </span>/etc/os-release
+</code></pre></div>
+<p>Expected output:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>PRETTY_NAME=&quot;Debian GNU/Linux 12 (bookworm)&quot;
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>NAME=&quot;Debian GNU/Linux&quot;
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>VERSION_ID=&quot;12&quot;
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>VERSION=&quot;12 (bookworm)&quot;
+</code></pre></div></p>
+<p>This confirms PAI is built on Debian 12, not a derivative or rebranded distro.</p>
+<ol>
+<li><strong>Confirm you are running a live system</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>mount<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>overlay
+</code></pre></div>
+<p>Expected output (abbreviated):
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>overlay on / type overlay (rw,relatime,lowerdir=/run/live/rootfs/filesystem.squashfs/,upperdir=/run/live/overlay/rw,workdir=/run/live/overlay/work)
+</code></pre></div></p>
+<p>You can see the squashfs as <code>lowerdir</code> (read-only) and <code>upperdir</code> as the RAM overlay (writable). This is the OverlayFS described above.</p>
+<ol>
+<li><strong>Confirm nothing is installed to the host disk</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>lsblk
+</code></pre></div>
+<p>Expected output (example — will vary by machine):
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>sda      8:0    1  29.1G  0 disk
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>└─sda1   8:1    1  29.1G  0 part /run/live/medium
+</code></pre></div></p>
+<p>Your USB appears (likely <code>sda</code> or <code>sdb</code>). The host machine's internal drive should appear with no mount points — PAI has not touched it.</p>
+<ol>
+<li><strong>Confirm which systemd units are running</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>systemctl<span class="w"> </span>list-units<span class="w"> </span>--state<span class="o">=</span>running<span class="w"> </span>--no-pager
+</code></pre></div>
+<p>Look for <code>ollama.service</code> and <code>open-webui.service</code> in the list. You will also see <code>NetworkManager.service</code>, <code>sway.service</code>, and a small set of essential services. Compare this to a standard Debian install — the list is much shorter.</p>
+<ol>
+<li><strong>Confirm Ollama is listening on localhost only</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>ss<span class="w"> </span>-tulpen<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">11434</span>
+</code></pre></div>
+<p>Expected output:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>tcp   LISTEN 0   128   127.0.0.1:11434   0.0.0.0:*   users:((&quot;ollama&quot;,pid=...,fd=...))
+</code></pre></div></p>
+<p>The <code>127.0.0.1</code> confirms Ollama is bound to localhost. It is not reachable from the network.</p>
+<ol>
+<li><strong>Confirm Open WebUI is listening on localhost only</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>ss<span class="w"> </span>-tulpen<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">8080</span>
+</code></pre></div>
+<p>Expected output:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>tcp   LISTEN 0   128   127.0.0.1:8080   0.0.0.0:*   users:((&quot;python3&quot;,pid=...,fd=...))
+</code></pre></div></p>
+<ol>
+<li><strong>Confirm the firewall policy</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>status<span class="w"> </span>verbose
+</code></pre></div>
+<p>Expected output (abbreviated):
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Status: active
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>Logging: on (low)
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>Default: deny (incoming), allow (outgoing), disabled (routed)
+</code></pre></div></p>
+<p>Inbound is denied by default. Your AI traffic never enters from outside.</p>
+<ol>
+<li><strong>Check installed package count</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>dpkg<span class="w"> </span>-l<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l
+</code></pre></div>
+<p>PAI ships a curated package set. Compare this number to a full Debian desktop install (typically 1500–2500 packages) to see how lean the image is.</p>
+<ol>
+<li><strong>Check available and used RAM</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>free<span class="w"> </span>-h
+</code></pre></div>
+<p>Expected output (example):
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>              total        used        free      shared  buff/cache   available
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>Mem:           15Gi        3.2Gi       9.8Gi      512Mi       2.1Gi      11.7Gi
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>Swap:            0B          0B          0B
+</code></pre></div></p>
+<p>Note that swap is <code>0B</code> — no swap partition is configured by default.</p>
+<ol>
+<li>
+<p><strong>Confirm the active Sway profile</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>cat<span class="w"> </span>/etc/sway/profile.d/active.conf
+</code></pre></div>
+<p>This shows which profile is loaded. You can inspect other profiles in <code>/etc/sway/profile.d/</code> to see what each one configures.</p>
+</li>
+</ol>
+<p><strong>What you verified</strong>: The live filesystem, the localhost-only AI services, the firewall policy, the package footprint, and the memory model — all from the terminal, with no need to trust this documentation blindly.</p>
+<p><strong>Next steps</strong>: See <a href="../../privacy/introduction-to-privacy/">Privacy Mode</a> to learn how to route traffic through Tor, or <a href="../../models/">Managing Models</a> to pull larger models for more capable responses.</p>
+<hr />
+<h2 id="frequently-asked-questions">Frequently asked questions<a class="headerlink" href="#frequently-asked-questions" title="Permanent link">&para;</a></h2>
+<h3 id="why-debian-and-not-ubuntu-or-arch">Why Debian and not Ubuntu or Arch?<a class="headerlink" href="#why-debian-and-not-ubuntu-or-arch" title="Permanent link">&para;</a></h3>
+<p>Debian is the upstream for many live-system distributions, including Tails. It has the most mature live-boot tooling (<code>live-build</code>, <code>live-boot</code>, <code>live-config</code>) and a long release cycle that makes a stable, reproducible ISO feasible. Ubuntu adds a layer of changes on top of Debian that complicate live-system builds without adding value for PAI's use case. Arch is a rolling release — excellent for a daily driver, but poor for an immutable appliance that needs to produce identical ISOs months apart.</p>
+<h3 id="why-sway-and-not-gnome-or-kde">Why Sway and not GNOME or KDE?<a class="headerlink" href="#why-sway-and-not-gnome-or-kde" title="Permanent link">&para;</a></h3>
+<p>Sway starts in roughly one second and uses around 50 MB of RAM. GNOME uses 500 MB to 1 GB just for the shell. On a machine with 8 GB RAM, the difference matters — that extra RAM goes to your AI model. Sway also runs on Wayland natively, which is a better security boundary than the older X11 protocol. The tradeoff is a steeper initial learning curve; the keybindings follow i3 conventions documented in the <a href="../../reference/keyboard-shortcuts/">keyboard shortcuts reference</a>.</p>
+<h3 id="why-ollama-and-not-llamacpp-directly">Why Ollama and not llama.cpp directly?<a class="headerlink" href="#why-ollama-and-not-llamacpp-directly" title="Permanent link">&para;</a></h3>
+<p>Ollama wraps llama.cpp (and other backends) with a clean REST API, a model registry, and a <code>docker pull</code>-style CLI. Using Ollama means Open WebUI and any other tool can talk to the AI runtime over HTTP without knowing which backend is in use. llama.cpp is excellent but requires you to manage model files, quantizations, and server flags manually. Ollama handles that complexity.</p>
+<h3 id="what-is-a-live-system">What is a live system?<a class="headerlink" href="#what-is-a-live-system" title="Permanent link">&para;</a></h3>
+<p>A live system is a complete operating system that runs from a removable medium — a USB stick, a CD, or a virtual disk — without installing anything to the host machine. The OS loads into RAM at boot. All changes during the session are stored in RAM. When the system shuts down, RAM is cleared and the session disappears. Live systems have been used since the early 2000s for system rescue, privacy, and demonstration purposes. PAI builds on this established technique to provide an AI workstation that leaves no trace.</p>
+<h3 id="how-big-is-the-pai-iso">How big is the PAI ISO?<a class="headerlink" href="#how-big-is-the-pai-iso" title="Permanent link">&para;</a></h3>
+<p>The PAI ISO is typically 2–4 GB depending on which models are baked in. The base system without any models is around 1.5 GB. The <code>llama3.2:1b</code> model adds approximately 900 MB in quantized form. Larger models add proportionally more. Check the release page for the exact size of each release variant.</p>
+<h3 id="can-i-modify-pai-or-build-my-own-version">Can I modify PAI or build my own version?<a class="headerlink" href="#can-i-modify-pai-or-build-my-own-version" title="Permanent link">&para;</a></h3>
+<p>Yes. PAI is open source under the GPL v3. The build system is documented in <a href="../../advanced/building-from-source/">Building from Source</a>. You can fork the repository, add packages, change the default model, add a profile, and produce your own ISO using the same build pipeline. The build runs on standard Debian and is designed to be reproducible.</p>
+<h3 id="does-pai-use-docker">Does PAI use Docker?<a class="headerlink" href="#does-pai-use-docker" title="Permanent link">&para;</a></h3>
+<p>No. Ollama and Open WebUI run as native systemd services, not as Docker containers. Docker adds complexity, requires a daemon, and consumes additional RAM. Ollama is a single statically-linked Go binary that manages its own process lifecycle. Open WebUI is a Python application managed by systemd. The absence of Docker is intentional — it reduces the attack surface and the RAM footprint.</p>
+<h3 id="what-happens-to-my-ai-conversations-when-i-shut-down">What happens to my AI conversations when I shut down?<a class="headerlink" href="#what-happens-to-my-ai-conversations-when-i-shut-down" title="Permanent link">&para;</a></h3>
+<p>By default, everything is erased. Your conversation history, any models you pulled during the session, browser history, and all configuration changes are in RAM. Shutdown clears RAM. The next boot starts from the exact factory state. If you want conversations to persist, you need the optional <a href="../../persistence/introduction/">persistence layer</a>, which stores data on a LUKS-encrypted partition on the USB.</p>
+<h3 id="does-pai-work-without-an-internet-connection">Does PAI work without an internet connection?<a class="headerlink" href="#does-pai-work-without-an-internet-connection" title="Permanent link">&para;</a></h3>
+<p>Yes — that is the entire point. The <code>llama3.2:1b</code> model is baked into the ISO. Ollama and Open WebUI communicate over localhost. You can have a full AI session on an airplane with no wifi. An internet connection is only needed if you want to pull additional models during a session or browse the web.</p>
+<h3 id="how-is-pai-different-from-running-ollama-on-my-regular-os">How is PAI different from running Ollama on my regular OS?<a class="headerlink" href="#how-is-pai-different-from-running-ollama-on-my-regular-os" title="Permanent link">&para;</a></h3>
+<p>Running Ollama on your regular OS means your AI activity is mixed with everything else on that machine — browser history, installed apps, and the OS itself. PAI creates a clean, isolated environment where the only thing running is what PAI ships. When you shut down, nothing about the session remains. You also get a pre-configured interface (Open WebUI, profile system, privacy tools) without any setup work.</p>
+<h3 id="can-i-run-pai-in-a-virtual-machine">Can I run PAI in a virtual machine?<a class="headerlink" href="#can-i-run-pai-in-a-virtual-machine" title="Permanent link">&para;</a></h3>
+<p>Yes, with limitations. PAI boots and runs normally in VMs including UTM (macOS), VirtualBox, and QEMU. The main limitation is GPU acceleration: most VM configurations do not pass through the GPU, so inference runs on the CPU. For light use with <code>llama3.2:1b</code>, CPU inference is perfectly adequate. For larger models, bare-metal boot is recommended.</p>
+<hr />
+<h2 id="related-documentation">Related documentation<a class="headerlink" href="#related-documentation" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../system-requirements/"><strong>System Requirements</strong></a> — Minimum hardware needed to run PAI, including RAM, USB speed, and CPU recommendations</li>
+<li><a href="../../getting-started/"><strong>First Boot Walkthrough</strong></a> — What to expect the first time you boot PAI, from GRUB to Open WebUI</li>
+<li><a href="../../models/"><strong>Managing Models</strong></a> — How to pull, switch between, and remove Ollama models during a session</li>
+<li><a href="../../persistence/introduction/"><strong>Persistence</strong></a> — How to set up the optional LUKS-encrypted partition so your data survives reboots</li>
+<li><a href="../../privacy/introduction-to-privacy/"><strong>Privacy Mode</strong></a> — How to route all traffic through Tor and what that protects you from</li>
+<li><a href="../../advanced/building-from-source/"><strong>Building from Source</strong></a> — How to build your own PAI ISO from the repository</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://x.com/nichxbt" target="_blank" rel="noopener" title="nichxbt on X" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/nirholas" target="_blank" rel="noopener" title="nirholas on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.instant", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

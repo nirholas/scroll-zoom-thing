@@ -1,0 +1,4519 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Learn how PAI keeps AI prompts, queries, and files private. Threat model, the four privacy pillars, verification commands, and PAI vs Tails vs Qubes.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.pai.direct/privacy/introduction-to-privacy/">
+      
+      
+        <link rel="prev" href="../../advanced/homebrew/">
+      
+      
+        <link rel="next" href="../privacy-mode-tor/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>PAI Privacy Guide — How Offline AI Protects Your Data - PAI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/pai-theme.css">
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#what-does-privacy-mean-on-pai" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="PAI Documentation" class="md-header__button md-logo" aria-label="PAI Documentation" data-md-component="logo">
+      
+  <img src="../../assets/pai-logo-white.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PAI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              PAI Privacy Guide — How Offline AI Protects Your Data
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../general/how-pai-works/" class="md-tabs__link">
+          
+  
+  Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../first-steps/try-in-a-vm/" class="md-tabs__link">
+          
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../using-pai/" class="md-tabs__link">
+          
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ai/choosing-a-model/" class="md-tabs__link">
+          
+  
+  AI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../apps/password-management/" class="md-tabs__link">
+          
+  
+  Apps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../advanced/gpu-setup/" class="md-tabs__link">
+          
+  
+  Advanced
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  Privacy
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../examples/getting-started/" class="md-tabs__link">
+          
+  
+  Examples
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../development/setup/" class="md-tabs__link">
+          
+  
+  Development
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/overview/" class="md-tabs__link">
+          
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../PHILOSOPHY/" class="md-tabs__link">
+          
+  
+  About
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="PAI Documentation" class="md-nav__button md-logo" aria-label="PAI Documentation" data-md-component="logo">
+      
+  <img src="../../assets/pai-logo-white.png" alt="logo">
+
+    </a>
+    PAI Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/nirholas/scroll-zoom-thing" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    nirholas/scroll-zoom-thing
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Overview
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/how-pai-works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How PAI works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/features-included/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Features included
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/system-requirements/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System requirements
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../general/warnings-and-limitations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Warnings and limitations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Getting started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/try-in-a-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Try in a VM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quickstart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../USB-FLASHING/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    USB flashing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/starting-on-mac/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Starting on Mac
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/starting-on-windows/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Starting on Windows
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/installing-and-booting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installing and booting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/using-raspberry-pi-imager/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Raspberry Pi Imager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/using-ventoy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Ventoy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/first-boot-walkthrough/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    First boot walkthrough
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/desktop-basics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Desktop basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/browser-installer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Browser installer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-steps/shutting-down/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shutting down
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../using-pai/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using PAI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/basic/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/advanced/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Advanced usage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Command line
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Persistence
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Persistence
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/creating-persistence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating persistence
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/unlocking/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Unlocking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../persistence/backing-up/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Backing up
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deployment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build-in-cloud/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Build in cloud
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/building-from-source/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Building from source
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../UPGRADING/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Upgrading
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MIGRATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/troubleshooting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AI
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            AI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/choosing-a-model/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Choosing a model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/managing-models/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Managing models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/using-ollama/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Ollama
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ai/using-open-webui/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using Open WebUI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Apps
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Apps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/password-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Password management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/encrypting-files-gpg/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Encrypting files (GPG)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../apps/secure-delete/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Secure delete
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Advanced
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/gpu-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPU setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/gpu-passthrough/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GPU passthrough (VMs)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/running-in-a-vm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Running in a VM
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/boot-options/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Boot options
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/windows-package-managers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows package managers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/arch-linux/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Arch Linux (AUR)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced/homebrew/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Homebrew (macOS/Linux)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Privacy
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-privacy-mean-on-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      What does privacy mean on PAI?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-pai-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      The PAI threat model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The PAI threat model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-pai-protects-against" class="md-nav__link">
+    <span class="md-ellipsis">
+      What PAI protects against
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#threat-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Threat matrix
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-four-pillars-of-pai-privacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The four pillars of PAI privacy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The four pillars of PAI privacy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pillar-1-everything-runs-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pillar 1: Everything runs locally
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pillar-2-everything-lives-in-ram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pillar 2: Everything lives in RAM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pillar-3-network-privacy-is-layered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pillar 3: Network privacy is layered
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pillar-4-the-host-machine-sees-nothing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pillar 4: The host machine sees nothing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-traces-does-pai-leave" class="md-nav__link">
+    <span class="md-ellipsis">
+      What traces does PAI leave?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-privacy-toolbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      The privacy toolbox
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The privacy toolbox">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ufw-firewall-the-always-on-piece" class="md-nav__link">
+    <span class="md-ellipsis">
+      UFW firewall — the always-on piece
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-which-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use which tool
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-verify-your-privacy-claims-in-five-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorial: verify your privacy claims in five minutes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pai-vs-alternatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      PAI vs alternatives
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-pai-is-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      What PAI is not
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequently asked questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequently asked questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#does-pai-make-me-anonymous" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does PAI make me anonymous?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-my-isp-see-im-using-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can my ISP see I'm using PAI?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-using-tor-slow-everything-down" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does using Tor slow everything down?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-pai-safer-than-tails" class="md-nav__link">
+    <span class="md-ellipsis">
+      Is PAI safer than Tails?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-ai-models-leak-my-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can AI models leak my data?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-if-someone-steals-my-usb-stick" class="md-nav__link">
+    <span class="md-ellipsis">
+      What if someone steals my USB stick?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-pai-hipaagdpr-compliant" class="md-nav__link">
+    <span class="md-ellipsis">
+      Is PAI HIPAA/GDPR compliant?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-be-tracked-across-pai-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I be tracked across PAI sessions?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../privacy-mode-tor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privacy mode (Tor)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mac-address-anonymization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MAC address anonymization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../offline-mode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Offline mode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tor-browser/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tor Browser
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Examples
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting started example
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/local-ai-assistant/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Local AI assistant
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/crypto-cold-signing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Crypto cold signing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/travel-and-network-hardening/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Travel and network hardening
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/real-world-use-cases/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Real-world use cases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/guidelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guidelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/debugging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Debugging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/ci-cd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ops-cloud-builders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cloud builders runbook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agents overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/agent-registry/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Agent registry
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../agents/skill-catalog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Skill catalog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_1" id="__nav_11_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_1">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/components/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data flow
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/diagrams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../editions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Editions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../skills/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Skills
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../TOOLS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/keyboard-shortcuts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Keyboard shortcuts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_11_8" id="__nav_11_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11_8">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/endpoints/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Endpoints
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/sdk/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SDK
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--experimental"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/cli-json-shapes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI JSON shapes
+  </span>
+  
+    
+  
+  
+    <span class="md-status md-status--stable"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            About
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PHILOSOPHY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Philosophy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../VISION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../VALUES/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Values
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../STRATEGY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strategy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../COMPARISON/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Comparison
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHANGELOG/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ETHICS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ethics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PRIVACY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ACCESSIBILITY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accessibility
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../governance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Governance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../INTERNATIONALIZATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Internationalization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../KNOWN_ISSUES/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Known issues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../RELEASE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../MAINTAINERS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maintainers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../AUTHORS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CITATION/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Citation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ACKNOWLEDGMENTS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Acknowledgments
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing-to-docs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing to docs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-privacy-mean-on-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      What does privacy mean on PAI?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-pai-threat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      The PAI threat model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The PAI threat model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-pai-protects-against" class="md-nav__link">
+    <span class="md-ellipsis">
+      What PAI protects against
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#threat-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Threat matrix
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-four-pillars-of-pai-privacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      The four pillars of PAI privacy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The four pillars of PAI privacy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pillar-1-everything-runs-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pillar 1: Everything runs locally
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pillar-2-everything-lives-in-ram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pillar 2: Everything lives in RAM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pillar-3-network-privacy-is-layered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pillar 3: Network privacy is layered
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pillar-4-the-host-machine-sees-nothing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pillar 4: The host machine sees nothing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-traces-does-pai-leave" class="md-nav__link">
+    <span class="md-ellipsis">
+      What traces does PAI leave?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-privacy-toolbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      The privacy toolbox
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The privacy toolbox">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ufw-firewall-the-always-on-piece" class="md-nav__link">
+    <span class="md-ellipsis">
+      UFW firewall — the always-on piece
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-which-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to use which tool
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tutorial-verify-your-privacy-claims-in-five-minutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tutorial: verify your privacy claims in five minutes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pai-vs-alternatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      PAI vs alternatives
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-pai-is-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      What PAI is not
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequently asked questions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequently asked questions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#does-pai-make-me-anonymous" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does PAI make me anonymous?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-my-isp-see-im-using-pai" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can my ISP see I'm using PAI?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#does-using-tor-slow-everything-down" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does using Tor slow everything down?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-pai-safer-than-tails" class="md-nav__link">
+    <span class="md-ellipsis">
+      Is PAI safer than Tails?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-ai-models-leak-my-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can AI models leak my data?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-if-someone-steals-my-usb-stick" class="md-nav__link">
+    <span class="md-ellipsis">
+      What if someone steals my USB stick?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-pai-hipaagdpr-compliant" class="md-nav__link">
+    <span class="md-ellipsis">
+      Is PAI HIPAA/GDPR compliant?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-be-tracked-across-pai-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I be tracked across PAI sessions?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/nirholas/scroll-zoom-thing/edit/main/src/privacy/introduction-to-privacy.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+  <h1>Introduction</h1>
+
+<p><strong>PAI makes privacy the default, not the feature.</strong> Your AI, your keys, your OS — running on your hardware, in your pocket, answering to no one but you. This guide walks through exactly how that works, and gives you the commands to verify every claim in under five minutes.</p>
+<p>Your AI conversations should belong to you. Not to a cloud provider, not to a telemetry service, and not to a future employer poking through your browser history. <strong>PAI</strong> is a bootable USB Linux distribution that runs large language models entirely on your own hardware, keeps every byte of state in RAM by default, and ships with a layered network-privacy stack you control. This page explains exactly what PAI's privacy model protects against, where it stops, and how to verify every claim on this page in under five minutes.</p>
+<p><strong>The short version:</strong> PAI keeps your AI private by design. Prompts run on your hardware. Session state lives in RAM. The host disk stays untouched. Networking defaults to deny-inbound, randomized MAC, and one-command Tor when you want it. Every one of those claims is verifiable from the terminal in under five minutes — you don't have to take our word for any of it.</p>
+<p><img alt="Cloud AI vs intelligence without traces" src="../../assets/slideshow/2.png" /></p>
+<p><img alt="PAI privacy threat model matrix" src="../../assets/slideshow/9.png" /></p>
+<p>In this guide:
+- The PAI threat model: what is in scope, partially in scope, and out of scope
+- The four pillars of PAI privacy (local execution, RAM-only state, layered network privacy, host isolation)
+- The privacy toolbox: every privacy tool shipped in PAI and when to reach for it
+- A five-minute tutorial to verify PAI's privacy claims on your running system
+- How PAI compares to a regular laptop, Tails, Qubes, and a true air-gapped machine
+- What traces PAI does leave (because honesty beats marketing)</p>
+<p><strong>Prerequisites</strong>: PAI booted and running, or the willingness to take the commands on faith while you read. No security background required. If you have booted a live Linux USB before, you already know more than enough.</p>
+<hr />
+<h2 id="what-does-privacy-mean-on-pai">What does privacy mean on PAI?<a class="headerlink" href="#what-does-privacy-mean-on-pai" title="Permanent link">&para;</a></h2>
+<p>When most people say "private AI", they mean one of three different things: <strong>confidentiality</strong> (nobody else reads my prompts), <strong>anonymity</strong> (nobody knows the prompts came from me), and <strong>unlinkability</strong> (nobody can connect two of my sessions). PAI is designed to deliver strong <strong>confidentiality</strong> by default, opt-in <strong>network anonymity</strong> through Tor, and session-level <strong>unlinkability</strong> through the RAM-only live-system model.</p>
+<p>PAI is a private AI workstation, purpose-built for the job: running large models locally, keeping your keys on-device, and leaving no footprint on the hardware it boots. It sits alongside tools like Tails, Whonix, and Qubes, each of which solves a different problem. PAI is not a drop-in replacement for them, and this guide is written so you know exactly which battles PAI fights and which ones it does not.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want a one-sentence summary: PAI stops your AI prompts from leaving your machine, stops your host operating system from keeping a record, and lets you opt into Tor for network-level privacy. It does not make you anonymous to a determined network observer.</p>
+</div>
+<hr />
+<h2 id="the-pai-threat-model">The PAI threat model<a class="headerlink" href="#the-pai-threat-model" title="Permanent link">&para;</a></h2>
+<p>Every privacy product has a threat model: the list of adversaries it defends against. A product without a published threat model is selling vibes. Here is PAI's.</p>
+<h3 id="what-pai-protects-against">What PAI protects against<a class="headerlink" href="#what-pai-protects-against" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
+    U[You] --&gt; L1[Layer 1: Local execution&lt;br/&gt;Ollama + Open WebUI run on your CPU/GPU]
+    L1 --&gt; L2[Layer 2: RAM-only state&lt;br/&gt;Live Debian, read-only squashfs, RAM overlay]
+    L2 --&gt; L3[Layer 3: Host isolation&lt;br/&gt;Internal drives unmounted, host OS not running]
+    L3 --&gt; L4[Layer 4: Network hardening&lt;br/&gt;UFW deny-inbound, MAC randomization]
+    L4 --&gt; L5[Layer 5: Opt-in Tor privacy mode&lt;br/&gt;All outbound via Tor SOCKS + DNS]
+    L5 --&gt; W[World]
+    style L1 fill:#0f6b3c,color:#fff
+    style L2 fill:#0f6b3c,color:#fff
+    style L3 fill:#0f6b3c,color:#fff
+    style L4 fill:#0f6b3c,color:#fff
+    style L5 fill:#1f4d8c,color:#fff</code></pre>
+<p>Each layer is independent. If one layer fails or is bypassed, the others still hold. Tor is opt-in because many PAI users want speed and have no reason to obfuscate the fact that they are on the internet; when you do need it, <code>pai-privacy on</code> flips the whole stack.</p>
+<h3 id="threat-matrix">Threat matrix<a class="headerlink" href="#threat-matrix" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Threat</th>
+<th>In scope?</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloud AI providers reading your prompts</td>
+<td>Yes</td>
+<td>All models run locally via Ollama. Open WebUI never calls a cloud API.</td>
+</tr>
+<tr>
+<td>SaaS apps logging your queries</td>
+<td>Yes</td>
+<td>No SaaS in the default image. Local-only inference.</td>
+</tr>
+<tr>
+<td>Host operating system keeping a record (browser history, API keys, cache)</td>
+<td>Yes</td>
+<td>Booting PAI does not start your host OS. The host cannot log what it does not see.</td>
+</tr>
+<tr>
+<td>Forensic analysis of the host machine after use</td>
+<td>Yes</td>
+<td>Internal drives are not mounted. Nothing is written to them unless you explicitly do so.</td>
+</tr>
+<tr>
+<td>ISPs and network operators seeing what you research</td>
+<td>Partial</td>
+<td>UFW firewall + opt-in Tor privacy mode. ISP still sees encrypted traffic volume.</td>
+</tr>
+<tr>
+<td>Browser fingerprinting</td>
+<td>Partial</td>
+<td>Tor Browser is included for this use case. Default Firefox is not anti-fingerprinting.</td>
+</tr>
+<tr>
+<td>MAC-address tracking on untrusted Wi-Fi</td>
+<td>Yes</td>
+<td><code>macchanger</code> randomizes your MAC at every boot.</td>
+</tr>
+<tr>
+<td>Passive traffic-analysis of Tor circuits</td>
+<td>Partial</td>
+<td>Tor provides best-effort defense. A global passive adversary can still correlate.</td>
+</tr>
+<tr>
+<td>Physical RAM capture after shutdown</td>
+<td>Partial</td>
+<td>Memory wipe on shutdown clears RAM. No defense against a cold-boot attack mid-session.</td>
+</tr>
+<tr>
+<td>Nation-state adversary with physical device access</td>
+<td>No</td>
+<td>Out of scope. Use Tails, Qubes, or an air-gapped machine.</td>
+</tr>
+<tr>
+<td>Hardware keyloggers, BIOS rootkits, hypervisor implants</td>
+<td>No</td>
+<td>Out of scope. PAI cannot protect against compromised hardware below the OS.</td>
+</tr>
+<tr>
+<td>Hiding that you are a PAI user</td>
+<td>No</td>
+<td>The USB stick itself is evidence. PAI does not disguise itself.</td>
+</tr>
+<tr>
+<td>Strong cross-session anonymity against a Tor-capable adversary</td>
+<td>No</td>
+<td>Use Tails. PAI is not an anonymity platform.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>PAI is not Tails. Tails is built from the ground up for anonymity, with years of adversarial review. If your threat model includes law enforcement, targeted state surveillance, or any adversary willing to run a traffic-correlation attack, use <a href="https://tails.net">Tails</a>. PAI complements Tails; it does not replace it.</p>
+</div>
+<hr />
+<h2 id="the-four-pillars-of-pai-privacy">The four pillars of PAI privacy<a class="headerlink" href="#the-four-pillars-of-pai-privacy" title="Permanent link">&para;</a></h2>
+<p>PAI's privacy model rests on four architectural decisions. Each is independently verifiable from the terminal.</p>
+<h3 id="pillar-1-everything-runs-locally">Pillar 1: Everything runs locally<a class="headerlink" href="#pillar-1-everything-runs-locally" title="Permanent link">&para;</a></h3>
+<p>There is no cloud AI in PAI. <strong>Ollama</strong> processes every prompt on your CPU or GPU. <strong>Open WebUI</strong> is the web front end that talks to <code>localhost:11434</code> over HTTP; it never makes an outbound request tied to your prompts. The default image contains no analytics agent, no telemetry service, no crash reporter, and no "optional" phone-home.</p>
+<p>You can verify this. The following command lists every process that is listening for a network connection on a running PAI system:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Show every listening socket, the process, and the user that owns it</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sudo<span class="w"> </span>ss<span class="w"> </span>-tulpen
+</code></pre></div>
+<p>Expected output (abridged):
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Netid State   Local Address:Port    Process
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>tcp   LISTEN  127.0.0.1:11434       users:((&quot;ollama&quot;,pid=812,fd=3))
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>tcp   LISTEN  127.0.0.1:8080        users:((&quot;open-webui&quot;,pid=941,fd=6))
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>tcp   LISTEN  127.0.0.1:9050        users:((&quot;tor&quot;,pid=1033,fd=5))
+</code></pre></div></p>
+<p>Every listener is bound to <code>127.0.0.1</code>. Nothing is exposed on the external interface. If a future PAI release ever adds a listener on <code>0.0.0.0</code>, you will see it here before anyone else.</p>
+<h3 id="pillar-2-everything-lives-in-ram">Pillar 2: Everything lives in RAM<a class="headerlink" href="#pillar-2-everything-lives-in-ram" title="Permanent link">&para;</a></h3>
+<p>PAI boots from a read-only squashfs image, and every write lands on a RAM-backed overlay. Your chat history with llama3.2, the browser tabs you left open, the Wi-Fi password you typed, the document you drafted in LibreOffice: all of it lives in volatile memory and nowhere else. When you shut down, it is gone.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>┌─────────────────────────────────────────────┐
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>│  RAM overlay (volatile)                     │
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>│    your writes, chat history, browser state │
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>│  ────────────────────────────────────────── │
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>│  Read-only squashfs (immutable)             │
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>│    /usr, /bin, shipped configs              │
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>│  ────────────────────────────────────────── │
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>│  USB device (mounted read-only)             │
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>└─────────────────────────────────────────────┘
+</code></pre></div>
+<p>The persistence layer is opt-in. If you do not set up a LUKS-encrypted persistence partition, every PAI session starts as a fresh installation. This is called <strong>amnesia</strong>, and it is one of the most powerful privacy properties a system can have.</p>
+<h3 id="pillar-3-network-privacy-is-layered">Pillar 3: Network privacy is layered<a class="headerlink" href="#pillar-3-network-privacy-is-layered" title="Permanent link">&para;</a></h3>
+<p>PAI does not assume the network is hostile. It also does not assume it is friendly.</p>
+<ul>
+<li><strong>UFW firewall</strong>: deny-inbound by default. Nothing listens on the external interface; nothing can connect in.</li>
+<li><strong>MAC randomization</strong>: <code>macchanger</code> rewrites your wireless MAC at every boot, so public Wi-Fi access points cannot link your sessions.</li>
+<li><strong>Opt-in Tor privacy mode</strong>: <code>pai-privacy on</code> routes every outbound TCP connection through Tor, including DNS, so there are no DNS leaks.</li>
+<li><strong>Offline mode</strong>: <code>pai-privacy offline</code> drops all outbound traffic. When you need to work on a confidential document with zero chance of exfiltration, this is the command.</li>
+</ul>
+<h3 id="pillar-4-the-host-machine-sees-nothing">Pillar 4: The host machine sees nothing<a class="headerlink" href="#pillar-4-the-host-machine-sees-nothing" title="Permanent link">&para;</a></h3>
+<p>This is the pillar that surprises people. When you boot PAI, your host operating system is not running. Windows is not running. macOS is not running. Your host Linux install is not running. They cannot log your activity because they are asleep on disk.</p>
+<p>PAI does not auto-mount internal drives. If you want to read from the host's SSD, you have to explicitly mount it, and you will have to type a password to do so. If you never mount it, you never touch it, and when you unplug the USB stick and reboot, the host has no record that you were there.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This is the single biggest privacy win over "install a private AI on my laptop". Your laptop already has a browser cache, Spotlight index, recent-files list, swap file, and a dozen logs that will remember what you did. PAI makes all of that irrelevant by not booting the host OS in the first place.</p>
+</div>
+<hr />
+<h2 id="what-traces-does-pai-leave">What traces does PAI leave?<a class="headerlink" href="#what-traces-does-pai-leave" title="Permanent link">&para;</a></h2>
+<p>Honesty beats marketing. PAI does leave traces. Here are all of them.</p>
+<table>
+<thead>
+<tr>
+<th>Location</th>
+<th>What stays</th>
+<th>How to mitigate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The USB stick</td>
+<td>The PAI ISO itself; persistence partition if you created one</td>
+<td>Encrypt persistence with <a href="../../persistence/introduction/">LUKS</a>; keep the stick physically secure</td>
+</tr>
+<tr>
+<td>Internal drives on the host</td>
+<td>Nothing, unless you explicitly mount and write to one</td>
+<td>Do not mount host drives; use the <a href="../../apps/secure-delete/">secure-delete</a> tools if you do</td>
+</tr>
+<tr>
+<td>The local network</td>
+<td>Your MAC (randomized) and the fact that a device joined the AP</td>
+<td>Use privacy mode + Tor for traffic content; accept that the AP sees the join</td>
+</tr>
+<tr>
+<td>Your ISP</td>
+<td>Encrypted traffic volume and timing</td>
+<td>Privacy mode hides destinations; volume and timing are still observable</td>
+</tr>
+<tr>
+<td>System RAM (briefly)</td>
+<td>Secrets, keys, chat history — while the system is running</td>
+<td>The memory wipe on shutdown clears this; do not leave PAI running unattended</td>
+</tr>
+<tr>
+<td>Router logs</td>
+<td>DHCP lease with your randomized MAC and hostname</td>
+<td>Set a generic hostname; router still logs the lease</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>"Leaves no trace" is a statement about the host machine and the PAI ISO, not the network. Your router and your ISP see the same kind of metadata they always do. Tor mitigates destination metadata; it does not hide that you used the internet.</p>
+</div>
+<hr />
+<h2 id="the-privacy-toolbox">The privacy toolbox<a class="headerlink" href="#the-privacy-toolbox" title="Permanent link">&para;</a></h2>
+<p>PAI ships a curated set of privacy tools. The table below is the definitive index.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What it does</th>
+<th>When to use</th>
+<th>Default state</th>
+<th>Detail doc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Privacy Mode (Tor)</td>
+<td>Routes all outbound TCP + DNS through Tor</td>
+<td>Researching something sensitive; using PAI on untrusted Wi-Fi</td>
+<td>Off</td>
+<td><a href="../privacy-mode-tor/">Privacy mode</a></td>
+</tr>
+<tr>
+<td>MAC Anonymization</td>
+<td>Rewrites your wireless MAC at every boot</td>
+<td>Public Wi-Fi, coffee shops, airports</td>
+<td>On</td>
+<td><a href="../mac-address-anonymization/">MAC anonymization</a></td>
+</tr>
+<tr>
+<td>Offline Mode</td>
+<td>Drops all outbound network traffic</td>
+<td>Handling a confidential document; running local AI with zero network risk</td>
+<td>Off</td>
+<td><a href="../offline-mode/">Offline mode</a></td>
+</tr>
+<tr>
+<td>Memory Wipe</td>
+<td>Overwrites RAM before power-off</td>
+<td>Every shutdown, automatically</td>
+<td>On</td>
+<td><a href="../../first-steps/shutting-down/">Shutting down</a></td>
+</tr>
+<tr>
+<td>UFW Firewall</td>
+<td>Deny-all inbound; allow outbound</td>
+<td>Always</td>
+<td>On</td>
+<td>See the firewall section below</td>
+</tr>
+<tr>
+<td>Secure Delete</td>
+<td>Shreds files on external drives</td>
+<td>Cleaning up files on a mounted external disk</td>
+<td>Available, manual</td>
+<td><a href="../../apps/secure-delete/">Secure delete</a></td>
+</tr>
+<tr>
+<td>GnuPG</td>
+<td>Encrypts files for storage and email</td>
+<td>Sending anything sensitive; long-term storage</td>
+<td>Available, manual</td>
+<td><a href="../../apps/encrypting-files-gpg/">Encrypting files with GPG</a></td>
+</tr>
+<tr>
+<td>KeePassXC</td>
+<td>Local password manager</td>
+<td>Any password you type more than once</td>
+<td>Available, manual</td>
+<td><a href="../../apps/password-management/">Password management</a></td>
+</tr>
+<tr>
+<td>LUKS</td>
+<td>Disk encryption for persistence and external drives</td>
+<td>Persistence partition; encrypted USB data disk</td>
+<td>Available, manual</td>
+<td><a href="../../persistence/introduction/">Persistence</a></td>
+</tr>
+<tr>
+<td>Tor Browser</td>
+<td>Browser with anti-fingerprinting and Tor routing</td>
+<td>Browsing the web with anonymity</td>
+<td>Installed, manual launch</td>
+<td>Project site</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ufw-firewall-the-always-on-piece">UFW firewall — the always-on piece<a class="headerlink" href="#ufw-firewall-the-always-on-piece" title="Permanent link">&para;</a></h3>
+<p>PAI ships with <code>ufw</code> configured and enabled. The default rules are:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Show the firewall status and active rules</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>status<span class="w"> </span>verbose
+</code></pre></div>
+<p>Expected output:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Status: active
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Logging: on (low)
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Default: deny (incoming), allow (outgoing), deny (routed)
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>New profiles: skip
+</code></pre></div></p>
+<p>Nothing inbound gets through. Nothing on your machine offers a service to the outside world. If you need to change this (rare; for example, to SSH into your PAI system from another laptop on the same LAN), <code>sudo ufw allow 22/tcp</code> will do it, and the change lives only in the current RAM session unless you have persistence enabled.</p>
+<hr />
+<h2 id="when-to-use-which-tool">When to use which tool<a class="headerlink" href="#when-to-use-which-tool" title="Permanent link">&para;</a></h2>
+<p>Privacy is a spectrum, and the right tool depends on what you are defending against.</p>
+<ul>
+<li><strong>Local AI work on an offline laptop</strong> → The default image is enough. UFW is on, the host OS is asleep, nothing leaves the machine.</li>
+<li><strong>Browsing the web + running local AI</strong> → Default image plus privacy mode if the network is untrusted.</li>
+<li><strong>Researching something sensitive that you do not want tied to your identity</strong> → Privacy mode on, use Tor Browser, do not log into accounts that are linked to your real identity.</li>
+<li><strong>Writing a confidential document with zero network risk</strong> → Offline mode on. Nothing outbound. Nothing inbound. Full amnesia on shutdown.</li>
+<li><strong>Strong adversary-model anonymity (journalism, activism under a hostile government)</strong> → Use <a href="https://tails.net">Tails</a>, not PAI. Tails is purpose-built for that threat model.</li>
+<li><strong>Long-running projects that need persistent data</strong> → LUKS-encrypted persistence partition, and still flip privacy mode on for any sensitive session.</li>
+</ul>
+<hr />
+<h2 id="tutorial-verify-your-privacy-claims-in-five-minutes">Tutorial: verify your privacy claims in five minutes<a class="headerlink" href="#tutorial-verify-your-privacy-claims-in-five-minutes" title="Permanent link">&para;</a></h2>
+<p>A privacy product that cannot be verified is a marketing page. PAI ships every tool you need to check whether the system is doing what this doc claims. Run these commands on a live PAI session.</p>
+<p><strong>Goal</strong>: confirm that (1) only local listeners are open, (2) the firewall is deny-inbound, (3) your MAC is randomized, and (4) Tor is routing correctly when privacy mode is on.</p>
+<p><strong>What you need</strong>: a booted PAI session with a terminal open.</p>
+<ol>
+<li><strong>List every listening socket on the machine.</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># -t TCP, -u UDP, -l listening, -p process, -e extended, -n numeric</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>sudo<span class="w"> </span>ss<span class="w"> </span>-tulpen
+</code></pre></div>
+<p>Every row should show <code>127.0.0.1:*</code> or <code>[::1]:*</code>. If you see <code>0.0.0.0:*</code> on a service you did not start, that is a problem. Report it.</p>
+<ol>
+<li><strong>Verify the firewall is active and denying inbound.</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>status<span class="w"> </span>verbose
+</code></pre></div>
+<p>Look for <code>Status: active</code> and <code>Default: deny (incoming)</code>. Those two lines are the core of PAI's network posture.</p>
+<ol>
+<li><strong>Confirm your MAC address has been randomized.</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Show every network interface and its current hardware address</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>ip<span class="w"> </span>link<span class="w"> </span>show
+</code></pre></div>
+<p>Expected output (abridged):
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>2: wlp2s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 ...
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    link/ether 5a:8d:42:7f:91:c3 brd ff:ff:ff:ff:ff:ff
+</code></pre></div></p>
+<p>Check the MAC against a sticker on your laptop if you have one. On PAI, it will not match: <code>macchanger</code> has replaced it.</p>
+<ol>
+<li><strong>Turn privacy mode on and confirm Tor is running.</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Enable Tor-routed privacy mode</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>pai-privacy<span class="w"> </span>on
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Confirm the Tor daemon is active</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>systemctl<span class="w"> </span>status<span class="w"> </span>tor
+</code></pre></div>
+<p>Look for <code>Active: active (running)</code>.</p>
+<ol>
+<li><strong>Prove your traffic is actually going through Tor.</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Ask Tor&#39;s own check service over the SOCKS proxy</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>curl<span class="w"> </span>--socks5-hostname<span class="w"> </span>localhost:9050<span class="w"> </span>https://check.torproject.org/api/ip
+</code></pre></div>
+<p>Expected output:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span><span class="nt">&quot;IsTor&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="nt">&quot;IP&quot;</span><span class="p">:</span><span class="s2">&quot;185.220.101.42&quot;</span><span class="p">}</span>
+</code></pre></div></p>
+<p><code>"IsTor":true</code> is what you want. If you get <code>false</code>, Tor is not intercepting. Flip privacy mode off and on again, and retry.</p>
+<p><strong>What just happened?</strong> You independently confirmed, from your own shell, that PAI's four outermost privacy layers are doing exactly what this page promised. You did not have to trust this doc. You verified it.</p>
+<p><strong>Next steps</strong>: Read the <a href="../privacy-mode-tor/">privacy mode deep dive</a> for the full set of flags, or jump to <a href="../mac-address-anonymization/">MAC anonymization</a> to see how the MAC rotation is implemented.</p>
+<hr />
+<h2 id="pai-vs-alternatives">PAI vs alternatives<a class="headerlink" href="#pai-vs-alternatives" title="Permanent link">&para;</a></h2>
+<p>Every privacy tool is a trade-off. PAI is not the right answer for every threat model. Here is an honest comparison.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Regular laptop</th>
+<th>PAI</th>
+<th>Tails</th>
+<th>Qubes OS</th>
+<th>Air-gapped machine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runs local AI out of the box</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No (possible, manual)</td>
+<td>Depends</td>
+</tr>
+<tr>
+<td>Host OS sees your activity</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>Partial (compartment-dependent)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Amnesic by default</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Tor routing</td>
+<td>No</td>
+<td>Opt-in</td>
+<td>Always-on</td>
+<td>Via Whonix compartment</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Strong anonymity</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes (with Whonix)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Compartmentalization between tasks</td>
+<td>No</td>
+<td>No</td>
+<td>Limited</td>
+<td>Yes (VM-per-task)</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Runs on most hardware</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Limited (strict HCL)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Setup effort</td>
+<td>None</td>
+<td>Low (flash + boot)</td>
+<td>Low</td>
+<td>High</td>
+<td>Very high</td>
+</tr>
+<tr>
+<td>Good for:</td>
+<td>General use</td>
+<td>Local private AI</td>
+<td>Anonymity</td>
+<td>High-security compartmentalized work</td>
+<td>True offline work</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>PAI and Tails are not competitors. A significant number of PAI users also run Tails for different tasks. PAI is for "I want to use an AI model without a cloud provider reading my prompts." Tails is for "I am a journalist and my threat model includes a state actor."</p>
+</div>
+<hr />
+<h2 id="what-pai-is-not">What PAI is not<a class="headerlink" href="#what-pai-is-not" title="Permanent link">&para;</a></h2>
+<p>To close the loop: PAI is not a Tor distribution, not a Qubes replacement, not a substitute for an air-gapped machine, and not an anonymity platform. It is an AI workstation that respects your privacy. That phrase is doing real work.</p>
+<ul>
+<li>If you need <strong>anonymity</strong>, use <a href="https://tails.net">Tails</a>.</li>
+<li>If you need <strong>strong compartmentalization</strong>, use <a href="https://qubes-os.org">Qubes OS</a>.</li>
+<li>If you need <strong>true air-gap</strong>, buy a second laptop, remove the Wi-Fi card, and never plug it into a network.</li>
+<li>If you want <strong>local AI without a cloud provider in the loop, on any machine you have, with no trace left on the host</strong>, use PAI.</li>
+</ul>
+<p>Pick the tool that matches the job. Stack them when you need to.</p>
+<hr />
+<h2 id="frequently-asked-questions">Frequently asked questions<a class="headerlink" href="#frequently-asked-questions" title="Permanent link">&para;</a></h2>
+<h3 id="does-pai-make-me-anonymous">Does PAI make me anonymous?<a class="headerlink" href="#does-pai-make-me-anonymous" title="Permanent link">&para;</a></h3>
+<p>Not by default, and not fully even with privacy mode on. PAI gives you strong <strong>confidentiality</strong> (your prompts and files stay on your hardware) and opt-in <strong>network privacy</strong> through Tor. Anonymity against a sophisticated adversary requires Tails, which is built specifically for that threat model. If you are a journalist, activist, or anyone with a targeted-adversary threat model, use Tails.</p>
+<h3 id="can-my-isp-see-im-using-pai">Can my ISP see I'm using PAI?<a class="headerlink" href="#can-my-isp-see-im-using-pai" title="Permanent link">&para;</a></h3>
+<p>Your ISP can see that your machine is on the internet and can see the volume and timing of your encrypted traffic. They cannot see which apps you are using or which websites you visit if privacy mode is on, because everything outbound is tunneled through Tor. The fact that you are using Tor is observable to your ISP, but the contents and destinations are not. There is nothing on the wire that says "this is PAI."</p>
+<h3 id="does-using-tor-slow-everything-down">Does using Tor slow everything down?<a class="headerlink" href="#does-using-tor-slow-everything-down" title="Permanent link">&para;</a></h3>
+<p>Yes, meaningfully. Tor typically adds 200–1500 ms of latency per request and caps effective bandwidth at a few megabits per second. This is fine for browsing, research, and sending email, and painful for video calls or large downloads. Leave privacy mode off when you do not need it. Flip it on when you do. The whole point of making it opt-in is that you pay the performance cost only on the sessions that need it.</p>
+<h3 id="is-pai-safer-than-tails">Is PAI safer than Tails?<a class="headerlink" href="#is-pai-safer-than-tails" title="Permanent link">&para;</a></h3>
+<p>For privacy against cloud AI providers, yes, because Tails does not ship a local LLM stack. For network anonymity against a state-level adversary, no. Tails is the better choice. The two systems target different threat models, and many users run both: PAI when they want local AI, Tails when they want anonymity.</p>
+<h3 id="can-ai-models-leak-my-data">Can AI models leak my data?<a class="headerlink" href="#can-ai-models-leak-my-data" title="Permanent link">&para;</a></h3>
+<p>Locally run models cannot exfiltrate prompts because they have no network access to a model provider. Ollama runs the model on your hardware and sends the output back to <code>localhost</code>. The only way data leaves your machine is if you paste the output into a network app yourself. Verify with <code>sudo ss -tulpen</code> and confirm the Ollama listener is bound to <code>127.0.0.1</code>.</p>
+<h3 id="what-if-someone-steals-my-usb-stick">What if someone steals my USB stick?<a class="headerlink" href="#what-if-someone-steals-my-usb-stick" title="Permanent link">&para;</a></h3>
+<p>If you have no persistence partition, the stick contains only the public PAI ISO, which is the same file thousands of other people have downloaded. There is nothing personal on it. If you have a persistence partition, it is LUKS-encrypted: without your passphrase, the data is inaccessible. Use a strong passphrase, and if the threat is credible, the right answer is secure physical destruction of the stick, not reliance on encryption alone.</p>
+<h3 id="is-pai-hipaagdpr-compliant">Is PAI HIPAA/GDPR compliant?<a class="headerlink" href="#is-pai-hipaagdpr-compliant" title="Permanent link">&para;</a></h3>
+<p>PAI is a technology, not a compliance program. It gives you architectural properties (local processing, amnesia, no telemetry) that make compliance dramatically easier than with cloud-based AI, but compliance is always about how you use the tool and the organizational controls around it. For HIPAA, you still need the usual BAAs, access controls, audit logs, and employee training. PAI removes the largest single risk (cloud-AI data handling); it does not remove your compliance work.</p>
+<h3 id="can-i-be-tracked-across-pai-sessions">Can I be tracked across PAI sessions?<a class="headerlink" href="#can-i-be-tracked-across-pai-sessions" title="Permanent link">&para;</a></h3>
+<p>By default, no. Each PAI session boots fresh: a new MAC address, a new RAM overlay, no cookies or accounts from last time. If you log into the same website with the same credentials in two sessions, that website links the sessions by your login, not by PAI. If you enable the persistence partition, persistent state (by design) crosses sessions. Persistence is a trade-off between convenience and unlinkability; you choose.</p>
+<hr />
+<h2 id="related-documentation">Related documentation<a class="headerlink" href="#related-documentation" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../privacy-mode-tor/"><strong>Privacy mode (Tor)</strong></a> — Deep dive on how <code>pai-privacy on</code> routes all outbound traffic through Tor with no DNS leaks</li>
+<li><a href="../mac-address-anonymization/"><strong>MAC address anonymization</strong></a> — How PAI randomizes your hardware MAC at every boot and why it matters on public Wi-Fi</li>
+<li><a href="../offline-mode/"><strong>Offline mode</strong></a> — The zero-network lockdown for handling confidential documents</li>
+<li><a href="../../first-steps/shutting-down/"><strong>Shutting down safely</strong></a> — Memory wipe, persistence handling, and how PAI leaves the host untouched</li>
+<li><a href="../../persistence/introduction/"><strong>Persistence</strong></a> — Optional LUKS-encrypted persistence partition for long-running projects</li>
+<li><a href="../../apps/secure-delete/"><strong>Secure delete</strong></a> — Shredding files when you have to write to an external drive</li>
+<li><a href="../../apps/encrypting-files-gpg/"><strong>Encrypting files with GPG</strong></a> — Long-term file encryption and signed email</li>
+<li><a href="../../general/how-pai-works/"><strong>How PAI works</strong></a> — The architecture under the hood, end to end</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://x.com/nichxbt" target="_blank" rel="noopener" title="nichxbt on X" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/nirholas" target="_blank" rel="noopener" title="nirholas on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.instant", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
