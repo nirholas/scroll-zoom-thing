@@ -66,6 +66,7 @@ markdown_extensions:
       custom_checkbox: true
 
 extra:
+  generator: false
   social:
     - icon: fontawesome/brands/x-twitter
       link: https://x.com/nichxbt
