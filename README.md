@@ -18,6 +18,8 @@ If you have ever wondered "how do they do that thing where the background drifts
 - [Converting images to AVIF](#converting-images-to-avif)
 - [Tuning depth, crop, and composition](#tuning-depth-crop-and-composition)
 - [Deploying to GitHub Pages](#deploying-to-github-pages)
+- [Deploying to Vercel](#deploying-to-vercel)
+- [Deploying to Cloudflare Pages](#deploying-to-cloudflare-pages)
 - [Agent skills bundled with this repo](#agent-skills-bundled-with-this-repo)
 - [Browser support and accessibility](#browser-support-and-accessibility)
 - [Performance notes](#performance-notes)
@@ -211,6 +213,61 @@ mkdocs gh-deploy --force
 This builds the site and pushes it to the `gh-pages` branch. For CI-based deploys (recommended for real projects), see [`docs/github-pages.md`](docs/github-pages.md), which includes a ready-to-use GitHub Actions workflow.
 
 If you deploy to a custom domain, drop a `CNAME` file in `docs/` and MkDocs will carry it through the build.
+
+## Deploying to Vercel
+
+Vercel works well for MkDocs sites: Python runtime, fast global CDN, automatic preview deployments on every PR, and free TLS for custom domains. The PAI docs site at `docs.pai.direct` is deployed this way.
+
+The minimal `vercel.json`:
+
+```json
+{
+  "buildCommand": "pip install -r requirements.txt && mkdocs build",
+  "outputDirectory": "_site",
+  "installCommand": "echo skip",
+  "headers": [
+    {
+      "source": "/assets/hero/(.*).avif",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
+}
+```
+
+Then either deploy from the CLI:
+
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+Or connect the repo in the Vercel dashboard for automatic deploys on every push to `main`. PRs get unique preview URLs.
+
+For the full guide — security headers, custom domains, Python version pinning, edge cache verification, and troubleshooting — see [`docs/vercel.md`](docs/vercel.md).
+
+## Deploying to Cloudflare Pages
+
+Cloudflare Pages offers unlimited bandwidth on the free tier and a global edge network. It supports MkDocs builds out of the box if you set the Python version.
+
+Connect the repo in the Cloudflare Pages dashboard with these build settings:
+
+- **Build command**: `pip install -r requirements.txt && mkdocs build`
+- **Build output directory**: `_site`
+- **Environment variable**: `PYTHON_VERSION=3.12`
+
+For one-off direct uploads, use Wrangler:
+
+```bash
+npm i -g wrangler
+mkdocs build
+wrangler pages deploy _site --project-name scroll-zoom-thing
+```
+
+Cloudflare Pages gives you preview URLs for every branch, free TLS, and the option to offload large hero images to Cloudflare R2 for even cheaper storage.
+
+For the full guide — `_redirects` and `_headers` files, R2 integration, Pages Functions, Cloudflare Access, and Web Analytics — see [`docs/cloudflare.md`](docs/cloudflare.md).
 
 ## Agent skills bundled with this repo
 

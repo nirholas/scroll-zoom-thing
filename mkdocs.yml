@@ -27,5 +27,8 @@ nav:
   - MkDocs Skills: mkdocs-skills.md
   - Agents: agents.md
   - Advanced CSS: advanced-css.md
-  - GitHub Pages: github-pages.md
+  - Deploy:
+      - GitHub Pages: github-pages.md
+      - Vercel: vercel.md
+      - Cloudflare Pages: cloudflare.md
 
