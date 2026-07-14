@@ -815,4 +815,4 @@ The bundled example content (PAI documentation) is from the [PAI](https://github
 
 ## License
 
-MIT. See [`LICENSE`](LICENSE) if present, or treat the contents as MIT until one is added.
+All rights reserved. See [LICENSE](LICENSE).
