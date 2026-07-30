@@ -827,3 +827,10 @@ The bundled example content (PAI documentation) is from the [PAI](https://github
 ## License
 
 All rights reserved. See [LICENSE](LICENSE).
+
+## Documentation
+
+Full documentation site: **https://nirholas.github.io/scroll-zoom-thing/**
+
+- [Getting started](docs/getting-started.md) covers install and first run.
+- [Examples](docs/examples.md) has copy-paste snippets.
