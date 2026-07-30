@@ -2,7 +2,11 @@
 
 > A pure-CSS 3D parallax MkDocs Material template. No JavaScript, no scroll listeners, no animation frame loops. Just `perspective`, `translateZ`, and `scale()`, plus a handful of AVIF layers, wired into the browser's own scroll rendering.
 
-The repository is a working production site — the docs you see when you build it are [docs.pai.direct](https://docs.pai.direct), included verbatim as a real-world example of the parallax pattern in use. Replace the content in `src/` with your own and you have a cinematic, depth-driven docs site for your own project.
+**Live demo:** [scroll-zoom-thing.pages.dev](https://scroll-zoom-thing.pages.dev) (this repository, built and deployed to Cloudflare Pages).
+
+The repository is a working production site. The docs you see when you build it are the [PAI](https://github.com/nirholas/PAI) documentation, included verbatim as a real-world example of the parallax pattern in use. Replace the content in `src/` with your own and you have a cinematic, depth-driven docs site for your own project.
+
+> The `pai.direct` and `docs.pai.direct` domains are offline while hosting is being migrated, so PAI links in this README point at the GitHub repository instead.
 
 > **Working with an AI agent? Read [`AGENTS.md`](AGENTS.md) first.** It is a tool-neutral operator's manual covering the mental model, decision tree, nine workflows (clone, hero copy, artwork, depth tuning, sections, pages, nav, palette, deploy), verification checklist, and common mistakes. There are also [`templates/`](templates/) starters and a [`scripts/new-site.sh`](scripts/new-site.sh) scaffolder that produces a new project in under a minute.
 
@@ -65,7 +69,7 @@ Click any button above. Each deploys this repository as-is, with the PAI docs as
 
 1. **No JavaScript drives the parallax.** The depth effect is the browser's native 3D projection of `translateZ`-positioned elements inside a `perspective` scrolling container. There is no `requestAnimationFrame` loop, no scroll event handler, nothing fires per frame. The compositor does the work.
 2. **AVIF layers, four planes deep.** Four panoramic AVIF images stacked at depths 8, 5, 2, 1 give a perceptible parallax range without bloating asset weight beyond ~600 KB total.
-3. **Production-tested.** The site you build from this repository is the live documentation site for [PAI](https://pai.direct), an open-source bootable Linux distribution for offline AI. It is not a toy. It is the same code rendering [docs.pai.direct](https://docs.pai.direct) every day.
+3. **Production-tested.** The site you build from this repository is the documentation site for [PAI](https://github.com/nirholas/PAI), an open-source bootable Linux distribution for offline AI. It is not a toy. The same code renders the deployed build at [scroll-zoom-thing.pages.dev](https://scroll-zoom-thing.pages.dev).
 
 The hero scroll feels cinematic because it is cinematic. It is the same projection math a 3D rendering engine uses to put objects at depth — applied to scroll position instead of camera position.
 
@@ -240,7 +244,14 @@ mkdir -p docs/assets/hero
 mkdir -p docs/assets/stylesheets
 ```
 
-### 3. Copy `overrides/home.html` and `docs/assets/stylesheets/home.css` from this repo
+### 3. Copy the two parallax files out of this repo
+
+This repository sets `docs_dir: src`, so the two files live at `overrides/home.html` and `src/assets/stylesheets/home.css`. In a stock MkDocs project (default `docs_dir: docs`) they land at:
+
+```
+overrides/home.html                    ← copy of overrides/home.html
+docs/assets/stylesheets/home.css       ← copy of src/assets/stylesheets/home.css
+```
 
 These two files contain the entire parallax implementation. Drop them into your project unchanged.
 
@@ -651,7 +662,7 @@ The hero is one parallax group. You can add more groups below it, each with thei
 
 This pattern works for any docs site that wants a cinematic landing without taking on a JavaScript framework. Real and proposed use cases:
 
-- **Open-source project landing pages.** Replace generic GitHub README → docs site with something memorable. The PAI docs at [docs.pai.direct](https://docs.pai.direct) is the production reference.
+- **Open-source project landing pages.** Replace generic GitHub README → docs site with something memorable. The [PAI](https://github.com/nirholas/PAI) docs bundled in `src/` are the production reference.
 - **Product documentation.** Internal docs, API references, or end-user guides where the homepage doubles as marketing.
 - **Personal portfolios.** Use the hero as a self-introduction, the rest as a CV or project list.
 - **Conference and event sites.** Speaker bios, schedules, FAQ — the hero sets atmosphere, the docs section handles logistics.

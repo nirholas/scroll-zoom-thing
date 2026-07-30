@@ -347,7 +347,7 @@ Refresh, confirm copy renders. Click both CTAs; confirm they navigate to existin
 
 ### Steps
 
-1. **Decide your scene.** You need 4 layers, depth-sortable. See [`agents/image-agent.md`](agents/image-agent.md) for the detailed prompt strategy.
+1. **Decide your scene.** You need 4 layers, depth-sortable. See [`agents/image-agent.md`](https://github.com/nirholas/scroll-zoom-thing/blob/main/agents/image-agent.md) for the detailed prompt strategy.
 
 2. **Generate or source the layers.** Each layer is a 4096×2304 (or wider 16:5 panoramic) PNG. Layer 1 is opaque (the background). Layers 2–4 have transparent backgrounds.
 
@@ -415,7 +415,7 @@ Plus, optionally, `:root { --md-parallax-perspective: 2.5rem }` in `home.css`.
 
 ### Use the slash command
 
-If you are Claude Code, the [tune-layers skill](skills/tune-layers/SKILL.md) automates this:
+If you are Claude Code, the [tune-layers skill](https://github.com/nirholas/scroll-zoom-thing/blob/main/skills/tune-layers/SKILL.md) automates this:
 
 ```
 /tune-layers
@@ -532,7 +532,7 @@ Each `<section>` can set its own `data-md-color-scheme`. Material picks up the a
 
 - **Filenames:** lowercase-kebab-case, no underscores, no trailing slashes.
 - **Title:** the H1 in the markdown becomes the nav label *if* the YAML omits the label. Set the label explicitly in `mkdocs.yml` for control.
-- **Length:** there's no minimum, but pages under 100 words feel like stubs. Stub pages should explicitly say "Coming soon — see [related](related.md)."
+- **Length:** there's no minimum, but pages under 100 words feel like stubs. Stub pages should explicitly say `"Coming soon, see [related](related.md)."`
 - **Frontmatter:** optional. Use `---\ntitle: ...\ndescription: ...\n---` if you need explicit `<title>` and meta description override.
 
 ---
@@ -1320,20 +1320,22 @@ A short, blunt list. Each item has been a real mistake.
 <a id="pointers"></a>
 ## 28. Pointers to deeper docs
 
+The minimal template ships only `README.md`, this file, `HERO_ARTWORK.md`, `mkdocs.yml`, `overrides/`, and `src/`. Everything else below lives in the upstream `scroll-zoom-thing` repository and is linked there.
+
 | Doc | Topic |
 |---|---|
 | [`README.md`](README.md) | Project overview, public-facing |
-| [`CLAUDE.md`](CLAUDE.md) | Claude Code-specific guidance (defers to this file) |
-| [`GEMINI.md`](GEMINI.md) | Gemini-specific guidance (defers to this file) |
-| [`llms.txt`](llms.txt) | Curated index for LLM crawlers (llmstxt.org standard) |
-| [`llms-full.txt`](llms-full.txt) | Longer-form LLM context |
-| [`skills/setup-parallax/SKILL.md`](skills/setup-parallax/SKILL.md) | Scaffolding the parallax from zero |
-| [`skills/tune-layers/SKILL.md`](skills/tune-layers/SKILL.md) | Diagnosing visual problems |
-| [`skills/convert-images/SKILL.md`](skills/convert-images/SKILL.md) | PNG→AVIF pipeline |
-| [`skills/generate-prompts/SKILL.md`](skills/generate-prompts/SKILL.md) | AI prompts for hero artwork |
-| [`agents/parallax-agent.md`](agents/parallax-agent.md) | Parallax-focused agent persona |
-| [`agents/image-agent.md`](agents/image-agent.md) | Imagery-focused agent persona |
-| [`templates/README.md`](templates/README.md) | The templates system |
+| [`CLAUDE.md`](https://github.com/nirholas/scroll-zoom-thing/blob/main/CLAUDE.md) | Claude Code-specific guidance (defers to this file) |
+| [`GEMINI.md`](https://github.com/nirholas/scroll-zoom-thing/blob/main/GEMINI.md) | Gemini-specific guidance (defers to this file) |
+| [`llms.txt`](https://github.com/nirholas/scroll-zoom-thing/blob/main/llms.txt) | Curated index for LLM crawlers (llmstxt.org standard) |
+| [`llms-full.txt`](https://github.com/nirholas/scroll-zoom-thing/blob/main/llms-full.txt) | Longer-form LLM context |
+| [`skills/setup-parallax/SKILL.md`](https://github.com/nirholas/scroll-zoom-thing/blob/main/skills/setup-parallax/SKILL.md) | Scaffolding the parallax from zero |
+| [`skills/tune-layers/SKILL.md`](https://github.com/nirholas/scroll-zoom-thing/blob/main/skills/tune-layers/SKILL.md) | Diagnosing visual problems |
+| [`skills/convert-images/SKILL.md`](https://github.com/nirholas/scroll-zoom-thing/blob/main/skills/convert-images/SKILL.md) | PNG→AVIF pipeline |
+| [`skills/generate-prompts/SKILL.md`](https://github.com/nirholas/scroll-zoom-thing/blob/main/skills/generate-prompts/SKILL.md) | AI prompts for hero artwork |
+| [`agents/parallax-agent.md`](https://github.com/nirholas/scroll-zoom-thing/blob/main/agents/parallax-agent.md) | Parallax-focused agent persona |
+| [`agents/image-agent.md`](https://github.com/nirholas/scroll-zoom-thing/blob/main/agents/image-agent.md) | Imagery-focused agent persona |
+| [`templates/README.md`](https://github.com/nirholas/scroll-zoom-thing/blob/main/templates/README.md) | The templates system |
 | [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) | Underlying theme reference |
 | [pymdown-extensions](https://facelessuser.github.io/pymdown-extensions/) | Markdown extensions enabled |
 | [llmstxt.org](https://llmstxt.org) | The `llms.txt` standard |

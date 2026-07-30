@@ -532,7 +532,7 @@ Each `<section>` can set its own `data-md-color-scheme`. Material picks up the a
 
 - **Filenames:** lowercase-kebab-case, no underscores, no trailing slashes.
 - **Title:** the H1 in the markdown becomes the nav label *if* the YAML omits the label. Set the label explicitly in `mkdocs.yml` for control.
-- **Length:** there's no minimum, but pages under 100 words feel like stubs. Stub pages should explicitly say "Coming soon — see [related](related.md)."
+- **Length:** there's no minimum, but pages under 100 words feel like stubs. Stub pages should explicitly say `"Coming soon, see [related](related.md)."`
 - **Frontmatter:** optional. Use `---\ntitle: ...\ndescription: ...\n---` if you need explicit `<title>` and meta description override.
 
 ---
