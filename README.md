@@ -1,5 +1,10 @@
 # scroll-zoom-thing
 
+<!-- three.ws:badges -->
+[![GitHub stars](https://img.shields.io/github/stars/nirholas/scroll-zoom-thing?style=flat&logo=github)](https://github.com/nirholas/scroll-zoom-thing/stargazers) [![Last commit](https://img.shields.io/github/last-commit/nirholas/scroll-zoom-thing?style=flat)](https://github.com/nirholas/scroll-zoom-thing/commits) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat)](https://github.com/nirholas/scroll-zoom-thing/pulls) [![AI agent friendly](https://img.shields.io/badge/AI%20agents-AGENTS.md%20%2B%20llms.txt-6d5dfc?style=flat)](https://github.com/nirholas/scroll-zoom-thing/blob/HEAD/AGENTS.md)
+<!-- /three.ws:badges -->
+
+
 > A pure-CSS 3D parallax MkDocs Material template. No JavaScript, no scroll listeners, no animation frame loops. Just `perspective`, `translateZ`, and `scale()`, plus a handful of AVIF layers, wired into the browser's own scroll rendering.
 
 **Live demo:** [scroll-zoom-thing.pages.dev](https://scroll-zoom-thing.pages.dev) (this repository, built and deployed to Cloudflare Pages).
@@ -838,3 +843,26 @@ Full documentation site: **https://nirholas.github.io/scroll-zoom-thing/**
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=nirholas/scroll-zoom-thing&type=Date)](https://www.star-history.com/#nirholas/scroll-zoom-thing&Date)
+
+<!-- three.ws:growth -->
+## Support the project
+
+If scroll-zoom-thing saves you time, **[star it on GitHub](https://github.com/nirholas/scroll-zoom-thing)**. Stars are how other developers and AI agents find the repositories worth trusting, and they cost you one click.
+
+Know someone who would use it? [Post on X](https://twitter.com/intent/tweet?text=scroll-zoom-thing%3A%20CSS%203D%20perspective%20scrolling%3A%20a%20pure-CSS%20parallax&url=https%3A%2F%2Fgithub.com%2Fnirholas%2Fscroll-zoom-thing) · [Share on Bluesky](https://bsky.app/intent/compose?text=scroll-zoom-thing%3A%20CSS%203D%20perspective%20scrolling%3A%20a%20pure-CSS%20parallax%20https%3A%2F%2Fgithub.com%2Fnirholas%2Fscroll-zoom-thing) · [Share on LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgithub.com%2Fnirholas%2Fscroll-zoom-thing) · [Submit to Hacker News](https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fgithub.com%2Fnirholas%2Fscroll-zoom-thing&t=scroll-zoom-thing%3A%20CSS%203D%20perspective%20scrolling%3A%20a%20pure-CSS%20parallax) · [Share on Reddit](https://www.reddit.com/submit?url=https%3A%2F%2Fgithub.com%2Fnirholas%2Fscroll-zoom-thing&title=scroll-zoom-thing%3A%20CSS%203D%20perspective%20scrolling%3A%20a%20pure-CSS%20parallax)
+
+## Built for AI agents too
+
+Coding agents and LLM tooling can read this repo directly: [AGENTS.md](./AGENTS.md), [llms.txt](./llms.txt), [llms-full.txt](./llms-full.txt). Point an agent at `https://github.com/nirholas/scroll-zoom-thing` and it has the context it needs.
+
+## More from the same author
+
+- [All repositories by nirholas](https://github.com/nirholas/nirholas#readme): the full catalog, grouped by topic
+- [three.ws](https://three.ws): the platform for 3D AI agents with Solana wallets, a skill marketplace and x402 payments
+- Questions or ideas: [open an issue](https://github.com/nirholas/scroll-zoom-thing/issues) or [start a discussion](https://github.com/nirholas/scroll-zoom-thing/discussions)
+
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=nirholas/scroll-zoom-thing)](https://github.com/nirholas/scroll-zoom-thing/graphs/contributors)
+
+<!-- /three.ws:growth -->
