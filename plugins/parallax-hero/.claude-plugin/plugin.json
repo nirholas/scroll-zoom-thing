@@ -1,0 +1,16 @@
+{
+  "name": "parallax-hero",
+  "version": "0.1.0",
+  "description": "Build and tune a pure-CSS 3D perspective parallax hero for MkDocs Material sites.",
+  "author": {
+    "name": "nirholas"
+  },
+  "repository": "https://github.com/nirholas/scroll-zoom-thing",
+  "homepage": "https://scroll-zoom-thing.pages.dev/",
+  "keywords": [
+    "parallax",
+    "css",
+    "mkdocs",
+    "hero"
+  ]
+}

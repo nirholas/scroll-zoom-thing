@@ -1,0 +1,21 @@
+{
+  "name": "scroll-zoom-thing",
+  "owner": {
+    "name": "nirholas"
+  },
+  "description": "Build and tune a pure-CSS 3D perspective parallax hero for MkDocs Material sites.",
+  "plugins": [
+    {
+      "name": "parallax-hero",
+      "source": "./plugins/parallax-hero",
+      "description": "Build and tune a pure-CSS 3D perspective parallax hero for MkDocs Material sites.",
+      "category": "design",
+      "tags": [
+        "parallax",
+        "css",
+        "mkdocs",
+        "hero"
+      ]
+    }
+  ]
+}
